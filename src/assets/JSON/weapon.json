@@ -1,0 +1,105 @@
+{
+  "list": [{
+    "name": "Sword",
+    "stats": {
+      "atk": 3,
+      "def": 2,
+      "drb": 2,
+      "spd": 4
+    }
+  },
+    {
+      "name": "Longsword",
+      "stats": {
+        "atk": 4,
+        "def": 3,
+        "drb": 2,
+        "spd": 2
+
+      }
+    },
+    {
+      "name": "Dagger",
+      "stats": {
+        "atk": 2,
+        "def": 1,
+        "drb": 2,
+        "spd": 6
+      }
+    },
+    {
+      "name": "Waraxe",
+      "stats": {
+        "atk": 5,
+        "def": 2,
+        "drb": 2,
+        "spd": 1
+      }
+    },
+    {
+      "name": "Warhammer",
+      "stats": {
+        "atk": 5,
+        "def": 2,
+        "drb": 2,
+        "spd": 1
+      }
+    }
+  ],
+  "material": [
+    {
+      "name": "Wood",
+      "stats": {
+        "atk": 1,
+        "def": 1,
+        "drb": 0,
+        "spd": 0
+      }
+    },
+    {
+      "name": "Stone",
+      "stats": {
+        "atk": 1,
+        "def": 2,
+        "drb": 1,
+        "spd": 0
+      }
+    },
+    {
+      "name": "Iron",
+      "stats": {
+        "atk": 2,
+        "def": 2,
+        "drb": 4,
+        "spd": 0
+      }
+    },
+    {
+      "name": "Steel",
+      "stats": {
+        "atk": 2,
+        "def": 2,
+        "drb": 5,
+        "spd": 0
+      }
+    },
+    {
+      "name": "Topaze",
+      "stats": {
+        "atk": 3,
+        "def": 2,
+        "drb": 8,
+        "spd": 0
+      }
+    },
+    {
+      "name": "Ruby",
+      "stats": {
+        "atk": 3,
+        "def": 2,
+        "drb": 9,
+        "spd": 0
+      }
+    }
+  ]
+}
