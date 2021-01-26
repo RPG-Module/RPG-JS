@@ -1,6 +1,9 @@
-const t = require('./src/Class/RPG')
+const RPG = require('./src/Class/RPG')
 
-const Class = new t()
+const rpg = new RPG()
 
 
-Class.init()
+rpg.getMonsterInfo('Slime', 'low').then(r => {
+    console.log(r)
+})
+
