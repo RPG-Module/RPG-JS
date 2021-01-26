@@ -1,0 +1,34 @@
+{
+  "heal": [
+    {
+      "name": "Heal potion",
+      "stats": {
+        "heal": 20
+      },
+      "store": {
+        "sell": 5,
+        "buy": 15
+      },
+      "description": "Heal 20 HP."
+    }
+  ],
+  "loot": {
+      "Drop of slime": {
+        "stats": {},
+        "store": {
+          "sell": 2,
+          "buy": 4
+        },
+        "description": "A simple part of slime."
+      },
+    "Bone": {
+      "stats": {},
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "A simple part of skeleton."
+    }
+    }
+
+}

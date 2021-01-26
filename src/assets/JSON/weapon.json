@@ -100,6 +100,15 @@
         "drb": 9,
         "spd": 0
       }
+    },
+    {
+      "name": "Dragon Stone",
+      "stats": {
+        "atk": 5,
+        "def": 3,
+        "drb": 10,
+        "spd": 0
+      }
     }
   ]
 }

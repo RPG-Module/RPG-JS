@@ -1,0 +1,81 @@
+{
+  "list": [
+    {
+      "name": "Helmet",
+      "stats": {
+        "def": 2,
+        "drb": 3
+      },
+      "description": "Protect your head."
+    },
+    {
+      "name": "Chestplate",
+      "stats": {
+        "def": 4,
+        "drb": 4
+      },
+      "description": "Protect your torso."
+    },
+    {
+      "name": "Leggings",
+      "stats": {
+        "def": 3,
+        "drb": 4
+      },
+      "description": "Protect your legs."
+    },
+    {
+      "name": "Boots",
+      "stats": {
+        "def": 2,
+        "drb": 3
+      },
+      "description": "Protect your feet."
+    },
+    {
+      "name": "Shield",
+      "stats": {
+        "def": 3,
+        "drb": 4
+      },
+      "description": "Protects you better."
+    }
+  ],
+  "material": [
+    {
+      "name": "Iron",
+      "stats": {
+        "def": 2,
+        "drb": 4
+      }
+    },
+    {
+      "name": "Steel",
+      "stats": {
+        "def": 2,
+        "drb": 5
+      }
+    },
+    {
+      "name": "Topaze",
+      "stats": {
+        "def": 2,
+        "drb": 8
+      }
+    },
+    {
+      "name": "Ruby",
+      "stats": {
+        "def": 2,
+        "drb": 9
+      }
+    },
+    {
+      "name": "Dragon Stone",
+      "stats": {
+        "def": 3,
+        "drb": 10
+      }
+    }
+  ]
+}
