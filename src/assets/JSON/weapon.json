@@ -1,15 +1,14 @@
 {
-  "list": [{
-    "name": "Sword",
-    "stats": {
-      "atk": 3,
-      "def": 2,
-      "drb": 2,
-      "spd": 4
-    }
-  },
-    {
-      "name": "Longsword",
+  "list": {
+    "Sword": {
+      "stats": {
+        "atk": 3,
+        "def": 2,
+        "drb": 2,
+        "spd": 4
+      }
+    },
+    "Longsword": {
       "stats": {
         "atk": 4,
         "def": 3,
@@ -18,8 +17,7 @@
 
       }
     },
-    {
-      "name": "Dagger",
+    "Dagger": {
       "stats": {
         "atk": 2,
         "def": 1,
@@ -27,8 +25,7 @@
         "spd": 6
       }
     },
-    {
-      "name": "Waraxe",
+    "Waraxe": {
       "stats": {
         "atk": 5,
         "def": 2,
@@ -36,8 +33,7 @@
         "spd": 1
       }
     },
-    {
-      "name": "Warhammer",
+    "Warhammer": {
       "stats": {
         "atk": 5,
         "def": 2,
@@ -45,19 +41,17 @@
         "spd": 1
       }
     }
-  ],
-  "material": [
-    {
-      "name": "Wood",
-      "stats": {
-        "atk": 1,
-        "def": 1,
-        "drb": 0,
-        "spd": 0
-      }
-    },
-    {
-      "name": "Stone",
+  },
+  "material": {
+      "Wood": {
+        "stats": {
+          "atk": 1,
+          "def": 1,
+          "drb": 0,
+          "spd": 0
+        }
+      },
+    "Stone": {
       "stats": {
         "atk": 1,
         "def": 2,
@@ -65,8 +59,7 @@
         "spd": 0
       }
     },
-    {
-      "name": "Iron",
+    "Iron": {
       "stats": {
         "atk": 2,
         "def": 2,
@@ -74,8 +67,7 @@
         "spd": 0
       }
     },
-    {
-      "name": "Steel",
+    "Steel": {
       "stats": {
         "atk": 2,
         "def": 2,
@@ -83,8 +75,7 @@
         "spd": 0
       }
     },
-    {
-      "name": "Topaze",
+    "Topaze": {
       "stats": {
         "atk": 3,
         "def": 2,
@@ -92,8 +83,7 @@
         "spd": 0
       }
     },
-    {
-      "name": "Ruby",
+    "Ruby": {
       "stats": {
         "atk": 3,
         "def": 2,
@@ -101,8 +91,7 @@
         "spd": 0
       }
     },
-    {
-      "name": "Dragon Stone",
+    "Dragon Stone": {
       "stats": {
         "atk": 5,
         "def": 3,
@@ -110,5 +99,5 @@
         "spd": 0
       }
     }
-  ]
+  }
 }

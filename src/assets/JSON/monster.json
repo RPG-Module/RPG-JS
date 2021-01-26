@@ -8,6 +8,15 @@
           "spd": 2
         }
       }
+    },
+    "medium": {
+      "Slime": {
+        "stats": {
+          "atk": 5,
+          "def": 3,
+          "spd": 4
+        }
+      }
     }
   }
 }

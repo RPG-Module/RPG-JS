@@ -1,7 +1,12 @@
 {
   "Slime" : [
     {
-      "name": "Drop of slime"
+      "name": "Drop of slime",
+      "proba": 0.7
+    },
+    {
+      "name": "Bone",
+      "proba": 0.2
     }
   ]
 
