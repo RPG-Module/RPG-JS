@@ -40,31 +40,31 @@
     "Iron": {
       "stats": {
         "def": 2,
-        "drb": 4,
+        "drb": 4
       }
     },
     "Steel": {
       "stats": {
         "def": 2,
-        "drb": 5,
+        "drb": 5
       }
     },
     "Topaze": {
       "stats": {
         "def": 2,
-        "drb": 8,
+        "drb": 8
       }
     },
     "Ruby": {
       "stats": {
         "def": 2,
-        "drb": 9,
+        "drb": 9
       }
     },
     "Dragon Stone": {
       "stats": {
         "def": 3,
-        "drb": 10,
+        "drb": 10
       }
     }
   }
