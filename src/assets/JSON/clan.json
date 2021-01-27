@@ -1,0 +1,47 @@
+{
+  "Tadil": {
+    "Wolfman": {
+      "Dinaris": {
+        "description": "A race of wolves, remnants of the rebellions of Distaris during the great war against the Tadil-Nor faction which lasted a very long time. They joined the Tadil faction to win the war, but they have since failed, and some clans have still resisted the many raids by the Distaris. They have a greater mastery of magic, but it is limited.",
+        "faction": "Tadil",
+        "clan": ["Dinaris"],
+        "info": {
+          "hp": 20,
+          "mp": 15,
+          "stats": {
+            "atk": 3,
+            "def": 3,
+            "spd": 2
+          }
+        }
+      }
+    },
+    "Elf": {
+      "description": "This clan of elves are at the origin of magic on the planet, and have passed on the knowledge of magic to the allied race.",
+      "info": {
+        "hp": 20,
+        "mp": 30,
+        "stats": {
+          "atk": 3,
+          "def": 2,
+          "spd": 2
+        }
+      }
+    }
+  },
+  "Nor": {
+    "Distaris": {
+      "description": "A race of wolf-men who are great fighters, victorious of the great war opposing the Tadil faction to the Norrian, they say that one cannot fight with magic but one finds among their race some mages and a little more magician-warrior.",
+      "faction": "Nor",
+      "info": {
+        "hp": 25,
+        "mp": 10,
+        "stats": {
+          "atk": 4,
+          "def": 3,
+          "spd": 2
+        }
+      }
+    }
+  }
+}

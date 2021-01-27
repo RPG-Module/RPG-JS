@@ -1,0 +1,11 @@
+{
+    "Elf": {
+      "description": "The elves are a race that is at the origin of magic on the planet, and have passed on the knowledge of magic to the allied race.",
+      "faction": "Tadil",
+
+    },
+    "Wolfman": {
+      "description":"A race of wolf-men who are great fighters, but bad magicians with a good defensive potential.",
+    },
+
+}
