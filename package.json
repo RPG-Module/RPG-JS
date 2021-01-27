@@ -8,7 +8,5 @@
   },
   "author": "zechaos",
   "license": "ISC",
-  "dependencies": {
-    "ora": "^5.3.0"
-  }
+  "dependencies": {}
 }
