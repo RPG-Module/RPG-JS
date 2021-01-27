@@ -1,5 +1,5 @@
 {
-  "heal": {
+  "modifiers": {
     "Heal potion": {
       "stats": {
         "heal": 20
@@ -21,7 +21,7 @@
       "description": "Give 20 EP."
     }
   },
-  "loot": {
+  "item": {
     "Drop of slime": {
       "stats": null,
       "store": {
