@@ -4,9 +4,33 @@ Create your own customizable RPG game
 
 This is under development
 
+## TO DO
+ - User profile
+    - Race
+    - Classe
+    - Inventory
+    - Level
+    - Reputation
+    - Job
+    - Money
+ 
+ - Battle
+    - PVE
+        - Dungeons
+        - Quest
+        - Bosses
+    - PVP
+        - Tournament
+        - Duel
+ 
+ - Shop
+    - Sell
+    - Buy
+    
+
 ## Add Item
 In object.json
-```hjson
+```json
 
 {
   //Add to heal or loot object
@@ -44,7 +68,7 @@ rpg.getItemInfo("heal","Heal potion").then(item =>{
 
 ## Add Monster
 In monster.json
- ```hjson
+ ```json
 {
 "level": {
     "low": { // for low user level
