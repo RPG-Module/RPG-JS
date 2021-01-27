@@ -4,7 +4,7 @@ Create your own customizable RPG game
 
 ## Add Item
 In object.json
-```json
+```hjson
 
 {
   //Add to heal or loot object
@@ -42,7 +42,7 @@ rpg.getItemInfo("heal","Heal potion").then(item =>{
 
 ## Add Monster
 In monster.json
- ```json
+ ```hjson
 {
 "level": {
     "low": { // for low user level
@@ -69,7 +69,7 @@ In monster.json
 
 To loottable.json
 
-```json
+```hjson
 {
   "Slime" : [ //monster name
     {
