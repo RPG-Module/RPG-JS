@@ -30,7 +30,7 @@ This is under development
 
 ## Add Item
 In object.json
-```json
+```jsonc
 
 {
   //Add to heal or loot object
@@ -68,7 +68,7 @@ rpg.getItemInfo("heal","Heal potion").then(item =>{
 
 ## Add Monster
 In monster.json
- ```json
+ ```jsonc
 {
 "level": {
     "low": { // for low user level
@@ -95,7 +95,7 @@ In monster.json
 
 To loottable.json
 
-```hjson
+```jsonc
 {
   "Slime" : [ //monster name
     {
