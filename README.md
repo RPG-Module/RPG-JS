@@ -2,6 +2,8 @@
 
 Create your own customizable RPG game
 
+This is under development
+
 ## Add Item
 In object.json
 ```hjson
