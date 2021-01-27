@@ -1,13 +1,14 @@
 # RPG-Module
 
+Create your own customizable RPG game
 
 ## Add Item
 In object.json
 ```json
-//
+
 {
   //Add to heal or loot object
-      "name": "Item Name",
+      "name": "Heal potion",
       "stats": {
         //Your stats for no stats provide null
         "heal":20, //property heal give 20 point
@@ -23,7 +24,6 @@ In object.json
       "description": "Give 20 HP." // simple description
     }
 }
-
 ```
 
 To get a new item
@@ -41,3 +41,57 @@ rpg.getItemInfo("heal","Heal potion").then(item =>{
 
 
 ## Add Monster
+In monster.json
+ ```json
+{
+"level": {
+    "low": { // for low user level
+          "Slime": { //Monster name
+            "stats": { //monster statistics
+              "atk": 2, //attack
+              "def": 1, // defence
+              "spd": 2 //speed
+            }
+          }
+    },
+    "medium": {// for medium user level
+      
+    },
+    "hard": {// for hard user level
+          
+    },
+    "legendary": {// for legendary user level
+          
+    }
+  }
+}
+```
+
+To loottable.json
+
+```json
+{
+  "Slime" : [ //monster name
+    {
+      "name": "Drop of slime", //Item name (in object.json in loot section) follow Add Item section
+      "proba": 0.7 //loot chance/1
+    },
+  ]
+
+}
+```
+
+To get a new monster 
+
+```js
+const RPG = require('./path/to/RPG.js')
+
+const rpg = new RPG()
+const monster = "Slime" // monster name
+const level = "low"
+rpg.monsters.getMonsterInfo(monster, level).then(r =>{
+    console.log(r)
+}).catch((err)=>{
+    console.log(err)
+})
+```
