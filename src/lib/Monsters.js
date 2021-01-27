@@ -5,9 +5,13 @@ module.exports = class {
     }
 
     getMonsterInfo(monster, level) {
-         monster = monster.replace(/^\w/, c => c.toUpperCase());
 
         return new Promise((resolve, reject) => {
+            if(!monster) reject('Specify a monster name')
+            if(!level) reject('Specify a level name')
+
+            monster = monster.replace(/^\w/, c => c.toUpperCase());
+
             fs.readFile('./src/assets/JSON/monster.json').then(function (mst) {
                 const monsters = JSON.parse(mst)
                 if(!monsters.level[level]){

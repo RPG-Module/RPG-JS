@@ -5,9 +5,12 @@ module.exports = class {
     }
 
     getItemInfo(type,name) {
-        name = name.replace(/^\w/, c => c.toUpperCase());
 
         return new Promise((resolve, reject) => {
+            if(!name) reject('Specify a item name')
+            if(!type) reject('Specify a type name')
+            name = name.replace(/^\w/, c => c.toUpperCase());
+
             fs.readFile('./src/assets/JSON/object.json').then(function (obj) {
                 const objs = JSON.parse(obj)
                 if(!objs[type]){
@@ -24,9 +27,11 @@ module.exports = class {
     }
 
     getMaterialArmor(name){
-        name = name.replace(/^\w/, c => c.toUpperCase());
 
         return new Promise((resolve, reject) => {
+            if(!name) reject('Specify a material name')
+            name = name.replace(/^\w/, c => c.toUpperCase());
+
             fs.readFile('./src/assets/JSON/armor.json').then(function (obj) {
                 const objs = JSON.parse(obj)
                 if(!objs.material[name]){
@@ -40,6 +45,8 @@ module.exports = class {
     }
     getMaterialWeapon(name){
         return new Promise((resolve, reject) => {
+            if(!name) reject('Specify a material name')
+            name = name.replace(/^\w/, c => c.toUpperCase());
             fs.readFile('./src/assets/JSON/weapon.json').then(function (obj) {
                 const objs = JSON.parse(obj)
                 if(!objs.material[name]){
