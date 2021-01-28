@@ -17,16 +17,18 @@
       }
     },
     "Elf": {
-      "description": "This clan of elves are at the origin of magic on the planet, and have passed on the knowledge of magic to the allied race.",
-      "info": {
-        "hp": 20,
-        "mp": 30,
-        "stats": {
-          "atk": 3,
-          "def": 2,
-          "spd": 2
+      "Meridor": {
+        "description": "This clan of elves are at the origin of magic on the planet, and have passed on the knowledge of magic to the allied race.",
+        "info": {
+          "hp": 20,
+          "mp": 30,
+          "stats": {
+            "atk": 3,
+            "def": 2,
+            "spd": 2
+          }
         }
-      }
+      },
     }
   },
   "Nor": {
