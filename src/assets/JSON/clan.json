@@ -2,7 +2,7 @@
   "Tadil": {
     "Wolfman": {
       "Dinaris": {
-        "description": "A race of wolves, remnants of the rebellions of Distaris during the great war against the Tadil-Nor faction which lasted a very long time. They joined the Tadil faction to win the war, but they have since failed, and some clans have still resisted the many raids by the Distaris. They have a greater mastery of magic, but it is limited.",
+        "description": "Une race de loups, vestiges des rébellions de Distaris pendant la grande guerre contre la faction Tadil-Nor qui a duré très longtemps. Ils ont rejoint la faction Tadil pour gagner la guerre, mais ils ont échoué depuis, et certains clans ont encore résisté aux nombreux raids des Distaris. Ils ont une plus grande maîtrise de la magie, mais elle est limitée.",
         "faction": "Tadil",
         "clan": ["Dinaris"],
         "info": {
@@ -18,28 +18,41 @@
     },
     "Elf": {
       "Meridor": {
-        "description": "This clan of elves are at the origin of magic on the planet, and have passed on the knowledge of magic to the allied race.",
+        "description": "Ce clan d'elfes est à l'origine de la magie sur la planète, et a transmis le savoir de la magie à la race alliée.",
         "info": {
           "hp": 20,
-          "mp": 30,
+          "mp": 35,
           "stats": {
             "atk": 3,
             "def": 2,
             "spd": 2
           }
         }
-      },
+      }
     }
   },
   "Nor": {
     "Distaris": {
-      "description": "A race of wolf-men who are great fighters, victorious of the great war opposing the Tadil faction to the Norrian, they say that one cannot fight with magic but one finds among their race some mages and a little more magician-warrior.",
+      "description": "Une race d'hommes-loups qui sont de grands combattants, victorieux de la grande guerre opposant la faction Tadil à la Norrienne, ils disent qu'on ne peut pas lutter avec la magie mais on trouve parmi leur race quelques mages et un peu plus de magiciens-guerriers.",
       "faction": "Nor",
       "info": {
         "hp": 25,
         "mp": 10,
         "stats": {
           "atk": 4,
+          "def": 3,
+          "spd": 2
+        }
+      }
+    },
+    "Latiran": {
+      "description": "Une race d'elfe corrompu par la magie noire, variante des la magie des elfes, se sont des bon combatant mais une bonne maitrise de la magie noir.",
+      "faction": "Nor",
+      "info": {
+        "hp": 20,
+        "mp": 30,
+        "stats": {
+          "atk": 3,
           "def": 3,
           "spd": 2
         }

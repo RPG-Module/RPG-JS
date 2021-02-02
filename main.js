@@ -2,7 +2,7 @@ const RPG = require('./src/Class/RPG')
 
 const rpg = new RPG()
 
-rpg.monsters.getMonsterInfo('Slime','low').then(r =>{
+/*rpg.monsters.getMonsterInfo('Slime','low').then(r =>{
     console.log(r)
 }).catch((err)=>{
     console.log(err)
@@ -20,4 +20,9 @@ rpg.items.getMaterialArmor("Iron").then((r) =>{
 
 }).catch((err)=>{
     console.log(err)
+})*/
+
+
+rpg.users.getProfile('Lynhall').then((data)=>{
+    console.log(data)
 })

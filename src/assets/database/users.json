@@ -1,0 +1,11 @@
+{
+    "Lynhall": {
+        "classe": "Chasseur",
+        "race": "Elfe",
+        "clan": "Clan",
+        "premium": false,
+        "inventory": {},
+        "dungeons": {},
+        "chest": {}
+    }
+}
