@@ -1,11 +1,14 @@
 {
-    "Elf": {
-      "description": "The elves are a race that is at the origin of magic on the planet, and have passed on the knowledge of magic to the allied race.",
-      "faction": "Tadil",
-
-    },
-    "Wolfman": {
-      "description":"A race of wolf-men who are great fighters, but bad magicians with a good defensive potential.",
-    },
-
+  "elf": {
+    "description": "Une race puissante en magie, ils sont a l'origine de la magie sur la planète ."
+  },
+  "wolfman": {
+    "description": "Une race d'homme loup de tres bon combatant avec un fort potentiel défensif."
+  },
+  "orc": {
+    "description": "Une race d'orc d'excellent combatant avec des connaissance basique en magie."
+  },
+  "darkElf": {
+    "description": "Une race d'elf corrompu par la magie noir, ils sont de bon combatant."
+  }
 }

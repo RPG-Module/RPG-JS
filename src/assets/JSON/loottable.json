@@ -1,13 +1,36 @@
 {
-  "Slime" : [
+  "slime" : [
     {
       "name": "Drop of slime",
-      "proba": 0.7
-    },
-    {
-      "name": "Bone",
-      "proba": 0.2
+      "proba": 0.7,
+      "lengthMax": 3
+
     }
-  ]
+  ],
+  "chest": {
+    "woodChest": [
+      {
+        "type": "weapons",
+        "material": ["Wood","Stone"],
+        "proba": 0.2,
+        "lengthMax": 1
+
+      },
+      {
+        "type": "armor",
+        "material": ["Iron"],
+        "proba": 0.2,
+        "lengthMax": 1
+
+      },
+      {
+        "type": "money",
+        "material": null,
+        "proba": 0.5,
+        "lengthMax": 50
+      }
+    ]
+  }
+
 
 }

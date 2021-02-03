@@ -1,34 +1,34 @@
 {
   "list": {
-    "Helmet": {
+    "helmet": {
       "stats": {
         "def": 2,
         "drb": 3
       },
       "description": "Protect your head."
     },
-    "Chestplate": {
+    "chestplate": {
       "stats": {
         "def": 4,
         "drb": 4
       },
       "description": "Protect your torso."
     },
-    "Leggings": {
+    "leggings": {
       "stats": {
         "def": 3,
         "drb": 4
       },
       "description": "Protect your legs."
     },
-    "Boots": {
+    "boots": {
       "stats": {
         "def": 2,
         "drb": 3
       },
       "description": "Protect your feet."
     },
-    "Shield": {
+    "shield": {
       "stats": {
         "def": 3,
         "drb": 4
@@ -37,31 +37,31 @@
     }
   },
   "material": {
-    "Iron": {
+    "iron": {
       "stats": {
         "def": 2,
         "drb": 4
       }
     },
-    "Steel": {
+    "steel": {
       "stats": {
         "def": 2,
         "drb": 5
       }
     },
-    "Topaze": {
+    "topaze": {
       "stats": {
         "def": 2,
         "drb": 8
       }
     },
-    "Ruby": {
+    "ruby": {
       "stats": {
         "def": 2,
         "drb": 9
       }
     },
-    "Dragon Stone": {
+    "dragon Stone": {
       "stats": {
         "def": 3,
         "drb": 10

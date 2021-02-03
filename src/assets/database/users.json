@@ -1,8 +1,8 @@
 {
     "Lynhall": {
-        "classe": "Chasseur",
-        "race": "Elfe",
-        "clan": "Clan",
+        "classe": "Classe",
+        "race": "Elf",
+        "clan": "Meridor",
         "premium": false,
         "inventory": {},
         "dungeons": {},

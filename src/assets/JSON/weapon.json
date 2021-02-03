@@ -1,6 +1,6 @@
 {
   "list": {
-    "Sword": {
+    "sword": {
       "stats": {
         "atk": 3,
         "def": 2,
@@ -8,7 +8,7 @@
         "spd": 4
       }
     },
-    "Longsword": {
+    "longsword": {
       "stats": {
         "atk": 4,
         "def": 3,
@@ -17,7 +17,7 @@
 
       }
     },
-    "Dagger": {
+    "dagger": {
       "stats": {
         "atk": 2,
         "def": 1,
@@ -25,7 +25,7 @@
         "spd": 6
       }
     },
-    "Waraxe": {
+    "waraxe": {
       "stats": {
         "atk": 5,
         "def": 2,
@@ -33,7 +33,7 @@
         "spd": 1
       }
     },
-    "Warhammer": {
+    "warhammer": {
       "stats": {
         "atk": 5,
         "def": 2,
@@ -43,7 +43,7 @@
     }
   },
   "material": {
-      "Wood": {
+      "wood": {
         "stats": {
           "atk": 1,
           "def": 1,
@@ -51,7 +51,7 @@
           "spd": 0
         }
       },
-    "Stone": {
+    "stone": {
       "stats": {
         "atk": 1,
         "def": 2,
@@ -59,7 +59,7 @@
         "spd": 0
       }
     },
-    "Iron": {
+    "iron": {
       "stats": {
         "atk": 2,
         "def": 2,
@@ -67,7 +67,7 @@
         "spd": 0
       }
     },
-    "Steel": {
+    "steel": {
       "stats": {
         "atk": 2,
         "def": 2,
@@ -75,7 +75,7 @@
         "spd": 0
       }
     },
-    "Topaze": {
+    "topaze": {
       "stats": {
         "atk": 3,
         "def": 2,
@@ -83,7 +83,7 @@
         "spd": 0
       }
     },
-    "Ruby": {
+    "ruby": {
       "stats": {
         "atk": 3,
         "def": 2,
@@ -91,7 +91,7 @@
         "spd": 0
       }
     },
-    "Dragon Stone": {
+    "dragon Stone": {
       "stats": {
         "atk": 5,
         "def": 3,

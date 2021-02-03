@@ -1,7 +1,7 @@
 {
   "level": {
     "low": {
-      "Slime": {
+      "slime": {
         "stats": {
           "atk": 2,
           "def": 1,
@@ -10,7 +10,7 @@
       }
     },
     "medium": {
-      "Slime": {
+      "slime": {
         "stats": {
           "atk": 5,
           "def": 3,
