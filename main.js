@@ -23,6 +23,6 @@ rpg.items.getMaterialArmor("Iron").then((r) =>{
 })*/
 
 
-rpg.users.getProfile('Lynhall').then((data)=>{
+rpg.users.createprofile('Lynhall',"Elf","Meridor","Classe","Tadil").then((data)=>{
     console.log(data)
 })
