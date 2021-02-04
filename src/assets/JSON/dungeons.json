@@ -1,0 +1,26 @@
+{
+  "Crypte des esprits": {
+    "monster": {
+      "low": ["slime","skeleton","spirit"],
+      "medium": []
+    },
+    "boss": {},
+    "loot": {
+      "orb": {
+        "defence": 1,
+        "attack" : 1,
+        "speed" : 0
+      },
+      "chest" : {
+        "woodChest": 1
+      },
+      "rareloot": {
+        "weapons": {
+          "sword": {
+            "material": "iron"
+          }
+        }
+      }
+    }
+  }
+}
