@@ -1,6 +1,12 @@
 const fs = require('fs/promises')
+const Battles = require('../lib/Battles')
+const Users = require('../lib/Users')
+const Items = require('../lib/Items')
 module.exports = class {
     constructor() {
+        this.users =  new Users()
+        this.items = new Items()
+        this.battles = new Battles()
 
     }
 

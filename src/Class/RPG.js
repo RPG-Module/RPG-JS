@@ -6,15 +6,13 @@ const Items = require('../lib/Items')
 
 module.exports = class {
     constructor() {
-        this.battles = new Battles()
         this.monsters = new Monsters()
         this.users =  new Users()
         this.items = new Items()
+        this.battles = new Battles()
 
     }
-
-
-
-
-
+    test(){
+        console.log("res")
+    }
 }

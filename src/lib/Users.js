@@ -1,7 +1,13 @@
 const fs = require('fs/promises')
-
+const Monsters = require('../lib/Monsters')
+const Battles = require('../lib/Battles')
+const Items = require('../lib/Items')
 module.exports = class {
     constructor() {
+        this.monsters = new Monsters()
+        this.items = new Items()
+        this.battles = new Battles()
+
     }
 
     createProfile(name,race, clan, classe,faction) {
@@ -25,6 +31,32 @@ module.exports = class {
                                     if(stringifyOlfUserJSON[name.toLowerCase()]){
                                         reject("Ce nom d'utilisateur est déjà pris")
                                     }
+                                    const newUser = {
+                                        [name]:{
+                                            classe,
+                                            race,
+                                            clan,
+                                            faction,
+                                            premium: false,
+                                            info:{
+                                                level:1,
+                                                xp:0,
+                                                stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info
+                                            },
+                                            inventory: {
+                                                modifiers:{},
+                                                item:{},
+                                                keys:{}
+                                            },
+                                            dungeons: {
+                                                begin:{},
+                                                end:{}
+
+                                            },
+                                            chest: {}
+
+                                        }
+                                    }
                                     const users = Object.assign(stringifyOlfUserJSON,newUser)
                                     fs.writeFile('./src/assets/database/users.json',JSON.stringify(users, null, 4)).then(()=>{
                                         resolve({message:"Utilisateur créer",user:newUser})
@@ -47,19 +79,7 @@ module.exports = class {
 
                 })
             })
-                const newUser = {
-                    [name]:{
-                        classe,
-                        race,
-                        clan,
-                        faction,
-                        premium: false,
-                        inventory: {},
-                        dungeons: {},
-                        chest: {}
 
-                    }
-                }
 
         })
 
@@ -78,5 +98,24 @@ module.exports = class {
             })
         })
 
+    }
+
+    removeProfile(name) {
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/database/users.json').then(function (user) {
+                const stringifyOlfUserJSON = JSON.parse(user)
+                if (!stringifyOlfUserJSON[name]) {
+                    reject('Utilisateur non trouvé')
+                }
+                delete stringifyOlfUserJSON[name]
+                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyOlfUserJSON, null, 4)).then(() => {
+                    resolve({message: "Utilisateur supprimé"})
+                }).catch((err) => {
+                    reject(err)
+                })
+            }).catch((err) => {
+                reject(err)
+            })
+        })
     }
 }
