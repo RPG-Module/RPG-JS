@@ -1,3 +1,32 @@
 {
-z
+    "Lynhall": {
+        "classe": "Classe",
+        "race": "Elf",
+        "clan": "Meridor",
+        "faction": "Tadil",
+        "premium": false,
+        "info": {
+            "level": 1,
+            "xp": 0,
+            "stats": {
+                "hp": 20,
+                "mp": 35,
+                "stats": {
+                    "atk": 3,
+                    "def": 2,
+                    "spd": 2
+                }
+            }
+        },
+        "inventory": {
+            "modifiers": {},
+            "item": {},
+            "keys": {}
+        },
+        "dungeons": {
+            "begin": {},
+            "end": {}
+        },
+        "chest": {}
+    }
 }

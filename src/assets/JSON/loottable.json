@@ -1,27 +1,43 @@
 {
-  "slime" : [
+  "slime": [
     {
       "name": "Drop of slime",
       "proba": 0.7,
       "lengthMax": 3
-
+    }
+  ],
+  "skeleton": [
+    {
+      "name": "Bone",
+      "proba": 0.7,
+      "lengthMax": 3
+    }
+  ],
+  "spirit": [
+    {
+      "name": "Ectoplasm",
+      "proba": 0.7,
+      "lengthMax": 3
     }
   ],
   "chest": {
     "woodChest": [
       {
         "type": "weapons",
-        "material": ["Wood","Stone"],
+        "material": [
+          "Wood",
+          "Stone"
+        ],
         "proba": 0.2,
         "lengthMax": 1
-
       },
       {
         "type": "armor",
-        "material": ["Iron"],
+        "material": [
+          "Iron"
+        ],
         "proba": 0.2,
         "lengthMax": 1
-
       },
       {
         "type": "money",
@@ -31,6 +47,4 @@
       }
     ]
   }
-
-
 }

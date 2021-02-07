@@ -1,12 +1,7 @@
 const fs = require('fs/promises')
-const Battles = require('../lib/Battles')
-const Users = require('../lib/Users')
-const Items = require('../lib/Items')
+
 module.exports = class {
     constructor() {
-        this.users =  new Users()
-        this.items = new Items()
-        this.battles = new Battles()
 
     }
 
@@ -32,9 +27,9 @@ module.exports = class {
                         const objs = JSON.parse(obj)
                         let loot = {}
                         for (const lootobj of loottable) {
-                            if (objs.loot[lootobj.name]) {
+                            if (objs.item[lootobj.name.toLowerCase()]) {
                                 Object.assign(loot, {
-                                    [lootobj.name]: [objs.loot[lootobj.name]]
+                                    [lootobj.name]: [objs.item[lootobj.name.toLowerCase()]]
                                 })
                             }
                         }

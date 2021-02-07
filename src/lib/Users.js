@@ -1,12 +1,8 @@
 const fs = require('fs/promises')
-const Monsters = require('../lib/Monsters')
-const Battles = require('../lib/Battles')
-const Items = require('../lib/Items')
+
 module.exports = class {
     constructor() {
-        this.monsters = new Monsters()
-        this.items = new Items()
-        this.battles = new Battles()
+
 
     }
 

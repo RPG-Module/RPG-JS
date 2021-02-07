@@ -37,6 +37,14 @@
         "buy": 4
       },
       "description": "A simple part of skeleton."
+    },
+    "ectoplasm": {
+      "stats": null,
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "A simple part of spirit."
     }
   }
 }

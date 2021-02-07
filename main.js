@@ -25,7 +25,9 @@ rpg.items.getMaterialArmor("Iron").then((r) =>{
 
 rpg.users.createProfile('Lynhall',"Elf","Meridor","Classe","Tadil").then((data)=>{
 
-    rpg.battles.fightDungeon('Crypte des esprits',"Lynhall")
+    rpg.battles.fightDungeon('Crypte des esprits',"Lynhall").then((data) =>{
+        console.log(data)
+    })
 
 })
 

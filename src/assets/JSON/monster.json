@@ -3,8 +3,25 @@
     "low": {
       "slime": {
         "stats": {
-          "atk": 2,
+          "pv" : 10,
+          "atk": 3,
           "def": 1,
+          "spd": 2
+        }
+      },
+      "skeleton": {
+        "stats": {
+          "pv" : 20,
+          "atk": 3,
+          "def": 1,
+          "spd": 2
+        }
+      },
+      "spirit": {
+        "stats": {
+          "pv" : 10,
+          "atk": 3,
+          "def": 2,
           "spd": 2
         }
       }
