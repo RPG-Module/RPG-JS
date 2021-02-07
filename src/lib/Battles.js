@@ -52,6 +52,8 @@ const fs = require('fs/promises')
                             let monsterAttack = (data.stats.atk - user.info.stats.stats.def)
                             let result = {}
                             let turn = 0
+
+                            //combat
                             while (userpv !== 0 && monsterpv !== 0){
                                 turn++
                                 monsterpv = monsterpv - userAttack
@@ -73,6 +75,7 @@ const fs = require('fs/promises')
                                     },
                                 })
                             }
+
                             resolve(result)
                         })
                     })
