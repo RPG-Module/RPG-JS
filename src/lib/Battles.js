@@ -1,7 +1,5 @@
 const fs = require('fs/promises')
 
-
-
     class Battle {
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
@@ -29,6 +27,13 @@ const fs = require('fs/promises')
         }
 
         fightDungeon(name, profile) {
+            //random dungeon
+            if(name === 'random') {
+                Battle.randomDungeon().then((djn) =>{
+                    name = djn
+                })
+            }
+
             const Monsters = require('../lib/Monsters')
             const monsters = new Monsters()
             return new Promise((resolve, reject) => {
@@ -44,7 +49,7 @@ const fs = require('fs/promises')
                         }
                         let user = stringifyUsers[profile]
                         let dungeon = stringifyDungeons[name]
-                        monsters.getMonsterInfo(Battle.selectMonster(dungeon.monster[Battle.calcLvl(user)]), Battle.calcLvl(user)).then((data) =>{
+                        monsters.getMonsterInfo(Battle.selectRandomThings(dungeon.monster[Battle.calcLvl(user)]), Battle.calcLvl(user)).then((data) =>{
                             let userpv = user.info.stats.hp
                             let monsterpv = data.stats.pv
                             let result = {}
@@ -125,13 +130,24 @@ const fs = require('fs/promises')
             })
         }
 
+        static randomDungeon(){
+            return new Promise((resolve, reject) => {
+                fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
+                    resolve(Object.keys(JSON.parse(dungeons))[Math.floor(Math.random()*Object.keys(JSON.parse(dungeons)).length)])
+                }).catch((err)=>{
+                    reject(err)
+                })
+            })
+
+        }
+
         static calcLvl(user) {
             if (user.info.level < 20) {
                 return 'low'
             }
         }
 
-        static selectMonster(array){
+        static selectRandomThings(array){
             return array[Math.floor(Math.random()*array.length)];
         }
 
