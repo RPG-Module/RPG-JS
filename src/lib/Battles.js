@@ -46,30 +46,58 @@ const fs = require('fs/promises')
                         let dungeon = stringifyDungeons[name]
                         monsters.getMonsterInfo(Battle.selectMonster(dungeon.monster[Battle.calcLvl(user)]), Battle.calcLvl(user)).then((data) =>{
                             let userpv = user.info.stats.hp
-                            let userAttack = (user.info.stats.stats.atk - data.stats.def)
-
                             let monsterpv = data.stats.pv
-                            let monsterAttack = (data.stats.atk - user.info.stats.stats.def)
                             let result = {}
                             let turn = 0
-                            let isCriticalUser = false
-                            let isCriticalMonster = false
 
                             //combat
                             while (userpv >= 0 && monsterpv >= 0){
-
-                                if(Battle.randomInt() <= (user.info.stats.stats.ctr)*100){
-                                    userAttack = userAttack*2
-                                    isCriticalUser = true
+                                //Set stats
+                                let attackMonsterStats = {
+                                    dodge:false,
+                                    crit:false
                                 }
-                                if(Battle.randomInt() <= (data.stats.ctr)*100){
-                                    monsterAttack = monsterAttack*2
-                                    isCriticalMonster = true
+                                let attackUserStats = {
+                                    dodge:false,
+                                    crit:false
                                 }
 
+                                let userAttack = (user.info.stats.stats.atk - data.stats.def)
+                                let monsterAttack = (data.stats.atk - user.info.stats.stats.def)
+
+
+                                //DODGE
+
+                                if(Battle.randomInt() <= (user.info.stats.stats.spd)*100){
+                                    attackUserStats.dodge = true
+
+                                }
+
+                                if(Battle.randomInt() <= (data.stats.spd)*100){
+                                    attackMonsterStats.dodge = true
+
+                                }
+
+                                //CRIT
+
+                                if(!attackUserStats.dodge){
+                                    if(Battle.randomInt() <= (data.stats.ctr)*100){
+                                        monsterAttack = monsterAttack*2
+                                        attackMonsterStats.crit = true
+                                    }
+                                    userpv = userpv - monsterAttack
+                                }
+
+                                if(!attackMonsterStats.dodge){
+                                    if(Battle.randomInt() <= (user.info.stats.stats.ctr)*100){
+                                        userAttack = userAttack*2
+                                        attackUserStats.crit = true
+                                    }
+                                    monsterpv = monsterpv - userAttack
+                                }
+
+                                //Make combat result
                                 turn++
-                                monsterpv = monsterpv - userAttack
-                                userpv = userpv - monsterAttack
                                 Object.assign(result,{
                                     [turn]:{
                                         [profile]:{
@@ -77,20 +105,19 @@ const fs = require('fs/promises')
                                             attack:user.info.stats.stats.atk,
                                             defence:user.info.stats.stats.def,
                                             effectiveAttack:userAttack,
-                                            critical : isCriticalUser
+                                            attackUserStats
                                         },
                                         [data.monster]:{
                                             pv:monsterpv,
                                             attack:data.stats.atk,
                                             defence:data.stats.def,
                                             effectiveAttack:monsterAttack,
-                                            critical : isCriticalMonster
+                                            attackMonsterStats
 
                                         }
                                     },
                                 })
                             }
-
                             resolve(result)
                         })
                     })
