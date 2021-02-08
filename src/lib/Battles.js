@@ -52,9 +52,21 @@ const fs = require('fs/promises')
                             let monsterAttack = (data.stats.atk - user.info.stats.stats.def)
                             let result = {}
                             let turn = 0
+                            let isCriticalUser = false
+                            let isCriticalMonster = false
 
                             //combat
-                            while (userpv !== 0 && monsterpv !== 0){
+                            while (userpv >= 0 && monsterpv >= 0){
+
+                                if(Battle.randomInt() <= (user.info.stats.stats.ctr)*100){
+                                    userAttack = userAttack*2
+                                    isCriticalUser = true
+                                }
+                                if(Battle.randomInt() <= (data.stats.ctr)*100){
+                                    monsterAttack = monsterAttack*2
+                                    isCriticalMonster = true
+                                }
+
                                 turn++
                                 monsterpv = monsterpv - userAttack
                                 userpv = userpv - monsterAttack
@@ -64,13 +76,16 @@ const fs = require('fs/promises')
                                             pv:userpv,
                                             attack:user.info.stats.stats.atk,
                                             defence:user.info.stats.stats.def,
-                                            effectiveAttack:userAttack
+                                            effectiveAttack:userAttack,
+                                            critical : isCriticalUser
                                         },
                                         [data.monster]:{
                                             pv:monsterpv,
                                             attack:data.stats.atk,
                                             defence:data.stats.def,
-                                            effectiveAttack:monsterAttack
+                                            effectiveAttack:monsterAttack,
+                                            critical : isCriticalMonster
+
                                         }
                                     },
                                 })
@@ -91,6 +106,10 @@ const fs = require('fs/promises')
 
         static selectMonster(array){
             return array[Math.floor(Math.random()*array.length)];
+        }
+
+        static randomInt(){
+            return Math.floor(Math.random()*100)
         }
     }
 module.exports = Battle

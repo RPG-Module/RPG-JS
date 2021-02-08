@@ -6,7 +6,8 @@
           "pv" : 10,
           "atk": 3,
           "def": 1,
-          "spd": 2
+          "spd": 2,
+          "ctr": 0.10
         }
       },
       "skeleton": {
@@ -14,7 +15,9 @@
           "pv" : 20,
           "atk": 3,
           "def": 1,
-          "spd": 2
+          "spd": 2,
+          "ctr": 0.15
+
         }
       },
       "spirit": {
@@ -22,16 +25,20 @@
           "pv" : 10,
           "atk": 3,
           "def": 2,
-          "spd": 2
+          "spd": 2,
+          "ctr": 0.15
+
         }
       }
     },
     "medium": {
       "slime": {
         "stats": {
-          "atk": 5,
-          "def": 3,
-          "spd": 4
+          "atk": 4,
+          "def": 2,
+          "spd": 4,
+          "ctr": 0.12
+
         }
       }
     }
