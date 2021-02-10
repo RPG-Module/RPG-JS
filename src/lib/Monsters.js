@@ -27,11 +27,12 @@ module.exports = class {
                         const objs = JSON.parse(obj)
                         let loot = {}
                         for (const lootobj of loottable) {
-                            if (objs.item[lootobj.name.toLowerCase()]) {
+                            if (objs.item[lootobj.name.toLowerCase()]|| lootobj.name.toLowerCase() === 'xp') {
                                 Object.assign(loot, {
-                                    [lootobj.name]: [objs.item[lootobj.name.toLowerCase()]]
+                                    [lootobj.name]: {data : lootobj, info: objs.item[lootobj.name.toLowerCase()] || null}
                                 })
                             }
+
                         }
                         resolve({monster, stats, loot})
                     }).catch((err) =>{

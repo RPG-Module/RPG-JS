@@ -15,10 +15,10 @@ module.exports = class {
             fs.readFile('./src/assets/JSON/object.json').then(function (obj) {
                 const objs = JSON.parse(obj)
                 if(!objs[type.toLowerCase()]){
-                    reject('This type doesn\'t exist\nType list: '+ Object.keys(objs))
+                    reject('Ce type n\'existe pas\nType liste: '+ Object.keys(objs))
                 }
                 if(!objs[type.toLowerCase()][name.toLowerCase()]){
-                    reject('This item doesn\'t exist\nItem list: '+ Object.keys(objs[type.toLowerCase()]))
+                    reject('Cet item n\'existe pas\nItem liste: '+ Object.keys(objs[type.toLowerCase()]))
                 }
                 resolve(objs[type.toLowerCase()][name.toLowerCase()])
             }).catch(err =>{

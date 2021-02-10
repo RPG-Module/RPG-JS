@@ -37,7 +37,8 @@ module.exports = class {
                                             info:{
                                                 level:1,
                                                 xp:0,
-                                                stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info
+                                                stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
+                                                point:0
                                             },
                                             inventory: {
                                                 modifiers:{},
@@ -54,7 +55,7 @@ module.exports = class {
                                         }
                                     }
                                     const users = Object.assign(stringifyOlfUserJSON,newUser)
-                                    fs.writeFile('./src/assets/database/users.json',JSON.stringify(users, null, 4)).then(()=>{
+                                    fs.writeFile('./src/assets/database/users.json',JSON.stringify(users, null, 2)).then(()=>{
                                         resolve({message:"Utilisateur créer",user:newUser})
                                     }).catch((err)=>{
                                         reject(err)
@@ -113,5 +114,19 @@ module.exports = class {
                 reject(err)
             })
         })
+    }
+
+    levelup(profile){
+        return new Promise((resolve, reject) => {
+            let needXP = ((profile.info.level+5)*2)
+            while (profile.info.xp >= needXP){
+                profile.info.xp -= profile.info.level+10
+                profile.info.level++
+                profile.info.point++
+            }
+            resolve(profile)
+        })
+
+
     }
 }

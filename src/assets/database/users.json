@@ -1,4 +1,58 @@
 {
+    "classe": "Classe",
+    "race": "Elf",
+    "clan": "Meridor",
+    "faction": "Tadil",
+    "premium": false,
+    "info": {
+        "level": 2,
+        "xp": 1,
+        "stats": {
+            "hp": 20,
+            "mp": 35,
+            "stats": {
+                "atk": 3,
+                "def": 2,
+                "spd": 0.2,
+                "ctr": 0.2
+            }
+        },
+        "point": 1
+    },
+    "inventory": {
+        "modifiers": {},
+        "item": {
+            "Drop of slime": {
+                "length": 2
+            }
+        },
+        "keys": {}
+    },
+    "dungeons": {
+        "begin": {
+            "Crypte des esprits": {
+                "orb": {
+                    "defence": 1,
+                    "attack": 1,
+                    "speed": 0
+                },
+                "chest": {
+                    "woodChest": 1
+                },
+                "rareloot": {
+                    "weapons": {
+                        "sword": {
+                            "material": [
+                                "iron"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "end": {}
+    },
+    "chest": {},
     "Lynhall": {
         "classe": "Classe",
         "race": "Elf",
@@ -17,7 +71,8 @@
                     "spd": 0.2,
                     "ctr": 0.2
                 }
-            }
+            },
+            "point": 0
         },
         "inventory": {
             "modifiers": {},

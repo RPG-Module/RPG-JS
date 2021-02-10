@@ -1,22 +1,23 @@
 const fs = require('fs/promises')
 
     class Battle {
+
+    //TODO Fix start dungeons erase old data
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
                     fs.readFile('./src/assets/database/users.json').then(function (users) {
                         const stringifyUsers = JSON.parse(users)
                         const stringifyDungeons = JSON.parse(dungeons)
-                        if (!stringifyUsers[profile]) {
+                        if (!stringifyUsers) {
                             reject("Cette utilisateur n'existe pas")
                         }
                         if (!stringifyDungeons[name]) {
                             reject("Ce donjon n'existe pas")
                         }
-                        let user = stringifyUsers[profile]
-                        Object.assign(user.dungeons.begin, {[name]: stringifyDungeons[name].loot})
-                        console.log(user)
-                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(user, null, 4)).then(() => {
+                        console.log(stringifyUsers)
+                        Object.assign(stringifyUsers.dungeons.begin, {[name]: stringifyDungeons[name].loot})
+                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 4)).then(() => {
                             resolve({message: "Nouveau donjon commencé"})
                         }).catch((err) => {
                             reject(err)
@@ -29,7 +30,8 @@ const fs = require('fs/promises')
         fightDungeon(name, profile) {
             //random dungeon
             if(name === 'random') {
-                Battle.randomDungeon().then((djn) =>{
+
+                Battle.randomDungeon(profile).then((djn) =>{
                     name = djn
                 })
             }
@@ -47,6 +49,9 @@ const fs = require('fs/promises')
                         if (!stringifyDungeons[name]) {
                             reject("Ce donjon n'existe pas")
                         }
+                        if(!stringifyUsers[profile].dungeons.begin[name]){
+                            reject("Ce donjon n'est pas commencé")
+                        }
                         let user = stringifyUsers[profile]
                         let dungeon = stringifyDungeons[name]
                         monsters.getMonsterInfo(Battle.selectRandomThings(dungeon.monster[Battle.calcLvl(user)]), Battle.calcLvl(user)).then((data) =>{
@@ -57,6 +62,7 @@ const fs = require('fs/promises')
 
                             //combat
                             while (userpv >= 0 && monsterpv >= 0){
+
                                 //Set stats
                                 let attackMonsterStats = {
                                     dodge:false,
@@ -123,6 +129,14 @@ const fs = require('fs/promises')
                                     },
                                 })
                             }
+                            Battle.obtainLoot(data,user).then((updateUser)=>{
+                                 Object.assign(user,updateUser)
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(user, null, 4)).then(() => {
+                                    resolve({message: "Nouveau donjon commencé"})
+                                }).catch((err) => {
+                                    reject(err)
+                                })
+                            })
                             resolve(result)
                         })
                     })
@@ -130,12 +144,50 @@ const fs = require('fs/promises')
             })
         }
 
-        static randomDungeon(){
+        static randomDungeon(username){
             return new Promise((resolve, reject) => {
-                fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
-                    resolve(Object.keys(JSON.parse(dungeons))[Math.floor(Math.random()*Object.keys(JSON.parse(dungeons)).length)])
+                fs.readFile('./src/assets/database/users.json').then(function (users) {
+                    let parsed = JSON.parse(users)
+                    resolve(Object.keys(parsed[username].dungeons.begin)[Math.floor(Math.random()*Object.keys(parsed[username].dungeons.begin).length)])
                 }).catch((err)=>{
                     reject(err)
+                })
+            })
+
+        }
+
+        static obtainLoot(monster,profile){
+            return new Promise((resolve, reject) => {
+                const loots = monster.loot
+                let gainloot = {}
+                let lengthloot = 0
+                for(const lootname in loots){
+                    let loot = loots[lootname]
+
+                    for(let i = 0;i<=loot.data.lengthMax;i++){
+                        if(Battle.randomInt() <= (loot.data.proba)*100){
+                            lengthloot++
+                        }
+                    }
+                    Object.assign(gainloot,{
+                        [loot.data.name]:{
+                            length : lengthloot
+                        }
+                    })
+                }
+                let inventory = profile.inventory
+                for(const givedLoot in gainloot){
+                    if(givedLoot !== 'xp'){
+                        Object.assign(inventory.item, {[givedLoot]: gainloot[givedLoot]})
+                    } else {
+                        profile.info.xp += gainloot["xp"].length
+                    }
+                }
+                const User = require('../lib/Users')
+                const userManager = new User()
+
+                userManager.levelup(profile).then((user) =>{
+                    resolve(user)
                 })
             })
 
