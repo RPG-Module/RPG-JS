@@ -7,17 +7,30 @@ const fs = require('fs/promises')
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
                     fs.readFile('./src/assets/database/users.json').then(function (users) {
-                        const stringifyUsers = JSON.parse(users)
-                        const stringifyDungeons = JSON.parse(dungeons)
-                        if (!stringifyUsers) {
+                        let parseUsers = JSON.parse(users)
+                        let parseDungeon = JSON.parse(dungeons)
+                        let usr = parseUsers[profile]
+                        let djn = parseDungeon[name]
+                        if(!usr){
                             reject("Cette utilisateur n'existe pas")
-                        }
-                        if (!stringifyDungeons[name]) {
+                        }else if(!djn){
                             reject("Ce donjon n'existe pas")
                         }
-                        console.log(stringifyUsers)
-                        Object.assign(stringifyUsers.dungeons.begin, {[name]: stringifyDungeons[name].loot})
-                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 4)).then(() => {
+                        Object.assign(usr.dungeons.begin,{[name]:djn.loot})
+                        let data = {
+                            [profile]:{
+                                classe : usr.classe,
+                                race:usr.race,
+                                clan:usr.clan,
+                                faction:usr.faction,
+                                premium:usr.premium,
+                                info:usr.info,
+                                inventory:usr.inventory,
+                                dungeons:usr.dungeons,
+                                chest:usr.chest
+                            }
+                        }
+                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2)).then(() => {
                             resolve({message: "Nouveau donjon commencé"})
                         }).catch((err) => {
                             reject(err)
@@ -171,7 +184,7 @@ const fs = require('fs/promises')
                     }
                     Object.assign(gainloot,{
                         [loot.data.name]:{
-                            length : lengthloot
+                            length : lengthloot + (profile.inventory.item[loot.data.name] ? profile.inventory.item[loot.data.name].length : 0)
                         }
                     })
                 }

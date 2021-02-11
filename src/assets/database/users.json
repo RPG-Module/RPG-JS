@@ -6,7 +6,7 @@
     "premium": false,
     "info": {
         "level": 2,
-        "xp": 1,
+        "xp": 6,
         "stats": {
             "hp": 20,
             "mp": 35,
@@ -23,7 +23,7 @@
         "modifiers": {},
         "item": {
             "Drop of slime": {
-                "length": 2
+                "length": 4
             }
         },
         "keys": {}
@@ -52,37 +52,5 @@
         },
         "end": {}
     },
-    "chest": {},
-    "Lynhall": {
-        "classe": "Classe",
-        "race": "Elf",
-        "clan": "Meridor",
-        "faction": "Tadil",
-        "premium": false,
-        "info": {
-            "level": 1,
-            "xp": 0,
-            "stats": {
-                "hp": 20,
-                "mp": 35,
-                "stats": {
-                    "atk": 3,
-                    "def": 2,
-                    "spd": 0.2,
-                    "ctr": 0.2
-                }
-            },
-            "point": 0
-        },
-        "inventory": {
-            "modifiers": {},
-            "item": {},
-            "keys": {}
-        },
-        "dungeons": {
-            "begin": {},
-            "end": {}
-        },
-        "chest": {}
-    }
+    "chest": {}
 }

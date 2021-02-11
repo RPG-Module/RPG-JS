@@ -21,13 +21,11 @@ rpg.items.getMaterialArmor("Iron").then((r) =>{
 }).catch((err)=>{
     console.log(err)
 })*/
+rpg.users.createProfile('Test',"Elf","Meridor","Classe","Tadil").then((data)=> {
+        rpg.battles.startDungeon('Crypte des esprits','Test').then(()=>{
+            rpg.battles.fightDungeon('Crypte des esprits','Test').then(()=>{
 
-
-rpg.users.createProfile('Lynhall',"Elf","Meridor","Classe","Tadil").then((data)=> {
-    rpg.battles.startDungeon('Crypte des esprits','Lynhall').then(()=>{
-        rpg.battles.fightDungeon('random', "Lynhall").then((data) => {
-            console.log(data)
+            })
         })
-    })
-
 })
+
