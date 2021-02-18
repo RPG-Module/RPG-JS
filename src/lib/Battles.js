@@ -130,7 +130,7 @@ const fs = require('fs/promises')
                                 })
                             }
                             Battle.obtainLoot(data,user).then(()=>{
-                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 4)).then(() => {
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2)).then(() => {
                                     resolve({message: "Nouveau donjon commencé"})
                                 }).catch((err) => {
                                     reject(err)
