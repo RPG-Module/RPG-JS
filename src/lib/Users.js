@@ -82,14 +82,14 @@ module.exports = class {
 
     }
 
-    getProfile(name) {
+    getProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
                 const stringifyOlfUserJSON = JSON.parse(user)
-                if (!stringifyOlfUserJSON[name]) {
+                if (!stringifyOlfUserJSON[profile]) {
                     reject('Utilisateur non trouvé')
                 }
-                resolve(stringifyOlfUserJSON[name])
+                resolve(stringifyOlfUserJSON[profile])
             }).catch((err)=>{
                 reject(err)
             })
@@ -97,15 +97,15 @@ module.exports = class {
 
     }
 
-    removeProfile(name) {
+    removeProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
                 const stringifyOlfUserJSON = JSON.parse(user)
-                if (!stringifyOlfUserJSON[name]) {
+                if (!stringifyOlfUserJSON[profile]) {
                     reject('Utilisateur non trouvé')
                 }
-                delete stringifyOlfUserJSON[name]
-                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyOlfUserJSON, null, 4)).then(() => {
+                delete stringifyOlfUserJSON[profile]
+                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyOlfUserJSON, null, 2)).then(() => {
                     resolve({message: "Utilisateur supprimé"})
                 }).catch((err) => {
                     reject(err)
@@ -126,7 +126,20 @@ module.exports = class {
             }
             resolve(profile)
         })
+    }
+    //TODO Get allInventory
+        //Error SyntaxError: Unexpected end of JSON input for no reason
+        //JSON is unaltered and all data is safe
+        // User exist
+    getInventory(profile){
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/database/users.json').then(function (user) {
+                console.log(JSON.parse(user))
 
 
+            }).catch((err) => {
+                reject(err)
+            })
+        })
     }
 }
