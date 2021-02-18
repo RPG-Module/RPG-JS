@@ -6,8 +6,8 @@
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 2,
-      "xp": 3,
+      "level": 1,
+      "xp": null,
       "stats": {
         "hp": 20,
         "mp": 35,
@@ -18,14 +18,12 @@
           "ctr": 0.2
         }
       },
-      "point": 1
+      "point": 0
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Drop of slime": {
-          "length": 2
-        }
+        "Ectoplasm": 3
       },
       "keys": {}
     },
@@ -39,15 +37,6 @@
           },
           "chest": {
             "woodChest": 1
-          },
-          "rareloot": {
-            "weapons": {
-              "sword": {
-                "material": [
-                  "iron"
-                ]
-              }
-            }
           }
         }
       },
