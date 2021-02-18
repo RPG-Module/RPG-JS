@@ -2,7 +2,6 @@ const fs = require('fs/promises')
 
     class Battle {
 
-    //TODO Fix start dungeons erase old data
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
@@ -156,11 +155,18 @@ const fs = require('fs/promises')
 
         }
 
+        //TODO Fix erase old loot
+
         static obtainLoot(monster,profile){
             return new Promise((resolve, reject) => {
                 const loots = monster.loot
                 let gainloot = {}
                 let lengthloot = 0
+                /*
+                *   The loot is probably remove here
+                *
+                *   TODO Remake loop
+                 */
                 for(const lootname in loots){
                     let loot = loots[lootname]
 
@@ -175,6 +181,10 @@ const fs = require('fs/promises')
                         }
                     })
                 }
+                /*
+                *   The loot is probably remove here
+                *
+                 */
                 let inventory = profile.inventory
                 for(const givedLoot in gainloot){
                     if(givedLoot !== 'xp'){
