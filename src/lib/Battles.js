@@ -162,11 +162,7 @@ const fs = require('fs/promises')
                 const loots = monster.loot
                 let gainloot = {}
                 let lengthloot = 0
-                /*
-                *   The loot is probably remove here
-                *
-                *   TODO Remake loop
-                 */
+
                 for(const lootname in loots){
                     let loot = loots[lootname]
 
@@ -181,10 +177,7 @@ const fs = require('fs/promises')
                         }
                     })
                 }
-                /*
-                *   The loot is probably remove here
-                *
-                 */
+
                 let inventory = profile.inventory
                 for(const givedLoot in gainloot){
                     if(givedLoot !== 'xp'){

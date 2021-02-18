@@ -6,8 +6,8 @@
         "faction": "Tadil",
         "premium": false,
         "info": {
-            "level": 2,
-            "xp": 6,
+            "level": 9,
+            "xp": 16,
             "stats": {
                 "hp": 20,
                 "mp": 35,
@@ -18,13 +18,19 @@
                     "ctr": 0.2
                 }
             },
-            "point": 1
+            "point": 8
         },
         "inventory": {
             "modifiers": {},
             "item": {
                 "Drop of slime": {
-                    "length": 4
+                    "length": 8
+                },
+                "Ectoplasm": {
+                    "length": 10
+                },
+                "Bone": {
+                    "length": 2
                 }
             },
             "keys": {}
