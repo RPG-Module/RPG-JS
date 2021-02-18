@@ -115,8 +115,11 @@ module.exports = class {
             })
         })
     }
-
+    //TODO Rework level up
+    // Error nul on xp
     levelup(profile){
+        console.log(profile.info.xp)
+
         return new Promise((resolve, reject) => {
             let needXP = ((profile.info.level+5)*2)
             while (profile.info.xp >= needXP){
@@ -127,19 +130,5 @@ module.exports = class {
             resolve(profile)
         })
     }
-    //TODO Get allInventory
-        //Error SyntaxError: Unexpected end of JSON input for no reason
-        //JSON is unaltered and all data is safe
-        // User exist
-    getInventory(profile){
-        return new Promise((resolve, reject) => {
-            fs.readFile('./src/assets/database/users.json').then(function (user) {
-                console.log(JSON.parse(user))
 
-
-            }).catch((err) => {
-                reject(err)
-            })
-        })
-    }
 }
