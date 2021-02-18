@@ -21,9 +21,13 @@ rpg.items.getMaterialArmor("Iron").then((r) =>{
 }).catch((err)=>{
     console.log(err)
 })*/
+rpg.users.createProfile('Test',"Elf","Meridor","Classe","Tadil").then(()=> {
         rpg.battles.startDungeon('Crypte des esprits','Test').then(()=>{
                 rpg.battles.fightDungeon('Crypte des esprits','Test').then((data)=>{
-                        console.log(data)
+                        rpg.users.getInventory('Test').then((inv) =>{
+
+                        })
                 })
         })
+})
 
