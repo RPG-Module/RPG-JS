@@ -172,9 +172,7 @@ const fs = require('fs/promises')
                         }
                     }
                     Object.assign(gainloot,{
-                        [loot.data.name]:{
-                            length : lengthloot + (profile.inventory.item[loot.data.name] ? profile.inventory.item[loot.data.name].length : 0)
-                        }
+                        [loot.data.name]:lengthloot + (profile.inventory.item[loot.data.name] ? profile.inventory.item[loot.data.name].length : 0)
                     })
                 }
 
