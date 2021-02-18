@@ -6,31 +6,19 @@ const fs = require('fs/promises')
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
+                    dungeons = JSON.parse(dungeons)
                     fs.readFile('./src/assets/database/users.json').then(function (users) {
-                        let parseUsers = JSON.parse(users)
-                        let parseDungeon = JSON.parse(dungeons)
-                        let usr = parseUsers[profile]
-                        let djn = parseDungeon[name]
-                        if(!usr){
-                            reject("Cette utilisateur n'existe pas")
-                        }else if(!djn){
-                            reject("Ce donjon n'existe pas")
-                        }
-                        Object.assign(usr.dungeons.begin,{[name]:djn.loot})
-                        let data = {
-                            [profile]:{
-                                classe : usr.classe,
-                                race:usr.race,
-                                clan:usr.clan,
-                                faction:usr.faction,
-                                premium:usr.premium,
-                                info:usr.info,
-                                inventory:usr.inventory,
-                                dungeons:usr.dungeons,
-                                chest:usr.chest
-                            }
-                        }
-                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2)).then(() => {
+
+                        users = JSON.parse(users)
+                        let selectedDungeon = dungeons[name];
+                        let selectedUser = users[profile]
+                        selectedUser.dungeons.begin[name] = {}
+
+                        Object.assign(selectedUser.dungeons.begin[name],selectedDungeon.loot)
+                        let stringifyUsers = JSON.stringify(users, null, 2)
+
+
+                        fs.writeFile('./src/assets/database/users.json', stringifyUsers).then(() => {
                             resolve({message: "Nouveau donjon commencé"})
                         }).catch((err) => {
                             reject(err)
@@ -142,9 +130,8 @@ const fs = require('fs/promises')
                                     },
                                 })
                             }
-                            Battle.obtainLoot(data,user).then((updateUser)=>{
-                                 Object.assign(user,updateUser)
-                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(user, null, 4)).then(() => {
+                            Battle.obtainLoot(data,user).then(()=>{
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 4)).then(() => {
                                     resolve({message: "Nouveau donjon commencé"})
                                 }).catch((err) => {
                                     reject(err)
