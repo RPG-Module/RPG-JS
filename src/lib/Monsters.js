@@ -1,9 +1,6 @@
 const fs = require('fs/promises')
 
-module.exports = class {
-    constructor() {
-
-    }
+class Monsters{
 
     getMonsterInfo(monster, level) {
 
@@ -47,3 +44,4 @@ module.exports = class {
         })
     }
 }
+module.exports = Monsters

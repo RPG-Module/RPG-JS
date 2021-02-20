@@ -155,8 +155,6 @@ const fs = require('fs/promises')
 
         }
 
-        //TODO Fix erase old loot
-
         static obtainLoot(monster,profile){
             return new Promise((resolve, reject) => {
                 const loots = monster.loot
@@ -181,7 +179,8 @@ const fs = require('fs/promises')
                     if(givedLoot !== 'xp'){
                         Object.assign(inventory.item, {[givedLoot]: gainloot[givedLoot]})
                     } else {
-                        profile.info.xp += gainloot["xp"].length
+                        console.log(gainloot["xp"])
+                        profile.info.xp += gainloot["xp"]
                     }
                 }
                 const User = require('../lib/Users')
@@ -197,8 +196,15 @@ const fs = require('fs/promises')
         static calcLvl(user) {
             if (user.info.level < 20) {
                 return 'low'
+            }else if(user.info.level < 40){
+                return 'medium'
+            }else if(user.info.level < 60){
+                return 'high'
+            }else if(user.info.level < 80){
+                return 'legendary'
             }
         }
+
 
         static selectRandomThings(array){
             return array[Math.floor(Math.random()*array.length)];

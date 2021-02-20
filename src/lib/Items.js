@@ -1,11 +1,6 @@
 const fs = require('fs/promises')
 
-module.exports = class {
-    constructor() {
-
-
-    }
-
+ class Items{
     getItemInfo(type,name) {
 
         return new Promise((resolve, reject) => {
@@ -58,3 +53,4 @@ module.exports = class {
         })
     }
 }
+module.exports = Items

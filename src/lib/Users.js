@@ -1,10 +1,6 @@
 const fs = require('fs/promises')
 
-module.exports = class {
-    constructor() {
-
-
-    }
+class Users{
 
     createProfile(name,race, clan, classe,faction) {
 
@@ -115,9 +111,7 @@ module.exports = class {
             })
         })
     }
-    //TODO Rework level up
-    // Error nul on xp
-    levelup(profile){
+    static levelup(profile){
         console.log(profile.info.xp)
 
         return new Promise((resolve, reject) => {
@@ -132,3 +126,4 @@ module.exports = class {
     }
 
 }
+module.exports = Users
