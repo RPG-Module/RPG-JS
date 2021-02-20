@@ -111,8 +111,7 @@ class Users{
             })
         })
     }
-    static levelup(profile){
-        console.log(profile.info.xp)
+    levelup(profile){
 
         return new Promise((resolve, reject) => {
             let needXP = ((profile.info.level+5)*2)
@@ -123,6 +122,10 @@ class Users{
             }
             resolve(profile)
         })
+    }
+    //TODO make chest opening
+    openChest(chest, profile){
+
     }
 
 }
