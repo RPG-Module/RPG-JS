@@ -12,7 +12,4 @@ module.exports = class {
         this.battles = new Battles()
 
     }
-    test(){
-        console.log("res")
-    }
 }
