@@ -36,9 +36,8 @@
     }
   ],
   "chest": {
-    "woodChest": [
-      {
-        "type": "weapons",
+    "woodChest": {
+      "weapons": {
         "material": [
           "Wood",
           "Stone"
@@ -46,20 +45,18 @@
         "proba": 0.2,
         "lengthMax": 1
       },
-      {
-        "type": "armor",
+      "armor": {
         "material": [
           "Iron"
         ],
         "proba": 0.2,
         "lengthMax": 1
       },
-      {
-        "type": "money",
+      "money": {
         "material": null,
         "proba": 0.5,
         "lengthMax": 50
       }
-    ]
+    }
   }
 }
