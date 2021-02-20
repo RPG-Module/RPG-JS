@@ -1,7 +1,7 @@
 const fs = require('fs/promises')
 
     class Battle {
-
+        //TODO No dungeons save
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
@@ -129,13 +129,11 @@ const fs = require('fs/promises')
                                     },
                                 })
                             }
-                            Battle.obtainLoot(data,user).then(()=>{
-                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2)).then(() => {
-                                    resolve({message: "Nouveau donjon commencé"})
-                                }).catch((err) => {
-                                    reject(err)
-                                })
+
+                            Battle.obtainLoot(data,stringifyUsers,profile).then((data)=>{
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2))
                             })
+                            Battle.rareLoot(stringifyDungeons[name], name,stringifyUsers,profile)
                             resolve(result)
                         })
                     })
@@ -155,54 +153,84 @@ const fs = require('fs/promises')
 
         }
 
-        static obtainLoot(monster,profile){
+        static obtainLoot(monster,stringifyUsers,profile){
             return new Promise((resolve, reject) => {
                 const loots = monster.loot
+                const user = stringifyUsers[profile]
                 let gainloot = {}
                 let lengthloot = 0
 
+                //LOOT
                 for(const lootname in loots){
                     let loot = loots[lootname]
-
                     for(let i = 0;i<=loot.data.lengthMax;i++){
                         if(Battle.randomInt() <= (loot.data.proba)*100){
                             lengthloot++
                         }
                     }
                     Object.assign(gainloot,{
-                        [loot.data.name]:lengthloot + (profile.inventory.item[loot.data.name] ? profile.inventory.item[loot.data.name].length : 0)
+                        [loot.data.name]:lengthloot + (user.inventory.item[loot.data.name] || 0)
                     })
                 }
 
-                let inventory = profile.inventory
+                let inventory = user.inventory
+
+                //XP
                 for(const givedLoot in gainloot){
                     if(givedLoot !== 'xp'){
                         Object.assign(inventory.item, {[givedLoot]: gainloot[givedLoot]})
                     } else {
-                        console.log(gainloot["xp"])
-                        profile.info.xp += gainloot["xp"]
+                        user.info.xp += gainloot["xp"]
                     }
                 }
+
+
+
                 const User = require('../lib/Users')
                 const userManager = new User()
 
-                userManager.levelup(profile).then((user) =>{
-                    resolve(user)
+                userManager.levelup(user).then((user) =>{
+                    resolve(stringifyUsers)
                 })
             })
 
         }
-
+        //TODO Rework monster level
         static calcLvl(user) {
-            if (user.info.level < 20) {
-                return 'low'
-            }else if(user.info.level < 40){
-                return 'medium'
-            }else if(user.info.level < 60){
-                return 'high'
-            }else if(user.info.level < 80){
-                return 'legendary'
+            return 'low'
+        }
+
+        static rareLoot(dungeon,name,stringifyUsers,profile){
+            const chests = dungeon.loot.chest
+            const keys = dungeon.loot.keys
+            const user = stringifyUsers[profile]
+
+
+            //Chest
+            for(const chest in chests){
+                if(user.dungeons.begin[name].chest[chest]){
+                    if(Battle.randomInt() <= (chests[chest].proba)*100){
+                        Object.assign(user.chest, {
+                            [chest]:1 + (user.chest[chest] || 0)
+                        })
+                        delete user.dungeons.begin[name].chest[chest]
+                    }
+                }
+
             }
+            //Keys
+            for(const key in keys){
+                if(user.dungeons.begin[name].keys[key]){
+                    if(Battle.randomInt() <= (keys[key].proba)*100){
+                        Object.assign(user.inventory.keys, {
+                            [key]:1 + (user.inventory.keys[key] || 0)
+                        })
+                        delete user.dungeons.begin[name].keys[key]
+
+                    }
+                }
+            }
+
         }
 
 
