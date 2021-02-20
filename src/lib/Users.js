@@ -24,7 +24,7 @@ class Users{
                                         reject("Ce nom d'utilisateur est déjà pris")
                                     }
                                     const newUser = {
-                                        [name]:{
+                                        [name.toLowerCase()]:{
                                             classe,
                                             race,
                                             clan,
@@ -39,7 +39,9 @@ class Users{
                                             inventory: {
                                                 modifiers:{},
                                                 item:{},
-                                                keys:{}
+                                                keys:{},
+                                                orbs:{},
+                                                stuff:{}
                                             },
                                             dungeons: {
                                                 begin:{},
@@ -114,7 +116,7 @@ class Users{
     levelup(profile){
 
         return new Promise((resolve, reject) => {
-            let needXP = ((profile.info.level+5)*2)
+            let needXP = ((profile.info.level+15)*2)
             while (profile.info.xp >= needXP){
                 profile.info.xp -= profile.info.level+10
                 profile.info.level++
