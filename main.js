@@ -23,6 +23,12 @@ rpg.items.getMaterialArmor("Iron").then((r) =>{
     console.log(err)
 })
 
+rpg.items.getMaterialWeapon("Iron").then((r) =>{
+    console.log(r)
+}).catch((err)=>{
+    console.log(err)
+})
+
 rpg.users.createProfile('Test',"Elf","Meridor","Classe","Tadil").then((r)=> {
         console.log(r)
 }).catch((err)=>{
