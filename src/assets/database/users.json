@@ -1,13 +1,13 @@
 {
-  "Test": {
+  "test": {
     "classe": "Classe",
     "race": "Elf",
     "clan": "Meridor",
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 28,
-      "xp": 62,
+      "level": 31,
+      "xp": 63,
       "stats": {
         "hp": 20,
         "mp": 35,
@@ -18,44 +18,80 @@
           "ctr": 0.2
         }
       },
-      "point": 27
+      "point": 30
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Bone": 45,
-        "Drop of slime": 31,
-        "Ectoplasm": 35
+        "Drop of slime": 48,
+        "Bone": 34,
+        "Ectoplasm": 55
       },
       "keys": {
-        "woodenKey": 6
+        "woodenKey": 20
+      },
+      "orbs": {
+        "attack": 3,
+        "defence": 4
+      },
+      "stuff": {
+        "weapons": {
+          "sword": {
+            "material": {
+              "iron": 1
+            }
+          }
+        }
       }
     },
     "dungeons": {
       "begin": {
         "Crypte des esprits": {
           "orb": {
-            "defence": 1,
             "attack": 1,
             "speed": 0
           },
           "chest": {},
           "keys": {},
-          "rareLoot": {
-            "weapons": {
-              "sword": {
-                "material": [
-                  "iron"
-                ]
-              }
-            }
-          }
+          "rareLoot": {}
         }
       },
       "end": {}
     },
     "chest": {
-      "woodChest": 5
+      "woodChest": 9
     }
+  },
+  "test1": {
+    "classe": "Classe",
+    "race": "Elf",
+    "clan": "Meridor",
+    "faction": "Tadil",
+    "premium": false,
+    "info": {
+      "level": 1,
+      "xp": 0,
+      "stats": {
+        "hp": 20,
+        "mp": 35,
+        "stats": {
+          "atk": 3,
+          "def": 2,
+          "spd": 0.2,
+          "ctr": 0.2
+        }
+      },
+      "point": 0
+    },
+    "inventory": {
+      "modifiers": {},
+      "item": {},
+      "keys": {}
+    },
+    "dungeons": {
+      "begin": {},
+      "end": {}
+    },
+    "chest": {}
   }
 }
