@@ -3,7 +3,7 @@ const fs = require('fs/promises')
 
 const rpg = new RPG()
 
-rpg.monsters.getMonsterInfo('Slime','low').then(r =>{
+/*rpg.monsters.getMonsterInfo('Slime','low').then(r =>{
     console.log(r)
 }).catch((err)=>{
     console.log(err)
@@ -33,21 +33,21 @@ rpg.users.createProfile('Test',"Elf","Meridor","Classe","Tadil").then((r)=> {
         console.log(r)
 }).catch((err)=>{
         console.log(err)
-})
+})*/
 
 rpg.battles.startDungeon('Crypte des esprits', 'Test').then((r) => {
-        console.log(r)
+       // console.log(r)
 }).catch((err)=>{
         console.log(err)
 })
 
 rpg.battles.fightDungeon('Crypte des esprits', 'Test').then((r) => {
-        console.log(r)
+       // console.log(r)
 }).catch((err)=>{
         console.log(err)
 })
 
-rpg.users.getProfile('Test').then((r) => {
+/*rpg.users.getProfile('Test').then((r) => {
         console.log(r)
 }).catch((err)=>{
         console.log(err)
@@ -57,7 +57,7 @@ rpg.users.removeProfile('Test').then((r) => {
         console.log(r)
 }).catch((err)=>{
         console.log(err)
-})
+})*/
 
 
 
