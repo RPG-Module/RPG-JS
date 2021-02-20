@@ -37,6 +37,12 @@
     }
   },
   "material": {
+    "leather": {
+      "stats": {
+        "def": 1,
+        "drb": 2
+      }
+    },
     "iron": {
       "stats": {
         "def": 2,

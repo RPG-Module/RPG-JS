@@ -6,8 +6,8 @@
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 1,
-      "xp": null,
+      "level": 2,
+      "xp": 5,
       "stats": {
         "hp": 20,
         "mp": 35,
@@ -18,12 +18,12 @@
           "ctr": 0.2
         }
       },
-      "point": 0
+      "point": 1
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Ectoplasm": 3
+        "Bone": 3
       },
       "keys": {}
     },
@@ -37,6 +37,15 @@
           },
           "chest": {
             "woodChest": 1
+          },
+          "rareloot": {
+            "weapons": {
+              "sword": {
+                "material": [
+                  "iron"
+                ]
+              }
+            }
           }
         }
       },
