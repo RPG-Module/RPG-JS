@@ -38,12 +38,21 @@
   "chest": {
     "woodChest": {
       "weapons": {
-        "material": [
-          "Wood",
-          "Stone"
-        ],
-        "proba": 0.2,
-        "lengthMax": 1
+        "sword": {
+          "material": [
+            "Wood",
+            "Stone"
+          ],
+          "proba": 0.2,
+          "lengthMax": 1
+        },
+        "dagger": {
+          "material": [
+            "Stone"
+          ],
+          "proba": 0.2,
+          "lengthMax": 1
+        }
       },
       "armor": {
         "material": [

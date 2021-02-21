@@ -126,9 +126,67 @@ class Users{
         })
     }
     //TODO make chest opening
-    openChest(chest, profile){
+    openChest(chest, profile) {
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/database/users.json').then(function (users) {
+                const stringifyUsers = JSON.parse(users)
+                let user = stringifyUsers[profile.toLowerCase()]
+                const chestList = Object.keys(user.chest)
+                const loot = {}
+                if (!chestList.includes(chest)) {
+                    reject('Coffre non trouvé ou le joueur ne possède pas ce coffre')
+                }
+                fs.readFile('./src/assets/JSON/loottable.json').then(function (lootTable) {
+                    const stringifyLootTable = JSON.parse(lootTable)
 
+                    if (!stringifyLootTable.chest[chest]) {
+                        reject("Ce coffre ne possède pas de lootTable")
+                    }
+                    const selectedChest = stringifyLootTable.chest[chest]
+                    const lootTypes = Object.keys(selectedChest)
+                    for (const lootType of lootTypes) {
+                        if (lootType === 'money') {
+                            for (let i = 0; i < selectedChest['money'].lengthMax; i++) {
+                                if (Users.randomInt() <= (selectedChest['money'].proba * 100)) {
+                                    Object.assign(loot, {money: 1 + (loot.money || 0)})
+
+                                }
+                            }
+                        } else {
+                            if(lootType === 'weapons'){
+                                const weapons = Object.keys(selectedChest[lootType])
+                                for(const weapon of weapons){
+                                    for(const material of selectedChest[lootType][weapon].material){
+                                        console.log(selectedChest[lootType][weapon])
+                                        if (Users.randomInt() <= (selectedChest[lootType][weapon].proba * 100)) {
+                                            Object.assign(loot,{["weapons"]: {
+                                                [weapon]:{
+                                                    material:{
+                                                        [material]: 1+(
+                                                            stringifyUsers[profile.toLowerCase()].inventory.stuff.weapons[weapon]?.material?[material] : 0)
+                                                    }
+                                                }
+                                            }})
+                                            console.log(loot.weapons[weapon].material)
+                                        }
+                                    }
+                                }
+                            }
+
+                            /*if (Users.randomInt() <= (selectedChest[lootType].proba * 100)) {
+                                Object.assign(loot, {[lootType]: 1 + (loot.money || 0)})
+
+                            }*/
+                        }
+                    }
+
+                })
+
+            })
+        })
     }
-
+    static randomInt(){
+        return Math.floor(Math.random()*100)
+    }
 }
 module.exports = Users
