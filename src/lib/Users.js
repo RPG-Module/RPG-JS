@@ -119,7 +119,7 @@ class Users{
         })
     }
     //TODO make chest opening
-    //TODO erase old data fix
+    //TODO multiple object not supported
     openChest(chest, profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -131,6 +131,7 @@ class Users{
                         armors: {},
                         money: 0
                     }
+
                     const toSend = {
                         weapons: {},
                         armors: {},
@@ -162,16 +163,36 @@ class Users{
                                 for (let i = 0; i < selectChest.weapons[weapon].lengthMax; i++) {
                                     if (Users.randomInt() <= (selectChest.weapons[weapon].proba * 100)) {
                                         let selectMat = Users.selectRandomThings(selectChest.weapons[weapon].material)
+
                                         //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
-                                        Object.assign(loot.weapons,{[weapon]:{}})
-                                        Object.assign(loot.weapons[weapon],{
-                                            [selectMat]: (loot.weapons[weapon][selectMat] || 0) +1
+                                        Object.assign(loot, {
+                                            weapons: {
+                                                [weapon]: {}
+                                            }
+                                        })
+                                        Object.assign(loot, {
+                                            weapons: {
+                                                [weapon]: {
+                                                    [selectMat]: isNaN(loot.weapons[weapon][selectMat]) ? 0 : loot.weapons[weapon][selectMat]++
+                                                }
+                                            }
+
                                         })
 
-                                        Object.assign(toSend.weapons,{[weapon]:{}})
-                                        Object.assign(toSend.weapons[weapon],{
-                                            [selectMat]: (toSend.weapons[weapon][selectMat] || 0) +1
+                                        Object.assign(toSend, {
+                                            weapons: {
+                                                [weapon]: {}
+                                            }
                                         })
+                                        Object.assign(toSend, {
+                                            weapons: {
+                                                [weapon]: {
+                                                    [selectMat]: isNaN(toSend.weapons[weapon][selectMat]) ? 0 : toSend.weapons[weapon][selectMat]++
+                                                }
+                                            }
+
+                                        })
+
                                     }
 
                                 }
@@ -184,25 +205,48 @@ class Users{
                                 for (let i = 0; i < selectChest.armor[armor].lengthMax; i++) {
 
                                     if (Users.randomInt() <= (selectChest.armor[armor].proba * 100)) {
+
                                         let selectMat = Users.selectRandomThings(selectChest.armor[armor].material)
+
                                         //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
-                                        Object.assign(loot.armors,{[armor]:{}})
-                                        Object.assign(loot.armors[armor],{
-                                            [selectMat]: (loot.armors[armor][selectMat] || 0) +1
+                                        Object.assign(loot, {
+                                            armors: {
+                                                [armor]: {}
+                                            }
+                                        })
+                                        Object.assign(loot, {
+                                            armors: {
+                                                [armor]: {
+                                                    [selectMat]: isNaN(loot.armors[armor][selectMat]) ? 0 : loot.armors[armor][selectMat]++
+                                                }
+                                            }
+
                                         })
 
-                                        Object.assign(toSend.armors,{[armor]:{}})
-                                        Object.assign(toSend.armors[armor],{
-                                            [selectMat]: (toSend.armors[armor][selectMat] || 0) +1
+                                        Object.assign(toSend, {
+                                            armors: {
+                                                [armor]: {}
+                                            }
+                                        })
+                                        Object.assign(toSend, {
+                                            armors: {
+                                                [armor]: {
+                                                    [selectMat]: isNaN(toSend.armors[armor][selectMat]) ? 0 : toSend.armors[armor][selectMat]++
+                                                }
+                                            }
+
                                         })
                                     }
                                 }
 
                             }
                             Object.assign(stringifyUsers[profile.toLowerCase()].inventory.stuff, loot)
-
+                            console.log(loot)
                             //Remove chest & Remove key
                             stringifyUsers[profile.toLowerCase()].chest[chest]--
+
+
+
                             fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
                             resolve(toSend)
 

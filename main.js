@@ -43,7 +43,6 @@ rpg.items.getMaterialWeapon("Iron").then((r) =>{
         //console.log(err)
 //})*/
 rpg.users.openChest('woodChest','Test').then((data) =>{
-    console.log(data)
 })
 
 

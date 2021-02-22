@@ -36,19 +36,16 @@
       },
       "stuff": {
         "weapons": {
-          "sword": {
-            "stone": 1
-          },
           "dagger": {
-            "stone": 1
+            "stone": 0
           }
         },
         "armors": {
-          "chestplate": {
-            "iron": 1
+          "leggings": {
+            "iron": 0
           }
         },
-        "money": 184
+        "money": 1662
       }
     },
     "dungeons": {
@@ -70,7 +67,7 @@
       "end": {}
     },
     "chest": {
-      "woodChest": 9
+      "woodChest": -82
     },
     "money": 1
   }
