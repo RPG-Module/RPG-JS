@@ -55,11 +55,20 @@
         }
       },
       "armor": {
-        "material": [
-          "Iron"
-        ],
-        "proba": 0.2,
-        "lengthMax": 1
+        "chestplate": {
+          "material": [
+            "Iron"
+          ],
+          "proba": 0.25,
+          "lengthMax": 1
+        },
+        "leggings": {
+          "material": [
+            "Iron"
+          ],
+          "proba": 0.2,
+          "lengthMax": 1
+        }
       },
       "money": {
         "material": null,

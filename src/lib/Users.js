@@ -119,16 +119,120 @@ class Users{
         })
     }
     //TODO make chest opening
+    //TODO erase old data fix
     openChest(chest, profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
                 const stringifyUsers = JSON.parse(users)
+
+                Users.checkKey(chest, stringifyUsers[profile.toLowerCase()]).then(() =>{
+                    const loot = {
+                        weapons: {},
+                        armors: {},
+                        money: 0
+                    }
+                    const toSend = {
+                        weapons: {},
+                        armors: {},
+                        money: 0
+                    }
+                    Object.assign(loot, stringifyUsers[profile.toLowerCase()].inventory.stuff)
+                    fs.readFile('./src/assets/JSON/loottable.json').then(function (lootable) {
+                        const stringifyLootable = JSON.parse(lootable)
+                        const chests = stringifyLootable.chest
+                        const chestList = Object.keys(chests)
+
+                        if(!chestList.includes(chest)){
+                            reject("Ce coffre n'existe pas")
+                        }else {
+                            const selectChest = chests[chest]
+
+                            //Money
+                            for (let i = 0; i < selectChest.money.lengthMax; i++) {
+                                if (Users.randomInt() <= (selectChest.money.proba * 100)) {
+                                    loot.money++
+                                    toSend.money++
+
+                                }
+                            }
+
+                            //Weapons
+                            let weaponsType = Object.keys(selectChest.weapons)
+                            for (const weapon of weaponsType) {
+                                for (let i = 0; i < selectChest.weapons[weapon].lengthMax; i++) {
+                                    if (Users.randomInt() <= (selectChest.weapons[weapon].proba * 100)) {
+                                        let selectMat = Users.selectRandomThings(selectChest.weapons[weapon].material)
+                                        //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
+                                        Object.assign(loot.weapons,{[weapon]:{}})
+                                        Object.assign(loot.weapons[weapon],{
+                                            [selectMat]: (loot.weapons[weapon][selectMat] || 0) +1
+                                        })
+
+                                        Object.assign(toSend.weapons,{[weapon]:{}})
+                                        Object.assign(toSend.weapons[weapon],{
+                                            [selectMat]: (toSend.weapons[weapon][selectMat] || 0) +1
+                                        })
+                                    }
+
+                                }
+
+                            }
+
+                            //Armors
+                            let armorsType = Object.keys(selectChest.armor)
+                            for (const armor of armorsType) {
+                                for (let i = 0; i < selectChest.armor[armor].lengthMax; i++) {
+
+                                    if (Users.randomInt() <= (selectChest.armor[armor].proba * 100)) {
+                                        let selectMat = Users.selectRandomThings(selectChest.armor[armor].material)
+                                        //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
+                                        Object.assign(loot.armors,{[armor]:{}})
+                                        Object.assign(loot.armors[armor],{
+                                            [selectMat]: (loot.armors[armor][selectMat] || 0) +1
+                                        })
+
+                                        Object.assign(toSend.armors,{[armor]:{}})
+                                        Object.assign(toSend.armors[armor],{
+                                            [selectMat]: (toSend.armors[armor][selectMat] || 0) +1
+                                        })
+                                    }
+                                }
+
+                            }
+                            Object.assign(stringifyUsers[profile.toLowerCase()].inventory.stuff, loot)
+
+                            //Remove chest & Remove key
+                            stringifyUsers[profile.toLowerCase()].chest[chest]--
+                            fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
+                            resolve(toSend)
+
+                        }
+
+                    })
+                }).catch((err) =>{
+                    reject(err)
+                })
+
 
             })
         })
     }
     static randomInt(){
         return Math.floor(Math.random()*100)
+    }
+    static selectRandomThings(array){
+        return array[Math.floor(Math.random()*array.length)].toLowerCase();
+    }
+    static checkKey(chest,profile){
+        return new Promise((resolve, reject) => {
+            if(chest === 'woodChest' ){
+                if(profile.inventory.keys.woodenKey){
+                    resolve()
+                }else{
+                    reject({message:"L'utilisateur ne possède pas de clé pour ce coffre"})
+                }
+            }
+        })
     }
 }
 module.exports = Users
