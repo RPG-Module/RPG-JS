@@ -36,9 +36,9 @@
       },
       "stuff": {
         "weapons": {
-          "sword": {
+          "dagger": {
             "material": {
-              "iron": 1
+              "Stone": 1
             }
           }
         }

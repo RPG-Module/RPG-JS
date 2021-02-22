@@ -3,15 +3,12 @@ const fs = require('fs/promises')
 class Users{
 
     createProfile(name,race, clan, classe,faction) {
-
         return new Promise((resolve, reject) => {
             if(!name || !race || !clan || !classe || !faction) {
                 reject("Il manque soit le nom du personnage, soit la race, soit le clan, soit la classe")
             }
-
             fs.readFile('./src/assets/JSON/race.json').then(function (races) {
                 const stringifyRaces = JSON.parse(races)
-
                 fs.readFile('./src/assets/JSON/clan.json').then(function (clans) {
                     const stringifyClans = JSON.parse(clans)
                     if(!stringifyRaces[race.toLowerCase()]) reject('Cette race n\'existe pas')
@@ -70,16 +67,10 @@ class Users{
                     }else{
                         reject("Cette faction n'existe pas")
                     }
-
-
                 })
             })
-
-
         })
-
     }
-
     getProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
@@ -92,9 +83,7 @@ class Users{
                 reject(err)
             })
         })
-
     }
-
     removeProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
@@ -133,12 +122,12 @@ class Users{
                 let user = stringifyUsers[profile.toLowerCase()]
                 const chestList = Object.keys(user.chest)
                 const loot = {}
+                Object.assign(loot,stringifyUsers[profile.toLowerCase()].inventory.stuff)
                 if (!chestList.includes(chest)) {
                     reject('Coffre non trouvé ou le joueur ne possède pas ce coffre')
                 }
                 fs.readFile('./src/assets/JSON/loottable.json').then(function (lootTable) {
                     const stringifyLootTable = JSON.parse(lootTable)
-
                     if (!stringifyLootTable.chest[chest]) {
                         reject("Ce coffre ne possède pas de lootTable")
                     }
@@ -149,7 +138,6 @@ class Users{
                             for (let i = 0; i < selectedChest['money'].lengthMax; i++) {
                                 if (Users.randomInt() <= (selectedChest['money'].proba * 100)) {
                                     Object.assign(loot, {money: 1 + (loot.money || 0)})
-
                                 }
                             }
                         } else {
@@ -157,31 +145,47 @@ class Users{
                                 const weapons = Object.keys(selectedChest[lootType])
                                 for(const weapon of weapons){
                                     for(const material of selectedChest[lootType][weapon].material){
-                                        console.log(selectedChest[lootType][weapon])
                                         if (Users.randomInt() <= (selectedChest[lootType][weapon].proba * 100)) {
-                                            Object.assign(loot,{["weapons"]: {
-                                                [weapon]:{
-                                                    material:{
-                                                        [material]: 1+(
-                                                            stringifyUsers[profile.toLowerCase()].inventory.stuff.weapons[weapon]?.material?[material] : 0)
+                                            if(!loot.weapons[weapon]) {
+                                                Object.assign(loot, {
+                                                    ["weapons"]: {
+                                                        [weapon]: { material:{}}
                                                     }
-                                                }
-                                            }})
-                                            console.log(loot.weapons[weapon].material)
+                                                })
+                                            }
+                                            //TODO fix erase old data when give new object
+                                            /*Object.assign(loot.weapons[weapon].material, {
+                                                [material.toLowerCase()]: 1 + (
+                                                    user.inventory.stuff ?
+                                                        user.inventory.stuff.weapons ?
+                                                            user.inventory.stuff.weapons[weapon] ?
+                                                                user.inventory.stuff.weapons[weapon].material ?
+                                                                    user.inventory.stuff.weapons[weapon].material[material.toLowerCase()] :
+                                                                    0 :
+                                                                0 :
+                                                            0 :
+                                                        0 || 0)
+                                            })*/
+                                            Object.assign(loot["weapons"][weapon].material,{[material]: 1 +(loot["weapons"][weapon].material[material.toLowerCase()] || 0)})
+                                            console.log(loot)
+
                                         }
                                     }
                                 }
-                            }
+                                Object.assign(user.inventory.stuff,loot)
 
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2)).then(() => {
+                                    resolve({message: "Utilisateur supprimé"})
+                                }).catch((err) => {
+                                    reject(err)
+                                })
+                            }
                             /*if (Users.randomInt() <= (selectedChest[lootType].proba * 100)) {
                                 Object.assign(loot, {[lootType]: 1 + (loot.money || 0)})
-
                             }*/
                         }
                     }
-
                 })
-
             })
         })
     }
