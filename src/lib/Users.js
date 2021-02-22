@@ -123,63 +123,7 @@ class Users{
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
                 const stringifyUsers = JSON.parse(users)
-                let user = stringifyUsers[profile.toLowerCase()]
-                const chestList = Object.keys(user.chest)
-                const loot = {
-                    money:0
-                }
-                if (!chestList.includes(chest)) {
-                    reject('Coffre non trouvé ou le joueur ne possède pas ce coffre')
-                }
-                fs.readFile('./src/assets/JSON/loottable.json').then(function (lootTable) {
-                    const stringifyLootTable = JSON.parse(lootTable)
-                    if (!stringifyLootTable.chest[chest]) {
-                        reject("Ce coffre ne possède pas de lootTable")
-                    }
-                    const selectedChest = stringifyLootTable.chest[chest]
-                    const lootTypes = Object.keys(selectedChest)
-                    for (const lootType of lootTypes) {
-                        if (lootType === 'money') {
-                            for (let i = 0; i < selectedChest['money'].lengthMax; i++) {
-                                if (Users.randomInt() <= (selectedChest['money'].proba * 100)) {
-                                    Object.assign(loot, {money: 1 + (user.inventory.stuff.money || 0) + (loot.money || 0)})
-                                }
-                            }
-                        } else {
-                            if (lootType === 'weapons') {
-                                let weaponsType = Object.keys(selectedChest["weapons"])
-                                for (const weapon of weaponsType) {
-                                    for (let i = 0; i < selectedChest["weapons"][weapon].lengthMax; i++) {
-                                        for (const material of selectedChest["weapons"][weapon].material) {
-                                            if (Users.randomInt() <= (selectedChest["weapons"][weapon].proba * 100)) {
-                                                Object.assign(loot, {
-                                                    ["weapons"]: {
-                                                        [weapon]: {
-                                                            material: 1 + (user.inventory.stuff["weapons"] ? [weapon] ? [material]?.material ? user.inventory.stuff["weapons"][weapon][material].material : 0 : 0 : 0)
-                                                        }
-                                                    }
-                                                })
-                                            }
-                                        }
-                                    }
 
-                                }
-                                Object.assign(user.inventory.stuff, loot)
-
-                            }
-                            /*if (Users.randomInt() <= (selectedChest[lootType].proba * 100)) {
-                                Object.assign(loot, {[lootType]: 1 + (loot.money || 0)})
-                            }*/
-                        }
-
-                    }
-                    console.log(user.inventory.stuff)
-                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2)).then(() => {
-                        resolve()
-                    }).catch((err) => {
-                        reject(err)
-                    })
-                })
             })
         })
     }
