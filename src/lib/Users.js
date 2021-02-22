@@ -38,7 +38,11 @@ class Users{
                                                 item:{},
                                                 keys:{},
                                                 orbs:{},
-                                                stuff:{}
+                                                stuff:{
+                                                    weapons:{},
+                                                    armors:{},
+                                                    money: 0
+                                                }
                                             },
                                             dungeons: {
                                                 begin:{},
@@ -121,8 +125,9 @@ class Users{
                 const stringifyUsers = JSON.parse(users)
                 let user = stringifyUsers[profile.toLowerCase()]
                 const chestList = Object.keys(user.chest)
-                const loot = {}
-                Object.assign(loot,stringifyUsers[profile.toLowerCase()].inventory.stuff)
+                const loot = {
+                    money:0
+                }
                 if (!chestList.includes(chest)) {
                     reject('Coffre non trouvé ou le joueur ne possède pas ce coffre')
                 }
@@ -137,54 +142,43 @@ class Users{
                         if (lootType === 'money') {
                             for (let i = 0; i < selectedChest['money'].lengthMax; i++) {
                                 if (Users.randomInt() <= (selectedChest['money'].proba * 100)) {
-                                    Object.assign(loot, {money: 1 + (loot.money || 0)})
+                                    Object.assign(loot, {money: 1 + (user.inventory.stuff.money || 0) + (loot.money || 0)})
                                 }
                             }
                         } else {
-                            if(lootType === 'weapons'){
-                                const weapons = Object.keys(selectedChest[lootType])
-                                for(const weapon of weapons){
-                                    for(const material of selectedChest[lootType][weapon].material){
-                                        if (Users.randomInt() <= (selectedChest[lootType][weapon].proba * 100)) {
-                                            if(!loot.weapons[weapon]) {
+                            if (lootType === 'weapons') {
+                                let weaponsType = Object.keys(selectedChest["weapons"])
+                                for (const weapon of weaponsType) {
+                                    for (let i = 0; i < selectedChest["weapons"][weapon].lengthMax; i++) {
+                                        for (const material of selectedChest["weapons"][weapon].material) {
+                                            if (Users.randomInt() <= (selectedChest["weapons"][weapon].proba * 100)) {
                                                 Object.assign(loot, {
                                                     ["weapons"]: {
-                                                        [weapon]: { material:{}}
+                                                        [weapon]: {
+                                                            material: 1 + (user.inventory.stuff["weapons"] ? [weapon] ? [material]?.material ? user.inventory.stuff["weapons"][weapon][material].material : 0 : 0 : 0)
+                                                        }
                                                     }
                                                 })
                                             }
-                                            //TODO fix erase old data when give new object
-                                            /*Object.assign(loot.weapons[weapon].material, {
-                                                [material.toLowerCase()]: 1 + (
-                                                    user.inventory.stuff ?
-                                                        user.inventory.stuff.weapons ?
-                                                            user.inventory.stuff.weapons[weapon] ?
-                                                                user.inventory.stuff.weapons[weapon].material ?
-                                                                    user.inventory.stuff.weapons[weapon].material[material.toLowerCase()] :
-                                                                    0 :
-                                                                0 :
-                                                            0 :
-                                                        0 || 0)
-                                            })*/
-                                            Object.assign(loot["weapons"][weapon].material,{[material]: 1 +(loot["weapons"][weapon].material[material.toLowerCase()] || 0)})
-                                            console.log(loot)
-
                                         }
                                     }
-                                }
-                                Object.assign(user.inventory.stuff,loot)
 
-                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2)).then(() => {
-                                    resolve({message: "Utilisateur supprimé"})
-                                }).catch((err) => {
-                                    reject(err)
-                                })
+                                }
+                                Object.assign(user.inventory.stuff, loot)
+
                             }
                             /*if (Users.randomInt() <= (selectedChest[lootType].proba * 100)) {
                                 Object.assign(loot, {[lootType]: 1 + (loot.money || 0)})
                             }*/
                         }
+
                     }
+                    console.log(user.inventory.stuff)
+                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2)).then(() => {
+                        resolve()
+                    }).catch((err) => {
+                        reject(err)
+                    })
                 })
             })
         })

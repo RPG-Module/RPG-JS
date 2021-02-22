@@ -36,12 +36,12 @@
       },
       "stuff": {
         "weapons": {
-          "dagger": {
-            "material": {
-              "Stone": 1
-            }
+          "sword": {
+            "material": 1
           }
-        }
+        },
+        "armors": {},
+        "money": 0
       }
     },
     "dungeons": {
@@ -64,38 +64,7 @@
     },
     "chest": {
       "woodChest": 12
-    }
-  },
-  "test1": {
-    "classe": "Classe",
-    "race": "Elf",
-    "clan": "Meridor",
-    "faction": "Tadil",
-    "premium": false,
-    "info": {
-      "level": 1,
-      "xp": 0,
-      "stats": {
-        "hp": 20,
-        "mp": 35,
-        "stats": {
-          "atk": 3,
-          "def": 2,
-          "spd": 0.2,
-          "ctr": 0.2
-        }
-      },
-      "point": 0
     },
-    "inventory": {
-      "modifiers": {},
-      "item": {},
-      "keys": {}
-    },
-    "dungeons": {
-      "begin": {},
-      "end": {}
-    },
-    "chest": {}
+    "money": 1
   }
 }
