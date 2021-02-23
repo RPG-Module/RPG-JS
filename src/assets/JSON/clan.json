@@ -9,10 +9,10 @@
           "hp": 20,
           "mp": 15,
           "stats": {
-            "atk": 3,
-            "def": 3,
-            "spd": 0.2,
-            "ctr": 0.15
+            "attack": 3,
+            "defence": 3,
+            "speed": 0.2,
+            "critic": 0.15
           }
         }
       }
@@ -24,10 +24,10 @@
           "hp": 20,
           "mp": 35,
           "stats": {
-            "atk": 3,
-            "def": 2,
-            "spd": 0.2,
-            "ctr": 0.20
+            "attack": 3,
+            "defence": 2,
+            "speed": 0.2,
+            "critic": 0.20
           }
         }
       }
@@ -42,10 +42,10 @@
           "hp": 25,
           "mp": 10,
           "stats": {
-            "atk": 4,
-            "def": 3,
-            "spd": 0.2,
-            "ctr": 0.20
+            "attack": 4,
+            "defence": 3,
+            "speed": 0.2,
+            "critic": 0.20
 
           }
         }
@@ -59,10 +59,10 @@
           "hp": 20,
           "mp": 30,
           "stats": {
-            "atk": 3,
-            "def": 3,
-            "spd": 0.2,
-            "ctr": 0.20
+            "attack": 3,
+            "defence": 3,
+            "speed": 0.2,
+            "critic": 0.20
           }
         }
       }

@@ -4,125 +4,33 @@
       "slime": {
         "stats": {
           "pv" : 10,
-          "atk": 3,
+          "attack": 3,
           "def": 1,
           "spd": 0.2,
-          "ctr": 0.10
+          "critic": 0.10
         }
       },
       "skeleton": {
         "stats": {
           "pv" : 20,
-          "atk": 3,
-          "def": 1,
-          "spd": 0.2,
-          "ctr": 0.15
+          "attack": 3,
+          "defence": 1,
+          "speed": 0.2,
+          "critic": 0.15
 
         }
       },
       "spirit": {
         "stats": {
           "pv" : 10,
-          "atk": 3,
-          "def": 2,
-          "spd": 0.3,
-          "ctr": 0.15
+          "attack": 3,
+          "defence": 2,
+          "speed": 0.3,
+          "critic": 0.15
 
         }
       }
     },
-    "medium": {
-      "slime": {
-        "stats": {
-          "pv" : 10,
-          "atk": 3,
-          "def": 1,
-          "spd": 0.2,
-          "ctr": 0.10
-        }
-      },
-      "skeleton": {
-        "stats": {
-          "pv" : 20,
-          "atk": 3,
-          "def": 1,
-          "spd": 0.2,
-          "ctr": 0.15
-
-        }
-      },
-      "spirit": {
-        "stats": {
-          "pv" : 10,
-          "atk": 3,
-          "def": 2,
-          "spd": 0.3,
-          "ctr": 0.15
-
-        }
-      },
-      "high": {
-        "slime": {
-          "stats": {
-            "pv" : 10,
-            "atk": 3,
-            "def": 1,
-            "spd": 0.2,
-            "ctr": 0.10
-          }
-        },
-        "skeleton": {
-          "stats": {
-            "pv" : 20,
-            "atk": 3,
-            "def": 1,
-            "spd": 0.2,
-            "ctr": 0.15
-
-          }
-        },
-        "spirit": {
-          "stats": {
-            "pv" : 10,
-            "atk": 3,
-            "def": 2,
-            "spd": 0.3,
-            "ctr": 0.15
-
-          }
-        },
-        "legendary": {
-          "slime": {
-            "stats": {
-              "pv" : 10,
-              "atk": 3,
-              "def": 1,
-              "spd": 0.2,
-              "ctr": 0.10
-            }
-          },
-          "skeleton": {
-            "stats": {
-              "pv" : 20,
-              "atk": 3,
-              "def": 1,
-              "spd": 0.2,
-              "ctr": 0.15
-
-            }
-          },
-          "spirit": {
-            "stats": {
-              "pv" : 10,
-              "atk": 3,
-              "def": 2,
-              "spd": 0.3,
-              "ctr": 0.15
-
-            }
-          }
-        }
-      }
-    }
+    "medium": {}
   }
 }

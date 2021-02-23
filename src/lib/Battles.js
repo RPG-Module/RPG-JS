@@ -77,19 +77,20 @@ const fs = require('fs/promises')
                                     dodge:false,
                                     crit:false
                                 }
+                                console.log(data.stats)
 
-                                let userAttack = (user.info.stats.stats.atk - data.stats.def)
-                                let monsterAttack = (data.stats.atk - user.info.stats.stats.def)
+                                let userAttack = (user.info.stats.stats.attack - data.stats.defence)
+                                let monsterAttack = (data.stats.attack - user.info.stats.stats.defence)
 
 
                                 //DODGE
 
-                                if(Battle.randomInt() <= (user.info.stats.stats.spd)*100){
+                                if(Battle.randomInt() <= (user.info.stats.stats.speed)*100){
                                     attackUserStats.dodge = true
 
                                 }
 
-                                if(Battle.randomInt() <= (data.stats.spd)*100){
+                                if(Battle.randomInt() <= (data.stats.speed)*100){
                                     attackMonsterStats.dodge = true
 
                                 }
@@ -97,7 +98,7 @@ const fs = require('fs/promises')
                                 //CRIT
 
                                 if(!attackUserStats.dodge){
-                                    if(Battle.randomInt() <= (data.stats.ctr)*100){
+                                    if(Battle.randomInt() <= (data.stats.critic)*100){
                                         monsterAttack = monsterAttack*2
                                         attackMonsterStats.crit = true
                                     }
@@ -105,7 +106,7 @@ const fs = require('fs/promises')
                                 }
 
                                 if(!attackMonsterStats.dodge){
-                                    if(Battle.randomInt() <= (user.info.stats.stats.ctr)*100){
+                                    if(Battle.randomInt() <= (user.info.stats.stats.critic)*100){
                                         userAttack = userAttack*2
                                         attackUserStats.crit = true
                                     }
@@ -118,15 +119,15 @@ const fs = require('fs/promises')
                                     [turn]:{
                                         [profile.toLowerCase()]:{
                                             pv:userpv,
-                                            attack:user.info.stats.stats.atk,
-                                            defence:user.info.stats.stats.def,
+                                            attack:user.info.stats.stats.attack,
+                                            defence:user.info.stats.stats.defence,
                                             effectiveAttack:userAttack,
                                             attackUserStats
                                         },
                                         [data.monster]:{
                                             pv:monsterpv,
-                                            attack:data.stats.atk,
-                                            defence:data.stats.def,
+                                            attack:data.stats.attack,
+                                            defence:data.stats.defence,
                                             effectiveAttack:monsterAttack,
                                             attackMonsterStats
 
