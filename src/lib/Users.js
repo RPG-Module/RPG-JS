@@ -109,7 +109,6 @@ class Users{
         })
     }
     levelup(profile){
-
         return new Promise((resolve, reject) => {
             let needXP = ((profile.info.level+15)*2)
             while (profile.info.xp >= needXP){
@@ -124,8 +123,13 @@ class Users{
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
                 const stringifyUsers = JSON.parse(users)
-
-                Users.checkKey(chest, stringifyUsers[profile.toLowerCase()]).then(() =>{
+                if(stringifyUsers[profile.toLowerCase()].chest[chest]){
+                    reject({message :"Cette utilisateur ne possède pas ce coffre"})
+                }
+                Users.checkKey(chest, stringifyUsers[profile.toLowerCase()]).then((res) =>{
+                    if(!res.response){
+                        reject(res.message)
+                    }
                     const loot = {
                         weapons: {},
                         armors: {},
@@ -155,6 +159,7 @@ class Users{
                                     toSend.money++
                                 }
                             }
+
                             //Weapons
                             let weaponsType = Object.keys(selectChest.weapons)
                             for (const weapon of weaponsType) {
@@ -190,13 +195,9 @@ class Users{
                             let armorsType = Object.keys(selectChest.armor)
                             for (const armor of armorsType) {
                                 for (let i = 0; i < selectChest.armor[armor].lengthMax; i++) {
-
                                     if (Users.randomInt() <= (selectChest.armor[armor].proba * 100)) {
-
                                         let selectMat = Users.selectRandomThings(selectChest.armor[armor].material)
-
                                         //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
-
                                         if(loot.armors[armor]){
                                             if(loot.armors[armor][selectMat]){
                                                 Object.assign(loot.armors[armor],{
@@ -221,7 +222,6 @@ class Users{
                                         }
                                     }
                                 }
-
                             }
                             Object.assign(stringifyUsers[profile.toLowerCase()].inventory.stuff, loot)
                             //Remove chest & Remove key
@@ -229,19 +229,13 @@ class Users{
                             if(stringifyUsers[profile.toLowerCase()].chest[chest] === 0 ){
                                 delete user.inventory.orbs[orb]
                             }
-
-
                             fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
                             resolve(toSend)
-
                         }
-
                     })
                 }).catch((err) =>{
                     reject(err)
                 })
-
-
             })
         })
     }
@@ -253,7 +247,6 @@ class Users{
                 console.log(!user.inventory.orbs[orb])
                 if(!user.inventory.orbs[orb]){
                     reject({message:"Cette personne ne possède pas cette orbe"})
-
                 }else{
                     user.inventory.orbs[orb]--
                     user.info.stats.stats[orb]++
@@ -261,9 +254,7 @@ class Users{
                         delete user.inventory.orbs[orb]
                     }
                     fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
-
                 }
-
             })
         })
     }
@@ -278,9 +269,9 @@ class Users{
         return new Promise((resolve, reject) => {
             if(chest === 'woodChest' ){
                 if(profile.inventory.keys.woodenKey){
-                    resolve()
+                    resolve({response : true})
                 }else{
-                    reject({message:"L'utilisateur ne possède pas de clé pour ce coffre"})
+                    resolve({response : false, message:"L'utilisateur ne possède pas de clé pour ce coffre"})
                 }
             }
         })
