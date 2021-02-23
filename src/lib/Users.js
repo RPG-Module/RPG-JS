@@ -153,52 +153,39 @@ class Users{
                                 if (Users.randomInt() <= (selectChest.money.proba * 100)) {
                                     loot.money++
                                     toSend.money++
-
                                 }
                             }
-
                             //Weapons
                             let weaponsType = Object.keys(selectChest.weapons)
                             for (const weapon of weaponsType) {
                                 for (let i = 0; i < selectChest.weapons[weapon].lengthMax; i++) {
                                     if (Users.randomInt() <= (selectChest.weapons[weapon].proba * 100)) {
                                         let selectMat = Users.selectRandomThings(selectChest.weapons[weapon].material)
-
-                                        //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
-                                        Object.assign(loot, {
-                                            weapons: {
-                                                [weapon]: {}
+                                        if(loot.weapons[weapon]){
+                                            if(loot.weapons[weapon][selectMat]){
+                                                Object.assign(loot.weapons[weapon],{
+                                                    [selectMat] : (loot.weapons[weapon][selectMat] ||0) + 1
+                                                })
+                                            }else{
+                                                Object.assign(loot.weapons[weapon],{
+                                                    [selectMat] : 1
+                                                })
                                             }
-                                        })
-                                        Object.assign(loot, {
-                                            weapons: {
+                                        }else{
+                                            Object.assign(loot.weapons, {
                                                 [weapon]: {
-                                                    [selectMat]: isNaN(loot.weapons[weapon][selectMat]) ? 0 : loot.weapons[weapon][selectMat]++
+                                                    [selectMat] : 1
                                                 }
-                                            }
-
-                                        })
-
-                                        Object.assign(toSend, {
-                                            weapons: {
-                                                [weapon]: {}
-                                            }
-                                        })
-                                        Object.assign(toSend, {
-                                            weapons: {
+                                            })
+                                            Object.assign(toSend.weapons, {
                                                 [weapon]: {
-                                                    [selectMat]: isNaN(toSend.weapons[weapon][selectMat]) ? 0 : toSend.weapons[weapon][selectMat]++
+                                                    [selectMat] : 1
                                                 }
-                                            }
-
-                                        })
-
+                                            })
+                                        }
                                     }
-
                                 }
-
                             }
-
                             //Armors
                             let armorsType = Object.keys(selectChest.armor)
                             for (const armor of armorsType) {
@@ -209,39 +196,34 @@ class Users{
                                         let selectMat = Users.selectRandomThings(selectChest.armor[armor].material)
 
                                         //oblige de faire comme ca pour l'instant car ¯\_(ツ)_/¯
-                                        Object.assign(loot, {
-                                            armors: {
-                                                [armor]: {}
+
+                                        if(loot.armors[armor]){
+                                            if(loot.armors[armor][selectMat]){
+                                                Object.assign(loot.armors[armor],{
+                                                    [selectMat] : (loot.armors[armor][selectMat] ||0) + 1
+                                                })
+                                            }else{
+                                                Object.assign(loot.armors[armor],{
+                                                    [selectMat] : 1
+                                                })
                                             }
-                                        })
-                                        Object.assign(loot, {
-                                            armors: {
+                                        }else{
+                                            Object.assign(loot.armors, {
+                                                    [armor]: {
+                                                        [selectMat] : 1
+                                                    }
+                                            })
+                                            Object.assign(toSend.armors, {
                                                 [armor]: {
-                                                    [selectMat]: isNaN(loot.armors[armor][selectMat]) ? 0 : loot.armors[armor][selectMat]++
+                                                    [selectMat] : 1
                                                 }
-                                            }
-
-                                        })
-
-                                        Object.assign(toSend, {
-                                            armors: {
-                                                [armor]: {}
-                                            }
-                                        })
-                                        Object.assign(toSend, {
-                                            armors: {
-                                                [armor]: {
-                                                    [selectMat]: isNaN(toSend.armors[armor][selectMat]) ? 0 : toSend.armors[armor][selectMat]++
-                                                }
-                                            }
-
-                                        })
+                                            })
+                                        }
                                     }
                                 }
 
                             }
                             Object.assign(stringifyUsers[profile.toLowerCase()].inventory.stuff, loot)
-                            console.log(loot)
                             //Remove chest & Remove key
                             stringifyUsers[profile.toLowerCase()].chest[chest]--
 
