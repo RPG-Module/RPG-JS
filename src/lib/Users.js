@@ -1,3 +1,5 @@
+
+
 const fs = require('fs/promises')
 
 class Users{
@@ -118,8 +120,6 @@ class Users{
             resolve(profile)
         })
     }
-    //TODO make chest opening
-    //TODO multiple object not supported
     openChest(chest, profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -226,7 +226,9 @@ class Users{
                             Object.assign(stringifyUsers[profile.toLowerCase()].inventory.stuff, loot)
                             //Remove chest & Remove key
                             stringifyUsers[profile.toLowerCase()].chest[chest]--
-
+                            if(stringifyUsers[profile.toLowerCase()].chest[chest] === 0 ){
+                                delete user.inventory.orbs[orb]
+                            }
 
 
                             fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
@@ -243,6 +245,29 @@ class Users{
             })
         })
     }
+    useOrb(orb,profile){
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/database/users.json').then(function (users) {
+                const stringifyUsers = JSON.parse(users)
+                const user = stringifyUsers[profile]
+                console.log(!user.inventory.orbs[orb])
+                if(!user.inventory.orbs[orb]){
+                    reject({message:"Cette personne ne possède pas cette orbe"})
+
+                }else{
+                    user.inventory.orbs[orb]--
+                    user.info.stats.stats[orb]++
+                    if(user.inventory.orbs[orb] === 0 ){
+                        delete user.inventory.orbs[orb]
+                    }
+                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
+
+                }
+
+            })
+        })
+    }
+
     static randomInt(){
         return Math.floor(Math.random()*100)
     }

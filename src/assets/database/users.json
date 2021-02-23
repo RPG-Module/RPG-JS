@@ -6,42 +6,39 @@
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 34,
-      "xp": 75,
+      "level": 35,
+      "xp": 80,
       "stats": {
         "hp": 20,
         "mp": 35,
         "stats": {
-          "atk": 3,
-          "def": 2,
-          "spd": 0.2,
-          "ctr": 0.2
+          "attack": 8,
+          "defence": 2,
+          "speed": 0.2,
+          "critic": 0.2
         }
       },
-      "point": 33
+      "point": 34
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Drop of slime": 51,
-        "Bone": 46,
-        "Ectoplasm": 66
+        "Drop of slime": 54,
+        "Bone": 49,
+        "Ectoplasm": 69
       },
       "keys": {
-        "woodenKey": 27
+        "woodenKey": 30
       },
       "orbs": {
-        "attack": 5,
         "defence": 9
       },
       "stuff": {
         "weapons": {
           "sword": {
-            "wood": 1,
-            "stone": 1
-          },
-          "dagger": {
-            "stone": 3
+            "material": {
+              "iron": 1
+            }
           }
         },
         "armors": {
@@ -59,14 +56,11 @@
       "begin": {
         "Crypte des esprits": {
           "orb": {
-            "attack": 1
+            "defence": 1,
+            "attack": 1,
+            "speed": 0
           },
-          "chest": {
-            "woodChest": {
-              "size": 1,
-              "proba": 0.3
-            }
-          },
+          "chest": {},
           "keys": {},
           "rareLoot": {}
         }
@@ -74,8 +68,7 @@
       "end": {}
     },
     "chest": {
-      "woodChest": -101
-    },
-    "money": 1
+      "woodChest": 0
+    }
   }
 }
