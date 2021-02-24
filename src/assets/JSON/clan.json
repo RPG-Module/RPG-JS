@@ -6,8 +6,10 @@
         "faction": "Tadil",
         "clan": ["Dinaris"],
         "info": {
-          "hp": 20,
-          "mp": 15,
+          "health": 20,
+          "mana": 15,
+          "energy": 20,
+
           "stats": {
             "attack": 3,
             "defence": 3,
@@ -21,8 +23,10 @@
       "meridor": {
         "description": "Ce clan d'elfes est à l'origine de la magie sur la planète, et a transmis le savoir de la magie à la race alliée.",
         "info": {
-          "hp": 20,
-          "mp": 35,
+          "health": 20,
+          "mana": 35,
+          "energy": 20,
+
           "stats": {
             "attack": 3,
             "defence": 2,
@@ -39,8 +43,10 @@
         "description": "Une race d'hommes-loups qui sont de grands combattants, victorieux de la grande guerre opposant la faction Tadil à la Norrienne, ils disent qu'on ne peut pas lutter avec la magie mais on trouve parmi leur race quelques mages et un peu plus de magiciens-guerriers.",
         "faction": "Nor",
         "info": {
-          "hp": 25,
-          "mp": 10,
+          "health": 25,
+          "mana": 10,
+          "energy": 20,
+
           "stats": {
             "attack": 4,
             "defence": 3,
@@ -56,8 +62,9 @@
         "description": "Une race d'elfe corrompu par la magie noire, variante des la magie des elfes, se sont des bon combatant mais une bonne maitrise de la magie noir.",
         "faction": "Nor",
         "info": {
-          "hp": 20,
-          "mp": 30,
+          "health": 20,
+          "mana": 30,
+          "energy": 20,
           "stats": {
             "attack": 3,
             "defence": 3,
