@@ -1,37 +1,53 @@
 {
-  "test": {
+  "hallo": {
     "classe": "Classe",
     "race": "Elf",
     "clan": "Meridor",
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 35,
-      "xp": 80,
+      "level": 10,
+      "xp": 30,
       "stats": {
         "hp": 20,
         "mp": 35,
         "stats": {
-          "attack": 8,
+          "attack": 3,
           "defence": 2,
           "speed": 0.2,
           "critic": 0.2
         }
       },
-      "point": 34
+      "reputation": 5,
+      "point": 9
+    },
+    "job": {
+      "bucheron": {
+        "level": 1,
+        "xp": 0
+      },
+      "mineur": {
+        "level": 1,
+        "xp": 0
+      },
+      "chasseur": {
+        "level": 1,
+        "xp": 0
+      }
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Drop of slime": 54,
-        "Bone": 49,
-        "Ectoplasm": 69
+        "Bone": 15,
+        "Drop of slime": 5,
+        "Ectoplasm": 9
       },
       "keys": {
-        "woodenKey": 30
+        "woodenKey": 1
       },
       "orbs": {
-        "defence": 9
+        "defence": 1,
+        "attack": 1
       },
       "stuff": {
         "weapons": {
@@ -41,34 +57,23 @@
             }
           }
         },
-        "armors": {
-          "chestplate": {
-            "iron": 4
-          },
-          "leggings": {
-            "iron": 3
-          }
-        },
-        "money": 295
+        "armors": {},
+        "money": 0
       }
     },
     "dungeons": {
-      "begin": {
+      "begin": {},
+      "end": {
         "Crypte des esprits": {
-          "orb": {
-            "defence": 1,
-            "attack": 1,
-            "speed": 0
-          },
+          "orb": {},
           "chest": {},
           "keys": {},
           "rareLoot": {}
         }
-      },
-      "end": {}
+      }
     },
     "chest": {
-      "woodChest": 0
+      "woodChest": 1
     }
   }
 }

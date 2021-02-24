@@ -6,72 +6,77 @@ class Users{
 
     createProfile(name,race, clan, classe,faction) {
         return new Promise((resolve, reject) => {
-            if(!name || !race || !clan || !classe || !faction) {
+            if (!name || !race || !clan || !classe || !faction) {
                 reject("Il manque soit le nom du personnage, soit la race, soit le clan, soit la classe")
             }
             fs.readFile('./src/assets/JSON/race.json').then(function (races) {
                 const stringifyRaces = JSON.parse(races)
                 fs.readFile('./src/assets/JSON/clan.json').then(function (clans) {
                     const stringifyClans = JSON.parse(clans)
-                    if(!stringifyRaces[race.toLowerCase()]) reject('Cette race n\'existe pas')
-                    if(stringifyClans[faction.toLowerCase()]){
-                        if(stringifyClans[faction.toLowerCase()][race.toLowerCase()]){
-                            if(stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()]){
+                    if (!stringifyRaces[race.toLowerCase()]) reject('Cette race n\'existe pas')
+                    if (stringifyClans[faction.toLowerCase()]) {
+                        if (stringifyClans[faction.toLowerCase()][race.toLowerCase()]) {
+                            if (stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()]) {
                                 fs.readFile('./src/assets/database/users.json').then(function (user) {
                                     const stringifyOlfUserJSON = JSON.parse(user)
-                                    if(stringifyOlfUserJSON[name.toLowerCase()]){
+                                    if (stringifyOlfUserJSON[name.toLowerCase()]) {
                                         reject("Ce nom d'utilisateur est déjà pris")
                                     }
-                            //TODO add Job and competence Job
+                                    //TODO add Job and competence Job
                                     const newUser = {
-                                        [name.toLowerCase()]:{
+                                        [name.toLowerCase()]: {
                                             classe,
                                             race,
                                             clan,
                                             faction,
                                             premium: false,
-                                            info:{
-                                                level:1,
-                                                xp:0,
+                                            info: {
+                                                level: 1,
+                                                xp: 0,
                                                 stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
+                                                reputation: 0,
                                                 point:0
                                             },
+                                            job: {},
                                             inventory: {
-                                                modifiers:{},
-                                                item:{},
-                                                keys:{},
-                                                orbs:{},
-                                                stuff:{
-                                                    weapons:{},
-                                                    armors:{},
+                                                modifiers: {},
+                                                item: {},
+                                                keys: {},
+                                                orbs: {},
+                                                stuff: {
+                                                    weapons: {},
+                                                    armors: {},
                                                     money: 0
                                                 }
                                             },
                                             dungeons: {
-                                                begin:{},
-                                                end:{}
+                                                begin: {},
+                                                end: {}
 
                                             },
                                             chest: {}
 
                                         }
                                     }
-                                    const users = Object.assign(stringifyOlfUserJSON,newUser)
-                                    fs.writeFile('./src/assets/database/users.json',JSON.stringify(users, null, 2)).then(()=>{
-                                        resolve({message:"Utilisateur créer",user:newUser})
-                                    }).catch((err)=>{
-                                        reject(err)
+                                    Users.setJob(newUser[name.toLowerCase()]).then(() => {
+                                        const users = Object.assign(stringifyOlfUserJSON, newUser)
+                                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(users, null, 2)).then(() => {
+                                            resolve({message: "Utilisateur créer", user: newUser})
+                                        }).catch((err) => {
+                                            reject(err)
+                                        })
                                     })
-                                }).catch((err)=>{
+
+                                }).catch((err) => {
                                     reject(err)
                                 })
-                            }else{
-                                reject("Ce clan n'existe pas dans cette race" )
+                            } else {
+                                reject("Ce clan n'existe pas dans cette race")
                             }
-                        }else{
+                        } else {
                             reject("Cette race n'existe pas dans cette faction")
                         }
-                    }else{
+                    } else {
                         reject("Cette faction n'existe pas")
                     }
                 })
@@ -81,6 +86,9 @@ class Users{
     getProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
+                if(!profile){
+                    reject({message:"Aucun utilisateur mentionné"})
+                }
                 const stringifyOlfUserJSON = JSON.parse(user)
                 if (!stringifyOlfUserJSON[profile]) {
                     reject('Utilisateur non trouvé')
@@ -95,6 +103,10 @@ class Users{
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
                 const stringifyOlfUserJSON = JSON.parse(user)
+                if(!profile){
+                    reject({message:"Aucun utilisateur mentionné"})
+                }
+
                 if (!stringifyOlfUserJSON[profile]) {
                     reject('Utilisateur non trouvé')
                 }
@@ -113,6 +125,9 @@ class Users{
     //TODO levelup rework
     levelup(profile){
         return new Promise((resolve, reject) => {
+            if(!profile){
+                reject({message:"Aucun utilisateur mentionné"})
+            }
             let needXP = ((profile.info.level+15)*2)
             while (profile.info.xp >= needXP){
                 profile.info.xp -= profile.info.level+10
@@ -126,6 +141,12 @@ class Users{
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
                 const stringifyUsers = JSON.parse(users)
+                if(!profile){
+                    reject({message:"Aucun utilisateur mentionné"})
+                }
+                if(!chest){
+                    reject({message:"Aucun coffre mentionné"})
+                }
                 if(stringifyUsers[profile.toLowerCase()].chest[chest]){
                     reject({message :"Cette utilisateur ne possède pas ce coffre"})
                 }
@@ -246,8 +267,13 @@ class Users{
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
                 const stringifyUsers = JSON.parse(users)
+                if(!profile){
+                    reject({message:"Aucun utilisateur mentionné"})
+                }
+                if(!orb){
+                    reject({message:"Aucune orbe mentionné"})
+                }
                 const user = stringifyUsers[profile]
-                console.log(!user.inventory.orbs[orb])
                 if(!user.inventory.orbs[orb]){
                     reject({message:"Cette personne ne possède pas cette orbe"})
                 }else{
@@ -264,6 +290,27 @@ class Users{
 
     //TODO harvest, quest, Job, Reputation
 
+    static setJob(user) {
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/JSON/jobs.json').then(function (jobs) {
+                const stringifyJobs = JSON.parse(jobs)
+
+                const jobsList = Object.keys(stringifyJobs)
+                let jobTake = {}
+                for (const job of jobsList) {
+                    const stats = stringifyJobs[job].stats
+                    Object.assign(jobTake, {[job]: {...stats}})
+
+                }
+                user.job =jobTake
+
+                resolve(user)
+
+            })
+
+        })
+    }
+
 
     static randomInt(){
         return Math.floor(Math.random()*100)
@@ -273,6 +320,12 @@ class Users{
     }
     static checkKey(chest,profile){
         return new Promise((resolve, reject) => {
+            if(!profile){
+                reject({message:"Aucun utilisateur mentionné"})
+            }
+            if(!chest){
+                reject({message:"Aucun coffre mentionné"})
+            }
             if(chest === 'woodChest' ){
                 if(profile.inventory.keys.woodenKey){
                     resolve({response : true})
