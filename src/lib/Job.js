@@ -1,6 +1,9 @@
 const fs = require('fs/promises')
 class Jobs {
-    //TODO Job Structure, gold win, Job level up
+    //TODO
+    // - Job Structure
+    // - Gold win
+    // - Job level up
 
     getJob(name) {
         return new Promise((resolve, reject) => {
@@ -17,7 +20,8 @@ class Jobs {
         })
     }
 
-    //TODO make gain ressources/job
+    //TODO
+    // - Make gain ressources
     makeJob(profile) {
         fs.readFile('./src/assets/database/users.json').then(function (users) {
             const stringifyUsers = JSON.parse(users)

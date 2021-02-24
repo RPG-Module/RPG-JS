@@ -159,7 +159,9 @@ const fs = require('fs/promises')
             })
         }
 
-        //TODO PVP, Bosses
+        //TODO
+        // - PVP
+        // - Bosses
 
         static randomDungeon(username){
             return new Promise((resolve, reject) => {
@@ -215,7 +217,8 @@ const fs = require('fs/promises')
             })
 
         }
-        //TODO Rework monster level
+        //FIXME
+        // - Rework monster level
         static calcLvl(user) {
             return 'low'
         }

@@ -50,6 +50,7 @@ const fs = require('fs/promises')
             })
         })
     }
-    //TODO Crafting
+    //TODO
+    // - Crafting
 }
 module.exports = Items

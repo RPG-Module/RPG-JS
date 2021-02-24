@@ -22,7 +22,9 @@ class Users{
                                     if (stringifyOlfUserJSON[name.toLowerCase()]) {
                                         reject("Ce nom d'utilisateur est déjà pris")
                                     }
-                                    //TODO add Job and competence Job
+                                    //TODO
+                                    // - Add Job
+                                    // - Competence Job
                                     const newUser = {
                                         [name.toLowerCase()]: {
                                             classe,
@@ -122,7 +124,7 @@ class Users{
         })
     }
 
-    //TODO levelup rework
+    //FIXME levelup rework
     levelup(profile){
         return new Promise((resolve, reject) => {
             if(!profile){
@@ -288,7 +290,11 @@ class Users{
         })
     }
 
-    //TODO harvest, quest, Job, Reputation
+    //TODO
+    // - Harvest
+    // - Quest
+    // - Job
+    // - Reputation
 
     static setJob(user) {
         return new Promise((resolve, reject) => {
