@@ -29,11 +29,11 @@ rpg.items.getMaterialWeapon("Iron").then((r) =>{
     console.log(err)
 })*/
 //rpg.users.createProfile("Hallo","Elf","Meridor","Classe","Tadil").then((data) =>{
-    rpg.battles.startDungeon('Crypte des esprits', 'Hallo').then((r) => {
+   // rpg.battles.startDungeon('Crypte des esprits', 'Hallo').then((r) => {
         //rpg.battles.fightDungeon('Crypte des esprits', 'Hallo').then((r) => {
-        }).catch((err)=>{
-            console.log(err)
-        })
+        //}).catch((err)=>{
+            //console.log(err)
+        //})
     /*}).catch((err)=>{
         console.log(err)
     })
@@ -42,7 +42,7 @@ rpg.items.getMaterialWeapon("Iron").then((r) =>{
 })*/
 
 
-
+rpg.jobs.makeJob("Hallo")
 
 /*rpg.users.createProfile("Hallo","Elf","Meridor","Classe","Tadil").then((data) =>{
     console.log(data)

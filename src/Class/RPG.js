@@ -2,6 +2,7 @@ const Monsters = require('../lib/Monsters')
 const Battles = require('../lib/Battles')
 const Users = require('../lib/Users')
 const Items = require('../lib/Items')
+const Jobs = require('../lib/Job')
 
 
 module.exports = class {
@@ -10,5 +11,6 @@ module.exports = class {
         this.users =  new Users()
         this.items = new Items()
         this.battles = new Battles()
+        this.jobs = new Jobs()
     }
 }
