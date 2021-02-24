@@ -1,9 +1,8 @@
 const fs = require('fs/promises')
 
 class Monsters{
-
+//TODO Make Bosses
     getMonsterInfo(monster, level) {
-
         return new Promise((resolve, reject) => {
             if(!monster) reject('Specify a monster name')
             if(!level) reject('Specify a level name')

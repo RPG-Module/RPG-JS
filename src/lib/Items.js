@@ -2,11 +2,9 @@ const fs = require('fs/promises')
 
  class Items{
     getItemInfo(type,name) {
-
         return new Promise((resolve, reject) => {
             if(!name) reject('Specify a item name')
             if(!type) reject('Specify a type name')
-
             fs.readFile('./src/assets/JSON/object.json').then(function (obj) {
                 const objs = JSON.parse(obj)
                 if(!objs[type.toLowerCase()]){
@@ -23,7 +21,6 @@ const fs = require('fs/promises')
     }
 
     getMaterialArmor(name){
-
         return new Promise((resolve, reject) => {
             if(!name) reject('Specify a material name')
             fs.readFile('./src/assets/JSON/armor.json').then(function (obj) {
@@ -37,6 +34,7 @@ const fs = require('fs/promises')
             })
         })
     }
+
     getMaterialWeapon(name){
         return new Promise((resolve, reject) => {
             if(!name) reject('Specify a material name')
@@ -52,5 +50,6 @@ const fs = require('fs/promises')
             })
         })
     }
+    //TODO Crafting
 }
 module.exports = Items

@@ -10,6 +10,5 @@ module.exports = class {
         this.users =  new Users()
         this.items = new Items()
         this.battles = new Battles()
-
     }
 }

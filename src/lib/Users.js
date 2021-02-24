@@ -22,6 +22,7 @@ class Users{
                                     if(stringifyOlfUserJSON[name.toLowerCase()]){
                                         reject("Ce nom d'utilisateur est déjà pris")
                                     }
+                            //TODO add Job and competence Job
                                     const newUser = {
                                         [name.toLowerCase()]:{
                                             classe,
@@ -108,6 +109,8 @@ class Users{
             })
         })
     }
+
+    //TODO levelup rework
     levelup(profile){
         return new Promise((resolve, reject) => {
             let needXP = ((profile.info.level+15)*2)
@@ -258,6 +261,9 @@ class Users{
             })
         })
     }
+
+    //TODO harvest, quest, Job, Reputation
+
 
     static randomInt(){
         return Math.floor(Math.random()*100)
