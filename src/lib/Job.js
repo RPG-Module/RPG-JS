@@ -16,6 +16,8 @@ class Jobs {
             })
         })
     }
+
+    //TODO make gain ressources/job
     makeJob(profile) {
         fs.readFile('./src/assets/database/users.json').then(function (users) {
             const stringifyUsers = JSON.parse(users)
