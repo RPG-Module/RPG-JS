@@ -29,6 +29,10 @@
             "material": ["iron"]
           }
         }
+      },
+      "reputation": {
+        "size": 3,
+        "proba": 0.5
       }
     }
   }

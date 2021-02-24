@@ -11,10 +11,13 @@ const fs = require('fs/promises')
                         let selectedDungeon = dungeons[name];
                         let selectedUser = users[profile.toLowerCase()]
                         if(!selectedUser){
-                            reject("Cette utilisateur n'existe pas")
+                            reject({message:"Cette utilisateur n'existe pas"})
                         }
                         if (!selectedDungeon) {
-                            reject("Ce donjon n'existe pas")
+                            reject({message:"Ce donjon n'existe pas"})
+                        }
+                        if(selectedUser.dungeons.end[name]){
+                            reject({message:"Ce donjon est deja fini"})
                         }
                         selectedUser.dungeons.begin[name] = {}
 
@@ -49,13 +52,13 @@ const fs = require('fs/promises')
                         const stringifyUsers = JSON.parse(users)
                         const stringifyDungeons = JSON.parse(dungeons)
                         if (!stringifyUsers[profile.toLowerCase()]) {
-                            reject("Cette utilisateur n'existe pas")
+                            reject({message:"Cette utilisateur n'existe pas"})
                         }
                         if (!stringifyDungeons[name]) {
-                            reject("Ce donjon n'existe pas")
+                            reject({message:"Ce donjon n'existe pas"})
                         }
                         if(!stringifyUsers[profile.toLowerCase()].dungeons.begin[name]){
-                            reject("Ce donjon n'est pas commencé")
+                            reject({message:"Ce donjon n'est pas commencé"})
                         }
                         let user = stringifyUsers[profile.toLowerCase()]
                         let dungeon = stringifyDungeons[name]
@@ -77,7 +80,6 @@ const fs = require('fs/promises')
                                     dodge:false,
                                     crit:false
                                 }
-                                console.log(data.stats)
 
                                 let userAttack = (user.info.stats.stats.attack - data.stats.defence)
                                 let monsterAttack = (data.stats.attack - user.info.stats.stats.defence)
@@ -136,11 +138,20 @@ const fs = require('fs/promises')
                                 })
                             }
 
-                            Battle.obtainLoot(data,stringifyUsers,profile.toLowerCase()).then((data)=>{
-                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2))
+
+
+                            Battle.orbLoot( name,stringifyUsers,profile.toLowerCase()).then((stringifyLootOrb)=>{
+                                Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile.toLowerCase()).then((stringifyLootRate)=>{
+                                    Battle.obtainLoot(data,stringifyLootRate,profile.toLowerCase()).then((data)=>{
+                                        console.log(profile)
+                                        console.log(name)
+
+                                        Battle.EndDungeon(data,name,profile.toLowerCase()).then((data)=>{
+                                            fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2))
+                                        })
+                                    })
+                                })
                             })
-                            Battle.rareLoot(stringifyDungeons[name], name,stringifyUsers,profile.toLowerCase())
-                            Battle.orbLoot( name,stringifyUsers,profile.toLowerCase())
                             resolve(result)
                         })
                     })
@@ -210,84 +221,128 @@ const fs = require('fs/promises')
         }
 
         static rareLoot(dungeon,name,stringifyUsers,profile){
-            const chests = dungeon.loot.chest
-            const keys = dungeon.loot.keys
-            const user = stringifyUsers[profile.toLowerCase()]
-            const rareloot = user.dungeons.begin[name].rareLoot
-
-
-            //Chest
-            for(const chest in chests){
-                if(user.dungeons.begin[name].chest[chest]){
-                    if(Battle.randomInt() <= (chests[chest].proba)*100){
-                        Object.assign(user.chest, {
-                            [chest]:1 + (user.chest[chest] ?  user.chest[chest] : 0)
-                        })
-                        delete user.dungeons.begin[name].chest[chest]
-                    }
-                }
-            }
-
-            //Keys
-            for(const key in keys){
-                if(user.dungeons.begin[name].keys[key]){
-                    if(Battle.randomInt() <= (keys[key].proba)*100){
-                        Object.assign(user.inventory.keys, {
-                            [key]:1 + (user.inventory.keys[key] || 0)
-                        })
-                        delete user.dungeons.begin[name].keys[key]
-
-                    }
-                }
-            }
-
-            let rareLootTypes = Object.keys(rareloot)
-            let rareLootWeapons = Object.keys(rareloot["weapons"])
-            let loot = {}
-            for(const type of rareLootTypes){
-                Object.assign(loot, {
-                        [type]: {}
-                })
-                for(const weapon of rareLootWeapons){
-                    const material = Battle.selectRandomThings(rareloot["weapons"][weapon].material)
-                    Object.assign(loot.weapons, {
-                        [weapon]:{
-                            material : {}
+            return new Promise((resolve, reject) => {
+                const chests = dungeon.loot.chest
+                const keys = dungeon.loot.keys
+                const reputation = dungeon.loot.reputation
+                const user = stringifyUsers[profile.toLowerCase()]
+                const rareloot = user.dungeons.begin[name].rareLoot
+                //reputation
+                    if(user.dungeons.begin[name].reputation) {
+                        if (Battle.randomInt() <= (reputation.proba) * 100) {
+                            user.info.reputation++
+                            user.dungeons.begin[name].reputation.size--
+                            if (user.dungeons.begin[name].reputation.size <= 0) {
+                                delete user.dungeons.begin[name].reputation
+                            }
                         }
-                    })
-                    Object.assign(loot["weapons"][weapon].material,{[material]: 1 +(loot["weapons"][weapon].material[material] || 0)})
-                    let pos = rareloot["weapons"][weapon].material.indexOf(material)
-                    rareloot["weapons"][weapon].material.splice(pos,1)
-                    if(rareloot["weapons"][weapon].material.length === 0 ){
-                        delete rareloot["weapons"][weapon]
-                        if(Object.entries(rareloot["weapons"]).length === 0){
-                            delete rareloot["weapons"]
+
+                    }
+
+                //Chest
+                for(const chest in chests){
+                    if(user.dungeons.begin[name].chest[chest]){
+                        if(Battle.randomInt() <= (chests[chest].proba)*100){
+                            Object.assign(user.chest, {
+                                [chest]:1 + (user.chest[chest] ?  user.chest[chest] : 0)
+                            })
+                            delete user.dungeons.begin[name].chest[chest]
                         }
                     }
                 }
-                Object.assign(user.inventory.stuff,loot)
-            }
+
+                //Keys
+                for(const key in keys){
+                    if(user.dungeons.begin[name].keys[key]){
+                        if(Battle.randomInt() <= (keys[key].proba)*100){
+                            Object.assign(user.inventory.keys, {
+                                [key]:1 + (user.inventory.keys[key] || 0)
+                            })
+                            delete user.dungeons.begin[name].keys[key]
+
+                        }
+                    }
+                }
+
+                //Rareloot
+                let rareLootTypes = Object.keys(rareloot)
+                if(rareloot["weapons"]){
+                    let rareLootWeapons = Object.keys(rareloot["weapons"])
+                    let loot = {}
+                    for(const type of rareLootTypes){
+                        Object.assign(loot, {
+                            [type]: {}
+                        })
+                        for(const weapon of rareLootWeapons){
+                            const material = Battle.selectRandomThings(rareloot["weapons"][weapon].material)
+                            Object.assign(loot.weapons, {
+                                [weapon]:{
+                                    material : {}
+                                }
+                            })
+                            Object.assign(loot["weapons"][weapon].material,{[material]: 1 +(loot["weapons"][weapon].material[material] || 0)})
+                            let pos = rareloot["weapons"][weapon].material.indexOf(material)
+                            rareloot["weapons"][weapon].material.splice(pos,1)
+                            if(rareloot["weapons"][weapon].material.length === 0 ){
+                                delete rareloot["weapons"][weapon]
+                                if(Object.entries(rareloot["weapons"]).length === 0){
+                                    delete rareloot["weapons"]
+                                }
+                            }
+                        }
+                        Object.assign(user.inventory.stuff,loot)
+                    }
+                }
+                resolve(stringifyUsers)
+            })
+
+
         }
 
         static orbLoot(name,stringifyUsers,profile) {
-            const orbs = stringifyUsers[profile].dungeons.begin[name].orb
-            let keysObject = Object.keys(orbs)
+            return new Promise((resolve, reject) => {
+                const orbs = stringifyUsers[profile].dungeons.begin[name].orb
+                let keysObject = Object.keys(orbs)
 
-            for (const orb of keysObject) {
-                if (Battle.randomInt() <= (0.25 * 100)) {
-                    if (orbs[orb]) {
-                        Object.assign(stringifyUsers[profile].inventory.orbs, {
-                            [orb]: 1 + (stringifyUsers[profile].inventory.orbs[orb] || 0)
-                        })
-                        delete orbs[orb]
-                    }else{
-                        delete orbs[orb]
+                for (const orb of keysObject) {
+                    if (Battle.randomInt() <= (0.25 * 100)) {
+                        if (orbs[orb]) {
+                            Object.assign(stringifyUsers[profile].inventory.orbs, {
+                                [orb]: 1 + (stringifyUsers[profile].inventory.orbs[orb] || 0)
+                            })
+                            delete orbs[orb]
+                        }else{
+                            delete orbs[orb]
+                        }
                     }
                 }
-            }
+                resolve(stringifyUsers)
+
+            })
+
         }
 
+        static EndDungeon(stringifyUser,name,profile){
+            return new Promise((resolve, reject) => {
+                const dungeon = stringifyUser[profile].dungeons.begin[name]
 
+                const ObjectKey = Object.keys(dungeon)
+                let isEmpty = true
+
+                for(const key of ObjectKey){
+                    if(!isEmpty){
+                        if(Object.entries(dungeon[key]).length !== 0){
+                            isEmpty = true
+                        }
+                    }
+                }
+                if(isEmpty){
+                    stringifyUser[profile].dungeons.end[name] = stringifyUser[profile].dungeons.begin[name]
+                    delete stringifyUser[profile].dungeons.begin[name]
+                }
+                resolve(stringifyUser)
+            })
+        }
 
         static selectRandomThings(array){
             return array[Math.floor(Math.random()*array.length)];
