@@ -1,6 +1,12 @@
 const fs = require('fs/promises')
 
     class Battle {
+        /**
+         * Start dungeons
+         * @param name
+         * @param profile
+         * @returns {Promise<unknown>} Return message
+         */
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
@@ -28,12 +34,19 @@ const fs = require('fs/promises')
                         fs.writeFile('./src/assets/database/users.json', stringifyUsers).then(() => {
                             resolve({message: "Nouveau donjon commencé"})
                         }).catch((err) => {
-                            reject(err)
+                            reject({message: err})
                         })
                     })
                 })
             })
         }
+
+        /**
+         * Made Battle
+         * @param name
+         * @param profile
+         * @returns {Promise<unknown>} Return data
+         */
 
         fightDungeon(name, profile) {
             //random dungeon
@@ -143,16 +156,13 @@ const fs = require('fs/promises')
                             Battle.orbLoot( name,stringifyUsers,profile.toLowerCase()).then((stringifyLootOrb)=>{
                                 Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile.toLowerCase()).then((stringifyLootRate)=>{
                                     Battle.obtainLoot(data,stringifyLootRate,profile.toLowerCase()).then((data)=>{
-                                        console.log(profile)
-                                        console.log(name)
-
                                         Battle.EndDungeon(data,name,profile.toLowerCase()).then((data)=>{
                                             fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2))
                                         })
                                     })
                                 })
                             })
-                            resolve(result)
+                            resolve({data: result, message:'End Battle'})
                         })
                     })
                 })
@@ -162,6 +172,12 @@ const fs = require('fs/promises')
         //TODO
         // - PVP
         // - Bosses
+
+        /**
+         * Select a random dungeons if dungeons is not specified
+         * @param username
+         * @returns {Promise<unknown>}
+         */
 
         static randomDungeon(username){
             return new Promise((resolve, reject) => {
@@ -174,6 +190,14 @@ const fs = require('fs/promises')
             })
 
         }
+
+        /**
+         * Give mod and dungeons loot
+         * @param monster
+         * @param stringifyUsers
+         * @param profile
+         * @returns {Promise<unknown>} return users
+         */
 
         static obtainLoot(monster,stringifyUsers,profile){
             return new Promise((resolve, reject) => {
@@ -219,9 +243,24 @@ const fs = require('fs/promises')
         }
         //FIXME
         // - Rework monster level
+
+        /**
+         * Calc monster level
+         * @param user
+         * @returns {string}
+         */
         static calcLvl(user) {
             return 'low'
         }
+
+        /**
+         * Give rareloot
+         * @param dungeon
+         * @param name
+         * @param stringifyUsers
+         * @param profile
+         * @returns {Promise<unknown>}
+         */
 
         static rareLoot(dungeon,name,stringifyUsers,profile){
             return new Promise((resolve, reject) => {
@@ -298,15 +337,20 @@ const fs = require('fs/promises')
                 }
                 resolve(stringifyUsers)
             })
-
-
         }
+
+        /**
+         * Give orb loot
+         * @param name
+         * @param stringifyUsers
+         * @param profile
+         * @returns {Promise<unknown>}
+         */
 
         static orbLoot(name,stringifyUsers,profile) {
             return new Promise((resolve, reject) => {
                 const orbs = stringifyUsers[profile].dungeons.begin[name].orb
                 let keysObject = Object.keys(orbs)
-
                 for (const orb of keysObject) {
                     if (Battle.randomInt() <= (0.25 * 100)) {
                         if (orbs[orb]) {
@@ -320,10 +364,17 @@ const fs = require('fs/promises')
                     }
                 }
                 resolve(stringifyUsers)
-
             })
-
         }
+
+        /**
+         * End dungeons is all loot and rareloot is empty
+         * @param stringifyUser
+         * @param name
+         * @param profile
+         * @returns {Promise<unknown>}
+         * @constructor
+         */
 
         static EndDungeon(stringifyUser,name,profile){
             return new Promise((resolve, reject) => {

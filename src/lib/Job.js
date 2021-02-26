@@ -5,6 +5,12 @@ class Jobs {
     // - Gold win
     // - Job level up
 
+    /**
+     * Get a job from JSON
+     * @param name
+     * @returns {Promise<unknown>} return job base stats
+     */
+
     getJob(name) {
         return new Promise((resolve, reject) => {
             if (!name) reject({message: "Nom du metier non specifier"})
@@ -25,6 +31,11 @@ class Jobs {
 
     //FIXME
     // - Made a "}" if no mat gain
+
+    /**
+     * Harvest ressources for all jobs
+     * @param profile
+     */
     makeJob(profile) {
         fs.readFile('./src/assets/database/users.json').then(function (users) {
             const stringifyUsers = JSON.parse(users)
@@ -50,6 +61,11 @@ class Jobs {
 
         })
     }
+
+    /**
+     * Update all job if job profile is missing
+     * @param profile
+     */
     updateJob(profile){
 
     }

@@ -1,6 +1,13 @@
 const fs = require('fs/promises')
 
  class Items{
+
+     /**
+      * Get item info
+      * @param type
+      * @param name
+      * @returns {Promise<unknown>} Return material stat
+      */
     getItemInfo(type,name) {
         return new Promise((resolve, reject) => {
             if(!name) reject('Specify a item name')
@@ -20,6 +27,11 @@ const fs = require('fs/promises')
         })
     }
 
+     /**
+      * Get stat material armor
+      * @param name
+      * @returns {Promise<unknown>} Return material stat
+      */
     getMaterialArmor(name){
         return new Promise((resolve, reject) => {
             if(!name) reject('Specify a material name')
@@ -34,6 +46,12 @@ const fs = require('fs/promises')
             })
         })
     }
+
+     /**
+      * Get stat material weapons
+      * @param name
+      * @returns {Promise<unknown>} Return material stat
+      */
 
     getMaterialWeapon(name){
         return new Promise((resolve, reject) => {

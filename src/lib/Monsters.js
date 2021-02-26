@@ -3,6 +3,13 @@ const fs = require('fs/promises')
 class Monsters{
 //TODO
 // - Make Bosses
+
+    /**
+     * Get monster stats and all info
+     * @param monster
+     * @param level
+     * @returns {Promise<unknown>} Return monster
+     */
     getMonsterInfo(monster, level) {
         return new Promise((resolve, reject) => {
             if(!monster) reject('Specify a monster name')

@@ -4,6 +4,15 @@ const fs = require('fs/promises')
 
 class Users{
 
+    /**
+     * Create a profile
+     * @param name
+     * @param race
+     * @param clan
+     * @param classe
+     * @param faction
+     * @returns {Promise<unknown>} return new user profile
+     */
     createProfile(name,race, clan, classe,faction) {
         return new Promise((resolve, reject) => {
             if (!name || !race || !clan || !classe || !faction) {
@@ -13,14 +22,14 @@ class Users{
                 const stringifyRaces = JSON.parse(races)
                 fs.readFile('./src/assets/JSON/clan.json').then(function (clans) {
                     const stringifyClans = JSON.parse(clans)
-                    if (!stringifyRaces[race.toLowerCase()]) reject('Cette race n\'existe pas')
+                    if (!stringifyRaces[race.toLowerCase()]) reject({message:'Cette race n\'existe pas'})
                     if (stringifyClans[faction.toLowerCase()]) {
                         if (stringifyClans[faction.toLowerCase()][race.toLowerCase()]) {
                             if (stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()]) {
                                 fs.readFile('./src/assets/database/users.json').then(function (user) {
                                     const stringifyOlfUserJSON = JSON.parse(user)
                                     if (stringifyOlfUserJSON[name.toLowerCase()]) {
-                                        reject("Ce nom d'utilisateur est déjà pris")
+                                        reject({message:"Ce nom d'utilisateur est déjà pris"})
                                     }
                                     //TODO
                                     // - Add Job
@@ -65,7 +74,7 @@ class Users{
                                         fs.writeFile('./src/assets/database/users.json', JSON.stringify(users, null, 2)).then(() => {
                                             resolve({message: "Utilisateur créer", user: newUser})
                                         }).catch((err) => {
-                                            reject(err)
+                                            reject({message:err})
                                         })
                                     })
 
@@ -73,18 +82,24 @@ class Users{
                                     reject(err)
                                 })
                             } else {
-                                reject("Ce clan n'existe pas dans cette race")
+                                reject({message:"Ce clan n'existe pas dans cette race"})
                             }
                         } else {
-                            reject("Cette race n'existe pas dans cette faction")
+                            reject({message:"Cette race n'existe pas dans cette faction"})
                         }
                     } else {
-                        reject("Cette faction n'existe pas")
+                        reject({message:"Cette faction n'existe pas"})
                     }
                 })
             })
         })
     }
+
+    /**
+     * Get user profile
+     * @param profile
+     * @returns {Promise<unknown>} Return profile
+     */
     getProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
@@ -93,14 +108,20 @@ class Users{
                 }
                 const stringifyOlfUserJSON = JSON.parse(user)
                 if (!stringifyOlfUserJSON[profile]) {
-                    reject('Utilisateur non trouvé')
+                    reject({message:'Utilisateur non trouvé'})
                 }
                 resolve(stringifyOlfUserJSON[profile])
             }).catch((err)=>{
-                reject(err)
+                reject({message: err})
             })
         })
     }
+
+    /**
+     * Remove user profile
+     * @param profile
+     * @returns {Promise<unknown>} Return message
+     */
     removeProfile(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
@@ -116,15 +137,20 @@ class Users{
                 fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyOlfUserJSON, null, 2)).then(() => {
                     resolve({message: "Utilisateur supprimé"})
                 }).catch((err) => {
-                    reject(err)
+                    reject({message: err})
                 })
             }).catch((err) => {
-                reject(err)
+                reject({message: err})
             })
         })
     }
 
     //FIXME levelup rework
+    /**
+     * Check user levelup
+     * @param profile
+     * @returns {Promise<unknown>} Return user profile
+     */
     levelup(profile){
         return new Promise((resolve, reject) => {
             if(!profile){
@@ -136,9 +162,16 @@ class Users{
                 profile.info.level++
                 profile.info.point++
             }
-            resolve(profile)
+            resolve({data:profile})
         })
     }
+
+    /**
+     * Open chest
+     * @param chest
+     * @param profile
+     * @returns {Promise<unknown>} Return chest loot
+     */
     openChest(chest, profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -154,7 +187,7 @@ class Users{
                 }
                 Users.checkKey(chest, stringifyUsers[profile.toLowerCase()]).then((res) =>{
                     if(!res.response){
-                        reject(res.message)
+                        reject({message:res.message})
                     }
                     const loot = {
                         weapons: {},
@@ -256,15 +289,22 @@ class Users{
                                 delete user.inventory.orbs[orb]
                             }
                             fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
-                            resolve(toSend)
+                            resolve({data: toSend})
                         }
                     })
                 }).catch((err) =>{
-                    reject(err)
+                    reject({message:err})
                 })
             })
         })
     }
+
+    /**
+     * Use orb for upgrade stats
+     * @param orb
+     * @param profile
+     * @returns {Promise<unknown>} nothing.
+     */
     useOrb(orb,profile){
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -295,7 +335,11 @@ class Users{
     // - Quest
     // - Job
     // - Reputation
-
+    /**
+     * Give all job user
+     * @param user
+     * @returns {Promise<unknown>} Return user
+     */
     static setJob(user) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/JSON/jobs.json').then(function (jobs) {
@@ -310,7 +354,7 @@ class Users{
                 }
                 user.job =jobTake
 
-                resolve(user)
+                resolve({data:user})
 
             })
 
@@ -324,6 +368,13 @@ class Users{
     static selectRandomThings(array){
         return array[Math.floor(Math.random()*array.length)].toLowerCase();
     }
+
+    /**
+     * Check if user content correct key
+     * @param chest
+     * @param profile
+     * @returns {Promise<boolean>} Return if user contain correct key for chest
+     */
     static checkKey(chest,profile){
         return new Promise((resolve, reject) => {
             if(!profile){
