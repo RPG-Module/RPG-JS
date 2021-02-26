@@ -40,7 +40,10 @@
       "item": {
         "Bone": 15,
         "Drop of slime": 5,
-        "Ectoplasm": 9
+        "Ectoplasm": 9,
+        "bois": 18,
+        "pierre": 16,
+        "cuir": 8
       },
       "keys": {
         "woodenKey": 1

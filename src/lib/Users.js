@@ -35,9 +35,9 @@ class Users{
                                             info: {
                                                 level: 1,
                                                 xp: 0,
-                                                stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
                                                 reputation: 0,
-                                                point:0
+                                                point:0,
+                                                stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
                                             },
                                             job: {},
                                             inventory: {

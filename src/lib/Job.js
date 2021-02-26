@@ -22,10 +22,12 @@ class Jobs {
 
     //TODO
     // - Make gain ressources
+
+    //FIXME
+    // - Made a "}" if no mat gain
     makeJob(profile) {
         fs.readFile('./src/assets/database/users.json').then(function (users) {
             const stringifyUsers = JSON.parse(users)
-            let  test = {lvl:1}
             const user = stringifyUsers[profile.toLowerCase()]
             const jobs = user.job
             for(const job of Object.keys(jobs)){
@@ -35,16 +37,15 @@ class Jobs {
                 let calculNeedXp = Math.pow(user.job[job].level, 2)+Math.pow(2, 1.5).toFixed(0)
                 let gain = {}
 
-                console.log(calculmat)
-                console.log(calculxp)
-                console.log(calculNeedXp)
                 Object.assign(gain,{
-                    [job]: calculmat + (user.inventory.item[job] || 0)
+                    [Jobs.JobRessources(job)]: parseInt(calculmat) + (user.inventory.item[Jobs.JobRessources(job)] || 0)
                 })
+                console.log(gain)
                 user.job[job].xp+calculxp
-                Object.assign(user.inventory.item, {[job]: gain[job]})
+                Object.assign(user.inventory.item, {[Jobs.JobRessources(job)]: gain[Jobs.JobRessources(job)]})
 
-                test.lvl++
+                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
+
             }
 
         })
@@ -53,8 +54,17 @@ class Jobs {
 
     }
     static randomInt(user,job){
-        console.log()
         return (Math.floor(Math.random()*(Math.pow(user.job[job].level, 2)+5)+2).toFixed(0))
+    }
+    static JobRessources(job){
+        switch (job){
+            case "bucheron":
+                return "bois"
+            case "mineur":
+                return "pierre"
+            case "chasseur":
+                return "cuir"
+        }
     }
 }
 module.exports = Jobs
