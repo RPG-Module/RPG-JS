@@ -169,6 +169,29 @@ const fs = require('fs/promises')
             })
         }
 
+        fightBosse(profile) {
+            return new Promise((resolve, reject) => {
+                fs.readFile('./src/assets/JSON/monster.json').then(function (monsters) {
+                    fs.readFile('./src/assets/database/users.json').then(function (users) {
+
+                        const parseMonster = JSON.parse(monsters)
+                        const parseUsers = JSON.parse(users)
+
+                        const user = parseUsers[profile.toLowerCase()]
+                        if(!user){
+                            reject({message:"Utilisateur introuvable"})
+                        }
+                        let levelMonster = Battle.calcLvl(user)
+
+                        Battle.MakeBosses(Object.keys(parseMonster.level[levelMonster]),user).then((data) =>{
+                            console.log(data)
+                        })
+                    })
+                })
+            })
+
+        }
+
         //TODO
         // - PVP
         // - Bosses
@@ -396,6 +419,42 @@ const fs = require('fs/promises')
                 }
                 resolve(stringifyUser)
             })
+        }
+
+        static MakeBosses(monsterList,profile) {
+            const Monsters = require('../lib/Monsters')
+            const monsters = new Monsters()
+            return new Promise((resolve, reject) => {
+                if(!Array.isArray(monsterList)){
+                    reject({message:"La liste de monstre n'est pas une liste"})
+                }
+
+                if(typeof profile !== "object" || !profile.info){
+                    reject({message: "Le profile indique n'est pas un utilisateur ou l'utilisateur n'est pas complet"})
+                }
+                monsters.getMonsterInfo(Battle.selectRandomThings(monsterList), Battle.calcLvl()).then((data) => {
+                    Battle.boostMonster(data).then((boss) =>{
+                        resolve(boss)
+                    })
+                })
+            })
+        }
+
+        static boostMonster(monster){
+            return new Promise((resolve, reject) => {
+                const statsKey = Object.keys(monster.stats)
+                for(const stats of statsKey){
+                    monster.stats[stats] = monster.stats[stats]*2
+                }
+                const lootKey = Object.keys(monster.loot)
+                for (const loot of lootKey){
+                    monster.loot[loot].data.lengthMax = monster.loot[loot].data.lengthMax*2
+                }
+
+                resolve(monster)
+            })
+
+
         }
 
         static selectRandomThings(array){

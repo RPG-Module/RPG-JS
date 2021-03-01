@@ -42,7 +42,9 @@ rpg.items.getMaterialWeapon("Iron").then((r) =>{
 })*/
 
 
-rpg.jobs.makeJob("Hallo")
+//rpg.jobs.makeJob("Hallo")
+
+rpg.battles.fightBosse("hallo").then((console.log)).catch((console.error))
 
 /*rpg.users.createProfile("Hallo","Elf","Meridor","Classe","Tadil").then((data) =>{
     console.log(data)
