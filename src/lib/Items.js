@@ -4,9 +4,9 @@ const fs = require('fs/promises')
 
      /**
       * Get item info
-      * @param type
-      * @param name
-      * @returns {Promise<unknown>} Return material stat
+      * @param type {String<itemType>} item type
+      * @param name {String<itemName>} item name
+      * @returns {Promise<item>} Return item stat
       */
     getItemInfo(type,name) {
         return new Promise((resolve, reject) => {
@@ -29,8 +29,8 @@ const fs = require('fs/promises')
 
      /**
       * Get stat material armor
-      * @param name
-      * @returns {Promise<unknown>} Return material stat
+      * @param {String<materialName>} name material material
+      * @returns {Promise<material>} Return material stat
       */
     getMaterialArmor(name){
         return new Promise((resolve, reject) => {
@@ -49,8 +49,8 @@ const fs = require('fs/promises')
 
      /**
       * Get stat material weapons
-      * @param name
-      * @returns {Promise<unknown>} Return material stat
+      * @param name {String<materialName>} name material material
+      * @returns {Promise<material>} Return material stat
       */
 
     getMaterialWeapon(name){
