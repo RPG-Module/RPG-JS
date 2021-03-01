@@ -3,9 +3,9 @@ const fs = require('fs/promises')
     class Battle {
         /**
          * Start dungeons
-         * @param name
-         * @param profile
-         * @returns {Promise<unknown>} Return message
+         * @param {String<dungeonName>} name dungeon name
+         * @param {String<username>} profile user name
+         * @returns {Promise<message>} Return message
          */
         startDungeon(name, profile) {
             return new Promise((resolve, reject) => {
@@ -43,9 +43,9 @@ const fs = require('fs/promises')
 
         /**
          * Made Battle
-         * @param name
-         * @param profile
-         * @returns {Promise<unknown>} Return data
+         * @param {String<dungeonName>} name dungeon name
+         * @param {String<username>} profile user name
+         * @returns {Promise<result>} Return data
          */
 
         fightDungeon(name, profile) {
@@ -169,6 +169,12 @@ const fs = require('fs/promises')
             })
         }
 
+        /**
+         * Fight a boss
+         * @param {String<username>} profile user name
+         * @returns {Promise<battleResult>}
+         */
+
         fightBosse(profile) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/monster.json').then(function (monsters) {
@@ -198,8 +204,8 @@ const fs = require('fs/promises')
 
         /**
          * Select a random dungeons if dungeons is not specified
-         * @param username
-         * @returns {Promise<unknown>}
+         * @param {String<username>} username user name
+         * @returns {Promise<dungeon>}
          */
 
         static randomDungeon(username){
@@ -216,10 +222,10 @@ const fs = require('fs/promises')
 
         /**
          * Give mod and dungeons loot
-         * @param monster
-         * @param stringifyUsers
-         * @param profile
-         * @returns {Promise<unknown>} return users
+         * @param monster monster data
+         * @param {Object<UsersData>} stringifyUsers users
+         * @param {String<username>} profile user name
+         * @returns {Promise<users>} return users
          */
 
         static obtainLoot(monster,stringifyUsers,profile){
@@ -269,7 +275,7 @@ const fs = require('fs/promises')
 
         /**
          * Calc monster level
-         * @param user
+         * @param {Object<userData>} user user data
          * @returns {string}
          */
         static calcLvl(user) {
@@ -278,11 +284,11 @@ const fs = require('fs/promises')
 
         /**
          * Give rareloot
-         * @param dungeon
-         * @param name
-         * @param stringifyUsers
-         * @param profile
-         * @returns {Promise<unknown>}
+         * @param {Object<dungeonData>}dungeon dungeon data
+         * @param {String<dungeonName>}name dungeon name
+         * @param {Object<UsersData>} stringifyUsers users data
+         * @param {String<username>} profile user name
+         * @returns {Promise<users>} return users
          */
 
         static rareLoot(dungeon,name,stringifyUsers,profile){
@@ -364,10 +370,10 @@ const fs = require('fs/promises')
 
         /**
          * Give orb loot
-         * @param name
-         * @param stringifyUsers
-         * @param profile
-         * @returns {Promise<unknown>}
+         * @param {String<dungeonName>} name dungeon name
+         * @param {Object<UsersData>} stringifyUsers users data
+         * @param {String<username>} profile user name
+         * @returns {Promise<users>} return users
          */
 
         static orbLoot(name,stringifyUsers,profile) {
@@ -392,11 +398,10 @@ const fs = require('fs/promises')
 
         /**
          * End dungeons is all loot and rareloot is empty
-         * @param stringifyUser
-         * @param name
-         * @param profile
-         * @returns {Promise<unknown>}
-         * @constructor
+         * @param {Object<allStringifyUser>}stringifyUser users data
+         * @param {String<dungeonName>}name dungeon name
+         * @param {String<username>} profile user name
+         * @returns {Promise<users>} return users
          */
 
         static EndDungeon(stringifyUser,name,profile){
@@ -421,6 +426,14 @@ const fs = require('fs/promises')
             })
         }
 
+        /**
+         * Make bosses
+         * @param monsterList {Array<monster>} monster list
+         * @param  {String<username>} profile user name
+         * @returns {Promise<boss>} return boss stats
+         * @constructor
+         */
+
         static MakeBosses(monsterList,profile) {
             const Monsters = require('../lib/Monsters')
             const monsters = new Monsters()
@@ -436,19 +449,29 @@ const fs = require('fs/promises')
                     Battle.boostMonster(data).then((boss) =>{
                         resolve(boss)
                     })
+                    Battle
                 })
             })
         }
 
-        static boostMonster(monster){
+
+
+        /**
+         * Make monster as bosses
+         * @param {Object<monster>}monster monster data
+         * @param multiplicator {Number<number>} stats multiplicator default : 2
+         * @returns {Promise<monster>} a boosted Monster
+         */
+
+        static boostMonster(monster,multiplicator =2){
             return new Promise((resolve, reject) => {
                 const statsKey = Object.keys(monster.stats)
                 for(const stats of statsKey){
-                    monster.stats[stats] = monster.stats[stats]*2
+                    monster.stats[stats] = monster.stats[stats]*multiplicator
                 }
                 const lootKey = Object.keys(monster.loot)
                 for (const loot of lootKey){
-                    monster.loot[loot].data.lengthMax = monster.loot[loot].data.lengthMax*2
+                    monster.loot[loot].data.lengthMax = monster.loot[loot].data.lengthMax*multiplicator
                 }
 
                 resolve(monster)
