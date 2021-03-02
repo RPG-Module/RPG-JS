@@ -6,9 +6,9 @@ class Monsters{
 
     /**
      * Get monster stats and all info
-     * @param monster
-     * @param level
-     * @returns {Promise<unknown>} Return monster
+     * @param monster {String<monsterName>} Monster name
+     * @param level {String<levelMonster>} the monster level (see monster.json)
+     * @returns {Promise<monster>} Return monster
      */
     getMonsterInfo(monster, level) {
         return new Promise((resolve, reject) => {

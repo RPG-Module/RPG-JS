@@ -34,7 +34,7 @@ class Jobs {
 
     /**
      * Harvest ressources for all jobs
-     * @param profile
+     * @param profile {String<username>} user name
      */
     makeJob(profile) {
         fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -64,11 +64,12 @@ class Jobs {
 
     /**
      * Update all job if job profile is missing
-     * @param profile
+     * @param profile {String<username>} user name
      */
     updateJob(profile){
 
     }
+
     static randomInt(user,job){
         return (Math.floor(Math.random()*(Math.pow(user.job[job].level, 2)+5)+2).toFixed(0))
     }

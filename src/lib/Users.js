@@ -6,12 +6,12 @@ class Users{
 
     /**
      * Create a profile
-     * @param name
-     * @param race
-     * @param clan
-     * @param classe
-     * @param faction
-     * @returns {Promise<unknown>} return new user profile
+     * @param name {String<name>} profile name
+     * @param race {String<race>} profile race
+     * @param clan {String<clan>} profile clan
+     * @param classe {String<classe>} profile classe
+     * @param faction {String<faction>} profile faction
+     * @returns {Promise<user>} return new user profile
      */
     createProfile(name,race, clan, classe,faction) {
         return new Promise((resolve, reject) => {
@@ -97,8 +97,8 @@ class Users{
 
     /**
      * Get user profile
-     * @param profile
-     * @returns {Promise<unknown>} Return profile
+     * @param profile {Object<profile>} user profile
+     * @returns {Promise<profile>} Return profile
      */
     getProfile(profile) {
         return new Promise((resolve, reject) => {
@@ -110,7 +110,7 @@ class Users{
                 if (!stringifyOlfUserJSON[profile]) {
                     reject({message:'Utilisateur non trouvé'})
                 }
-                resolve(stringifyOlfUserJSON[profile])
+                resolve({data: stringifyOlfUserJSON[profile]})
             }).catch((err)=>{
                 reject({message: err})
             })
@@ -119,8 +119,8 @@ class Users{
 
     /**
      * Remove user profile
-     * @param profile
-     * @returns {Promise<unknown>} Return message
+     * @param profile {Object<profile>} user profile
+     * @returns {Promise<string>} Return message
      */
     removeProfile(profile) {
         return new Promise((resolve, reject) => {
@@ -148,17 +148,16 @@ class Users{
     //FIXME levelup rework
     /**
      * Check user levelup
-     * @param profile
-     * @returns {Promise<unknown>} Return user profile
+     * @param profile {Object<profile>} user profile
+     * @returns {Promise<profile>} Return user profile
      */
     levelup(profile){
         return new Promise((resolve, reject) => {
             if(!profile){
                 reject({message:"Aucun utilisateur mentionné"})
             }
-            let needXP = ((profile.info.level+15)*2)
-            while (profile.info.xp >= needXP){
-                profile.info.xp -= profile.info.level+10
+            while (profile.info.xp >= ((profile.info.level+20)*2)){
+                profile.info.xp -= ((profile.info.level+20)*2)
                 profile.info.level++
                 profile.info.point++
             }
@@ -168,9 +167,9 @@ class Users{
 
     /**
      * Open chest
-     * @param chest
-     * @param profile
-     * @returns {Promise<unknown>} Return chest loot
+     * @param chest {String<chest>} chest name
+     * @param profile {Object<profile>} user profile
+     * @returns {Promise<loot>} Return chest loot
      */
     openChest(chest, profile) {
         return new Promise((resolve, reject) => {
@@ -301,8 +300,8 @@ class Users{
 
     /**
      * Use orb for upgrade stats
-     * @param orb
-     * @param profile
+     * @param orb {String<orb>} orb name
+     * @param profile {Object<profile>} user profile
      * @returns {Promise<unknown>} nothing.
      */
     useOrb(orb,profile){
@@ -337,10 +336,10 @@ class Users{
     // - Reputation
     /**
      * Give all job user
-     * @param user
-     * @returns {Promise<unknown>} Return user
+     * @param profile {Object<profile>} user profile
+     * @returns {Promise<profile>} Return user
      */
-    static setJob(user) {
+    static setJob(profile) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/JSON/jobs.json').then(function (jobs) {
                 const stringifyJobs = JSON.parse(jobs)
@@ -352,9 +351,9 @@ class Users{
                     Object.assign(jobTake, {[job]: {...stats}})
 
                 }
-                user.job =jobTake
+                profile.job =jobTake
 
-                resolve({data:user})
+                resolve({data:profile})
 
             })
 
@@ -371,8 +370,8 @@ class Users{
 
     /**
      * Check if user content correct key
-     * @param chest
-     * @param profile
+     * @param chest {String<chest>} chest name
+     * @param profile {Object<profile>} user profile
      * @returns {Promise<boolean>} Return if user contain correct key for chest
      */
     static checkKey(chest,profile){
