@@ -45,20 +45,40 @@ class Jobs {
 
                 let calculmat = Jobs.randomInt(user,job)
                 let calculxp = (calculmat*1.25).toFixed(0)
-                let calculNeedXp = Math.pow(user.job[job].level, 2)+Math.pow(2, 1.5).toFixed(0)
                 let gain = {}
 
                 Object.assign(gain,{
                     [Jobs.JobRessources(job)]: parseInt(calculmat) + (user.inventory.item[Jobs.JobRessources(job)] || 0)
                 })
-                console.log(gain)
-                user.job[job].xp+calculxp
+                user.job[job].xp += (parseInt(calculxp))
                 Object.assign(user.inventory.item, {[Jobs.JobRessources(job)]: gain[Jobs.JobRessources(job)]})
+                console.log(user.job)
+                Jobs.levelup(user).then(() =>{
+                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
 
-                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
+                })
+
 
             }
 
+        })
+    }
+
+    static levelup(profile){
+        return new Promise((resolve, reject) => {
+            if(!profile){
+                reject({message:"Aucun utilisateur mentionné"})
+            }
+            const jobs = Object.keys(profile.job)
+
+            for(const job of jobs){
+                while (profile.job[job].xp >= ((profile.job[job].level+20)*2)){
+                    profile.job[job].xp -= ((profile.job[job].level+20)*2)
+                    profile.job[job].level++
+                }
+            }
+
+            resolve({data:profile})
         })
     }
 
