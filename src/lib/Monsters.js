@@ -36,7 +36,6 @@ class Monsters{
                                     [lootobj.name]: {data : lootobj, info: objs.item[lootobj.name.toLowerCase()] || null}
                                 })
                             }
-
                         }
                         resolve({monster, stats, loot})
                     }).catch((err) =>{

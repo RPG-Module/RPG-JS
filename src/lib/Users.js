@@ -145,7 +145,6 @@ class Users{
         })
     }
 
-    //FIXME levelup rework
     /**
      * Check user levelup
      * @param profile {Object<profile>} user profile
