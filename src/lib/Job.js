@@ -41,26 +41,27 @@ class Jobs {
             const stringifyUsers = JSON.parse(users)
             const user = stringifyUsers[profile.toLowerCase()]
             const jobs = user.job
+            let gain = {}
             for(const job of Object.keys(jobs)){
 
                 let calculmat = Jobs.randomInt(user,job)
                 let calculxp = (calculmat*1.25).toFixed(0)
-                let gain = {}
+
 
                 Object.assign(gain,{
                     [Jobs.JobRessources(job)]: parseInt(calculmat) + (user.inventory.item[Jobs.JobRessources(job)] || 0)
                 })
                 user.job[job].xp += (parseInt(calculxp))
                 Object.assign(user.inventory.item, {[Jobs.JobRessources(job)]: gain[Jobs.JobRessources(job)]})
-                console.log(user.job)
-                Jobs.levelup(user).then(() =>{
-                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
 
-                })
 
 
             }
+            console.log(gain)
+            Jobs.levelup(user).then(() =>{
+                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
 
+            })
         })
     }
 

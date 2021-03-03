@@ -23,16 +23,16 @@
     },
     "job": {
       "bucheron": {
-        "level": 5,
-        "xp": 5
+        "level": 16,
+        "xp": 25
       },
       "mineur": {
-        "level": 5,
-        "xp": 43
+        "level": 15,
+        "xp": 57
       },
       "chasseur": {
-        "level": 4,
-        "xp": 31
+        "level": 21,
+        "xp": 57
       }
     },
     "inventory": {
@@ -41,9 +41,9 @@
         "Bone": 15,
         "Drop of slime": 5,
         "Ectoplasm": 9,
-        "bois": 145,
-        "pierre": 173,
-        "cuir": 128
+        "bois": 687,
+        "pierre": 654,
+        "cuir": 1018
       },
       "keys": {
         "woodenKey": 1
