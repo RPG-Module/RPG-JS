@@ -342,7 +342,6 @@ class Users{
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/JSON/jobs.json').then(function (jobs) {
                 const stringifyJobs = JSON.parse(jobs)
-
                 const jobsList = Object.keys(stringifyJobs)
                 let jobTake = {}
                 for (const job of jobsList) {
@@ -351,11 +350,34 @@ class Users{
 
                 }
                 profile.job =jobTake
-
                 resolve({data:profile})
-
             })
+        })
+    }
 
+    /**
+     * Update all job if job profile is missing
+     * @param profile {String<username>} user name
+     */
+    updateJob(profile) {
+        fs.readFile('./src/assets/JSON/jobs.json').then(function (jobs) {
+            fs.readFile('./src/assets/database/users.json').then(function (users) {
+
+                const stringifyJobs = JSON.parse(jobs)
+                const stringifyUser = JSON.parse(users)
+                let user = stringifyUser[profile.toLowerCase()]
+                const jobsList = Object.keys(stringifyJobs)
+                let jobTake = {}
+                Object.assign(jobTake, user.job)
+                for (const job of jobsList) {
+                    if(!jobTake[job]){
+                        const stats = stringifyJobs[job].stats
+                        Object.assign(jobTake, {[job]: {...stats}})
+                    }
+                }
+                user.job = jobTake
+                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUser, null, 2))
+            })
         })
     }
 
