@@ -28,6 +28,7 @@ class Jobs {
 
     //TODO
     // - Make gain ressources
+    // - Rework gain ressources and leveling
 
     //FIXME
     // - Made a "}" if no mat gain
@@ -42,23 +43,21 @@ class Jobs {
             const user = stringifyUsers[profile.toLowerCase()]
             const jobs = user.job
             let gain = {}
-            for(const job of Object.keys(jobs)){
-
-                let calculmat = Jobs.randomInt(user,job)
-                let calculxp = (calculmat*1.25).toFixed(0)
-
-
-                Object.assign(gain,{
-                    [Jobs.JobRessources(job)]: parseInt(calculmat) + (user.inventory.item[Jobs.JobRessources(job)] || 0)
-                })
-                user.job[job].xp += (parseInt(calculxp))
-                Object.assign(user.inventory.item, {[Jobs.JobRessources(job)]: gain[Jobs.JobRessources(job)]})
-
-
+            for (const job of Object.keys(jobs)) {
+                let calculmat = Jobs.randomInt(user, job)
+                let calculxp = ((calculmat *0.02)+5).toFixed(0)
+                for(const mat of Jobs.JobRessources(job,user)){
+                    console.log( parseInt(calculmat))
+                    Object.assign(gain, {
+                        [mat]: (parseInt(calculmat) + (user.inventory.item[mat] || 0))
+                    })
+                    user.job[job].xp += (parseInt(calculxp))
+                    Object.assign(user.inventory.item, {[mat]: gain[mat]})
+                }
 
             }
             console.log(gain)
-            Jobs.levelup(user).then(() =>{
+            Jobs.levelup(user).then(() => {
                 fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
 
             })
@@ -71,37 +70,43 @@ class Jobs {
                 reject({message:"Aucun utilisateur mentionné"})
             }
             const jobs = Object.keys(profile.job)
-
             for(const job of jobs){
-                while (profile.job[job].xp >= ((profile.job[job].level+20)*2)){
-                    profile.job[job].xp -= ((profile.job[job].level+20)*2)
+                console.log(((profile.job[job].level+20)*3)*1.75)
+                while (profile.job[job].xp >= ((profile.job[job].level+20)*3)*1.75){
+                    profile.job[job].xp -= ((profile.job[job].level+20)*3)*1.75.toFixed(0)
                     profile.job[job].level++
                 }
             }
-
             resolve({data:profile})
         })
-    }
-
-    /**
-     * Update all job if job profile is missing
-     * @param profile {String<username>} user name
-     */
-    updateJob(profile){
-
     }
 
     static randomInt(user,job){
         return (Math.floor(Math.random()*(Math.pow(user.job[job].level, 2)+5)+2).toFixed(0))
     }
-    static JobRessources(job){
-        switch (job){
+    static JobRessources(job,user){
+        switch (job) {
             case "bucheron":
-                return "bois"
+                if (user.job[job].level >= 10) {
+                    return ["bois", "hêtre"]
+                } else if (user.job[job].level >= 20) {
+                    return ["bois", "hêtre", "bouleau"]
+                }
+                return ["bois"]
+
             case "mineur":
-                return "pierre"
+                console.log(user.job[job].level >= 10)
+                 if (user.job[job] <= 10) {
+                    return ["pierre", "charbon"]
+                } else if (user.job[job].level >= 20) {
+                    return ["pierre", "charbon", "fer"]
+                }
+                return ["pierre"]
+
             case "chasseur":
-                return "cuir"
+                return ["cuir"]
+            case "tailleur":
+                return ["tissu"]
         }
     }
 }
