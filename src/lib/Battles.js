@@ -157,12 +157,14 @@ const fs = require('fs/promises')
                                 Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile.toLowerCase()).then((stringifyLootRate)=>{
                                     Battle.obtainLoot(data,stringifyLootRate,profile.toLowerCase()).then((data)=>{
                                         Battle.EndDungeon(data,name,profile.toLowerCase()).then((data)=>{
-                                            fs.writeFile('./src/assets/database/users.json', JSON.stringify(data, null, 2))
+                                            Object.assign(result.loot, data.loot)
+                                            resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+
+                                            fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
                                         })
                                     })
                                 })
                             })
-                            resolve({data: result, message:'End Battle'})
                         })
                     })
                 })
@@ -184,13 +186,95 @@ const fs = require('fs/promises')
                         const parseUsers = JSON.parse(users)
 
                         const user = parseUsers[profile.toLowerCase()]
-                        if(!user){
-                            reject({message:"Utilisateur introuvable"})
+                        if (!user) {
+                            reject({message: "Utilisateur introuvable"})
                         }
                         let levelMonster = Battle.calcLvl(user)
 
-                        Battle.MakeBosses(Object.keys(parseMonster.level[levelMonster]),user).then((data) =>{
-                            console.log(data)
+                        Battle.MakeBosses(Object.keys(parseMonster.level[levelMonster]), user).then((data) => {
+                            let userpv = user.info.stats.hp
+                            let monsterpv = data.stats.pv
+                            let result = {
+                                battles:{},
+                                loot:{}
+                            }
+                            let turn = 0
+
+                            while (userpv >= 0 && monsterpv >= 0) {
+
+                                //Set stats
+                                let attackMonsterStats = {
+                                    dodge: false,
+                                    crit: false
+                                }
+                                let attackUserStats = {
+                                    dodge: false,
+                                    crit: false
+                                }
+
+                                let userAttack = (user.info.stats.stats.attack - data.stats.defence)
+                                let monsterAttack = (data.stats.attack - user.info.stats.stats.defence)
+
+
+                                //DODGE
+
+                                if (Battle.randomInt() <= (user.info.stats.stats.speed) * 100) {
+                                    attackUserStats.dodge = true
+
+                                }
+
+                                if (Battle.randomInt() <= (data.stats.speed) * 100) {
+                                    attackMonsterStats.dodge = true
+
+                                }
+
+                                //CRIT
+
+                                if (!attackUserStats.dodge) {
+                                    if (Battle.randomInt() <= (data.stats.critic) * 100) {
+                                        monsterAttack = monsterAttack * 2
+                                        attackMonsterStats.crit = true
+                                    }
+                                    userpv = userpv - monsterAttack
+                                }
+
+                                if (!attackMonsterStats.dodge) {
+                                    if (Battle.randomInt() <= (user.info.stats.stats.critic) * 100) {
+                                        userAttack = userAttack * 2
+                                        attackUserStats.crit = true
+                                    }
+                                    monsterpv = monsterpv - userAttack
+                                }
+
+                                //Make combat result
+                                turn++
+                                Object.assign(result.battles, {
+                                    [turn]: {
+                                        [profile.toLowerCase()]: {
+                                            pv: userpv,
+                                            attack: user.info.stats.stats.attack,
+                                            defence: user.info.stats.stats.defence,
+                                            effectiveAttack: userAttack,
+                                            attackUserStats
+                                        },
+                                        [data.monster]: {
+                                            pv: monsterpv,
+                                            attack: data.stats.attack,
+                                            defence: data.stats.defence,
+                                            effectiveAttack: monsterAttack,
+                                            attackMonsterStats
+
+                                        }
+                                    },
+                                })
+                            }
+                            Battle.obtainLoot(data, parseUsers, profile.toLowerCase()).then((data) => {
+                                Object.assign(result.loot, data.loot)
+                                resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
+                            })
+
                         })
                     })
                 })
@@ -232,6 +316,7 @@ const fs = require('fs/promises')
             return new Promise((resolve, reject) => {
                 const loots = monster.loot
                 const user = stringifyUsers[profile.toLowerCase()]
+                let Allloot = {}
                 let gainloot = {}
                 let lengthloot = 0
 
@@ -243,19 +328,22 @@ const fs = require('fs/promises')
                             lengthloot++
                         }
                     }
-                    Object.assign(gainloot,{
+                    Object.assign(Allloot,{
                         [loot.data.name]:lengthloot + (user.inventory.item[loot.data.name] || 0)
+                    })
+                    Object.assign(gainloot,{
+                        [loot.data.name]:lengthloot
                     })
                 }
 
                 let inventory = user.inventory
 
                 //XP
-                for(const givedLoot in gainloot){
+                for(const givedLoot in Allloot){
                     if(givedLoot !== 'xp'){
-                        Object.assign(inventory.item, {[givedLoot]: gainloot[givedLoot]})
+                        Object.assign(inventory.item, {[givedLoot]: Allloot[givedLoot]})
                     } else {
-                        user.info.xp += gainloot["xp"]
+                        user.info.xp += Allloot["xp"]
                     }
                 }
 
@@ -265,7 +353,7 @@ const fs = require('fs/promises')
                 const userManager = new User()
 
                 userManager.levelup(user).then((user) =>{
-                    resolve(stringifyUsers)
+                    resolve({user : stringifyUsers, loot: gainloot})
                 })
             })
 
@@ -275,7 +363,7 @@ const fs = require('fs/promises')
 
         /**
          * Calc monster level
-         * @param {Object<userData>} user user data
+         * @param {Object<user>} user User profile data
          * @returns {string}
          */
         static calcLvl(user) {
@@ -429,7 +517,7 @@ const fs = require('fs/promises')
         /**
          * Make bosses
          * @param monsterList {Array<monster>} monster list
-         * @param  {String<username>} profile user name
+         * @param  {Object<user>} profile  user profile data
          * @returns {Promise<boss>} return boss stats
          * @constructor
          */
@@ -445,11 +533,10 @@ const fs = require('fs/promises')
                 if(typeof profile !== "object" || !profile.info){
                     reject({message: "Le profile indique n'est pas un utilisateur ou l'utilisateur n'est pas complet"})
                 }
-                monsters.getMonsterInfo(Battle.selectRandomThings(monsterList), Battle.calcLvl()).then((data) => {
+                monsters.getMonsterInfo(Battle.selectRandomThings(monsterList), Battle.calcLvl(profile)).then((data) => {
                     Battle.boostMonster(data).then((boss) =>{
                         resolve(boss)
                     })
-                    Battle
                 })
             })
         }
@@ -459,19 +546,19 @@ const fs = require('fs/promises')
         /**
          * Make monster as bosses
          * @param {Object<monster>}monster monster data
-         * @param multiplicator {Number<number>} stats multiplicator default : 2
+         * @param multiple {Number<number>} stats multiplicator default : 2
          * @returns {Promise<monster>} a boosted Monster
          */
 
-        static boostMonster(monster,multiplicator =2){
+        static boostMonster(monster,multiple =2){
             return new Promise((resolve, reject) => {
                 const statsKey = Object.keys(monster.stats)
                 for(const stats of statsKey){
-                    monster.stats[stats] = monster.stats[stats]*multiplicator
+                    monster.stats[stats] = monster.stats[stats]*multiple
                 }
                 const lootKey = Object.keys(monster.loot)
                 for (const loot of lootKey){
-                    monster.loot[loot].data.lengthMax = monster.loot[loot].data.lengthMax*multiplicator
+                    monster.loot[loot].data.lengthMax = monster.loot[loot].data.lengthMax*multiple
                 }
 
                 resolve(monster)

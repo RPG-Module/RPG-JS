@@ -49,7 +49,7 @@ class Jobs {
                 for(const mat of Jobs.JobRessources(job,user)){
                     console.log( parseInt(calculmat))
                     Object.assign(gain, {
-                        [mat]: (parseInt(calculmat) + (user.inventory.item[mat] || 0))
+                        [mat]: parseInt(parseInt(calculmat) + (user.inventory.item[mat] || 0))
                     })
                     user.job[job].xp += (parseInt(calculxp))
                     Object.assign(user.inventory.item, {[mat]: gain[mat]})

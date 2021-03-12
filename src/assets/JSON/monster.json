@@ -5,8 +5,8 @@
         "stats": {
           "pv" : 10,
           "attack": 3,
-          "def": 1,
-          "spd": 0.2,
+          "defence": 1,
+          "speed": 0.2,
           "critic": 0.10
         }
       },

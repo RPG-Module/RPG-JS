@@ -6,8 +6,8 @@
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 10,
-      "xp": 30,
+      "level": 38,
+      "xp": 27,
       "stats": {
         "hp": 20,
         "mp": 35,
@@ -19,39 +19,39 @@
         }
       },
       "reputation": 5,
-      "point": 9
+      "point": 37
     },
     "job": {
       "bucheron": {
         "level": 3,
-        "xp": 6
+        "xp": 21
       },
       "mineur": {
         "level": 3,
-        "xp": 6
+        "xp": 21
       },
       "chasseur": {
         "level": 3,
-        "xp": 6
+        "xp": 21
       },
       "tailleur": {
         "level": 3,
-        "xp": 6
+        "xp": 21
       }
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Bone": 15,
-        "Drop of slime": 5,
-        "Ectoplasm": 9,
-        "bois": "5141476232241036471061063853224467552653632674623672625476627267236754575",
-        "pierre": "11662496102437624752105976323247574767636357662355344322676326341452209",
-        "cuir": "151182106942710103661088375224573525275466566622574735652665425227233081",
-        "tissu": "232114101098268249955262623755536474642237322557266626773763233553614",
-        "hêtre": 6754197,
-        "charbon": 1450095,
-        "fer": 1450095
+        "Bone": 14,
+        "Drop of slime": 15,
+        "Ectoplasm": 17,
+        "bois": 25,
+        "pierre": 35,
+        "cuir": 30,
+        "tissu": 19,
+        "hêtre": 0,
+        "charbon": 0,
+        "fer": 0
       },
       "keys": {
         "woodenKey": 1
