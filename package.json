@@ -8,5 +8,8 @@
   },
   "author": "zechaos",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {}
 }

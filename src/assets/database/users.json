@@ -1,90 +1,140 @@
 {
-  "hallo": {
+  "802e51ac-f377-4779-b35a-c1b9c0940c7b": {
+    "name": "hallo",
     "classe": "Classe",
     "race": "Elf",
     "clan": "Meridor",
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 38,
-      "xp": 27,
+      "level": 1,
+      "xp": 0,
+      "reputation": 0,
+      "point": 0,
       "stats": {
-        "hp": 20,
-        "mp": 35,
-        "stats": {
-          "attack": 3,
-          "defence": 2,
-          "speed": 0.2,
-          "critic": 0.2
+        "health": 20,
+        "mana": 35,
+        "energy": 20,
+        "perks": {
+          "forge": {
+            "level": 2,
+            "xp": 0
+          },
+          "enchantement": {
+            "level": 5,
+            "xp": 0
+          },
+          "stats": {
+            "attack": 3,
+            "defence": 2,
+            "speed": 0.2,
+            "critic": 0.2
+          }
         }
-      },
-      "reputation": 5,
-      "point": 37
+      }
     },
     "job": {
       "bucheron": {
-        "level": 3,
-        "xp": 21
+        "level": 1,
+        "xp": 0
       },
       "mineur": {
-        "level": 3,
-        "xp": 21
+        "level": 1,
+        "xp": 0
       },
       "chasseur": {
-        "level": 3,
-        "xp": 21
+        "level": 1,
+        "xp": 0
       },
       "tailleur": {
-        "level": 3,
-        "xp": 21
+        "level": 1,
+        "xp": 0
       }
     },
     "inventory": {
       "modifiers": {},
-      "item": {
-        "Bone": 14,
-        "Drop of slime": 15,
-        "Ectoplasm": 17,
-        "bois": 25,
-        "pierre": 35,
-        "cuir": 30,
-        "tissu": 19,
-        "hêtre": 0,
-        "charbon": 0,
-        "fer": 0
-      },
-      "keys": {
-        "woodenKey": 1
-      },
-      "orbs": {
-        "defence": 1,
-        "attack": 1
-      },
+      "item": {},
+      "keys": {},
+      "orbs": {},
       "stuff": {
-        "weapons": {
-          "sword": {
-            "material": {
-              "iron": 1
-            }
-          }
-        },
+        "weapons": {},
         "armors": {},
         "money": 0
       }
     },
     "dungeons": {
       "begin": {},
-      "end": {
-        "Crypte des esprits": {
-          "orb": {},
-          "chest": {},
-          "keys": {},
-          "rareLoot": {}
+      "end": {}
+    },
+    "chest": {}
+  },
+  "2324a870-952c-46a2-a829-71878e911c06": {
+    "name": "hallo",
+    "classe": "Classe",
+    "race": "Elf",
+    "clan": "Meridor",
+    "faction": "Tadil",
+    "premium": false,
+    "info": {
+      "level": 1,
+      "xp": 0,
+      "reputation": 0,
+      "point": 0,
+      "stats": {
+        "health": 20,
+        "mana": 35,
+        "energy": 20,
+        "perks": {
+          "forge": {
+            "level": 2,
+            "xp": 0
+          },
+          "enchantement": {
+            "level": 5,
+            "xp": 0
+          },
+          "stats": {
+            "attack": 3,
+            "defence": 2,
+            "speed": 0.2,
+            "critic": 0.2
+          }
         }
       }
     },
-    "chest": {
-      "woodChest": 1
-    }
+    "job": {
+      "bucheron": {
+        "level": 1,
+        "xp": 0
+      },
+      "mineur": {
+        "level": 1,
+        "xp": 0
+      },
+      "chasseur": {
+        "level": 1,
+        "xp": 0
+      },
+      "tailleur": {
+        "level": 1,
+        "xp": 0
+      }
+    },
+    "inventory": {
+      "modifiers": {},
+      "item": {},
+      "keys": {},
+      "orbs": {},
+      "stuff": {
+        "weapons": {},
+        "armors": {},
+        "money": 0
+      }
+    },
+    "dungeons": {
+      "begin": {},
+      "end": {}
+    },
+    "chest": {}
   }
 }

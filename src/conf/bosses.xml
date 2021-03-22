@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rpg>
+    <bossesconf>
+        <multiplicatorStat>2</multiplicatorStat>
+        <multiplicatorStuff>2</multiplicatorStuff>
+
+    </bossesconf>
+</rpg>

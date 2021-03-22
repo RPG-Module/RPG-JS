@@ -19,23 +19,29 @@ class Users{
                 reject("Il manque soit le nom du personnage, soit la race, soit le clan, soit la classe")
             }
             fs.readFile('./src/assets/JSON/race.json').then(function (races) {
-                const stringifyRaces = JSON.parse(races)
+                const parseRaces = JSON.parse(races)
                 fs.readFile('./src/assets/JSON/clan.json').then(function (clans) {
-                    const stringifyClans = JSON.parse(clans)
-                    if (!stringifyRaces[race.toLowerCase()]) reject({message:'Cette race n\'existe pas'})
-                    if (stringifyClans[faction.toLowerCase()]) {
-                        if (stringifyClans[faction.toLowerCase()][race.toLowerCase()]) {
-                            if (stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()]) {
+                    const parseClans = JSON.parse(clans)
+                    if (!parseRaces[race.toLowerCase()]) reject({message:'Cette race n\'existe pas'})
+                    if (parseClans[faction.toLowerCase()]) {
+                        if (parseClans[faction.toLowerCase()][race.toLowerCase()]) {
+                            if (parseClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()]) {
                                 fs.readFile('./src/assets/database/users.json').then(function (user) {
-                                    const stringifyOlfUserJSON = JSON.parse(user)
-                                    if (stringifyOlfUserJSON[name.toLowerCase()]) {
-                                        reject({message:"Ce nom d'utilisateur est déjà pris"})
+                                    const parseUserJSON = JSON.parse(user)
+                                    let uuids = Object.keys(parseUserJSON)
+                                    for(const uuid of uuids){
+                                        if (parseUserJSON[uuid].name.toLowerCase() === name.toLowerCase()) {
+                                            reject({message:"Ce nom d'utilisateur est déjà pris"})
+                                        }
                                     }
+
+                            const uuid = Users.generateUUID()
                                     //TODO
                                     // - Add Job
                                     // - Competence Job
                                     const newUser = {
-                                        [name.toLowerCase()]: {
+                                        [uuid]: {
+                                            name: name.toLowerCase(),
                                             classe,
                                             race,
                                             clan,
@@ -46,7 +52,7 @@ class Users{
                                                 xp: 0,
                                                 reputation: 0,
                                                 point:0,
-                                                stats: stringifyClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
+                                                stats: parseRaces[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
                                             },
                                             job: {},
                                             inventory: {
@@ -69,8 +75,8 @@ class Users{
 
                                         }
                                     }
-                                    Users.setJob(newUser[name.toLowerCase()]).then(() => {
-                                        const users = Object.assign(stringifyOlfUserJSON, newUser)
+                                    Users.setJob(newUser[uuid]).then(() => {
+                                        const users = Object.assign(parseUserJSON, newUser)
                                         fs.writeFile('./src/assets/database/users.json', JSON.stringify(users, null, 2)).then(() => {
                                             resolve({message: "Utilisateur créer", user: newUser})
                                         }).catch((err) => {
@@ -94,6 +100,26 @@ class Users{
             })
         })
     }
+
+    getUserUUID(name) {
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/database/users.json').then(function (user) {
+                const parseuser = JSON.parse(user)
+
+                let uuids = Object.keys(parseuser)
+
+                for(const uuid of uuids){
+                    if(parseuser[uuid].name === name){
+                        resolve(uuid)
+                    }
+                }
+                reject({message:"Aucun utilisateur trouvé"})
+
+            })
+        })
+
+    }
+
 
     /**
      * Get user profile
@@ -411,6 +437,18 @@ class Users{
                 }
             }
         })
+    }
+
+    /**
+     * Generate UUID
+     * @returns {String<uuid>} Return UUID
+     */
+
+    static generateUUID(){
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     }
 }
 module.exports = Users

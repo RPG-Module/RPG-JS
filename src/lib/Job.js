@@ -35,12 +35,12 @@ class Jobs {
 
     /**
      * Harvest ressources for all jobs
-     * @param profile {String<username>} user name
+     * @param profile {String<username>} user uuid
      */
     makeJob(profile) {
         fs.readFile('./src/assets/database/users.json').then(function (users) {
             const stringifyUsers = JSON.parse(users)
-            const user = stringifyUsers[profile.toLowerCase()]
+            const user = stringifyUsers[profile]
             const jobs = user.job
             let gain = {}
             for (const job of Object.keys(jobs)) {
