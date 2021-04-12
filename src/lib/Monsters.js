@@ -37,6 +37,7 @@ class Monsters{
                                 })
                             }
                         }
+
                         resolve({monster, stats, loot})
                     }).catch((err) =>{
                         reject(err)
