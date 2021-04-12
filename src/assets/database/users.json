@@ -7,10 +7,10 @@
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 1,
-      "xp": 0,
+      "level": 4,
+      "xp": 42,
       "reputation": 0,
-      "point": 0,
+      "point": 3,
       "stats": {
         "health": 20,
         "mana": 35,
@@ -53,7 +53,11 @@
     },
     "inventory": {
       "modifiers": {},
-      "item": {},
+      "item": {
+        "Drop of slime": 13,
+        "Bone": 10,
+        "Ectoplasm": 2
+      },
       "keys": {},
       "orbs": {},
       "stuff": {

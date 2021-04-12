@@ -97,13 +97,13 @@ const utils = require('../utils/utils')
                                     crit:false
                                 }
 
-                                let userAttack = (user.info.stats.stats.attack - data.stats.defence)
-                                let monsterAttack = (data.stats.attack - user.info.stats.stats.defence)
+                                let userAttack = (user.info.stats.perks.stats.attack - data.stats.defence)
+                                let monsterAttack = (data.stats.attack - user.info.stats.perks.stats.defence)
 
 
                                 //DODGE
 
-                                if(Battle.randomInt() <= (user.info.stats.stats.speed)*100){
+                                if(Battle.randomInt() <= (user.info.stats.perks.stats.speed)*100){
                                     attackUserStats.dodge = true
 
                                 }
@@ -124,7 +124,7 @@ const utils = require('../utils/utils')
                                 }
 
                                 if(!attackMonsterStats.dodge){
-                                    if(Battle.randomInt() <= (user.info.stats.stats.critic)*100){
+                                    if(Battle.randomInt() <= (user.info.stats.perks.stats.critic)*100){
                                         userAttack = userAttack*2
                                         attackUserStats.crit = true
                                     }
@@ -137,8 +137,8 @@ const utils = require('../utils/utils')
                                     [turn]:{
                                         [user.name]:{
                                             pv:userpv,
-                                            attack:user.info.stats.stats.attack,
-                                            defence:user.info.stats.stats.defence,
+                                            attack:user.info.stats.perks.stats.attack,
+                                            defence:user.info.stats.perks.stats.defence,
                                             effectiveAttack:userAttack,
                                             attackUserStats
                                         },
@@ -154,20 +154,22 @@ const utils = require('../utils/utils')
                                 })
                             }
 
-
-
-                            Battle.orbLoot( name,stringifyUsers,profile).then((stringifyLootOrb)=>{
-                                Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile).then((stringifyLootRate)=>{
-                                    Battle.obtainLoot(data,stringifyLootRate,profile).then((data)=>{
-                                        Battle.EndDungeon(data,name,profile).then((data)=>{
-                                            Object.assign(result.loot, data.loot)
-                                            resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
-
-                                            fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
+                            if(userpv <= 0) {
+                                resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+                            }else{
+                                Battle.orbLoot( name,stringifyUsers,profile).then((stringifyLootOrb)=>{
+                                    Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile).then((stringifyLootRate)=>{
+                                        Battle.obtainLoot(data,stringifyLootRate,profile).then((data)=>{
+                                            Battle.EndDungeon(data,name,profile).then((data)=>{
+                                                Object.assign(result.loot, data.loot)
+                                                resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+    
+                                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
+                                            })
                                         })
                                     })
                                 })
-                            })
+                            }
                         })
                     })
                 })
@@ -195,7 +197,7 @@ const utils = require('../utils/utils')
                         let levelMonster = Battle.calcLvl(user)
 
                         Battle.MakeBosses(Object.keys(parseMonster.level[levelMonster]), user).then((data) => {
-                            let userpv = user.info.stats.hp
+                            let userpv = user.info.stats.health
                             let monsterpv = data.stats.pv
                             let result = {
                                 battles:{},
@@ -215,13 +217,13 @@ const utils = require('../utils/utils')
                                     crit: false
                                 }
 
-                                let userAttack = (user.info.stats.stats.attack - data.stats.defence)
-                                let monsterAttack = (data.stats.attack - user.info.stats.stats.defence)
+                                let userAttack = (user.info.stats.perks.stats.attack - data.stats.defence)
+                                let monsterAttack = (data.stats.attack - user.info.stats.perks.stats.defence)
 
 
                                 //DODGE
 
-                                if (Battle.randomInt() <= (user.info.stats.stats.speed) * 100) {
+                                if (Battle.randomInt() <= (user.info.stats.perks.stats.speed) * 100) {
                                     attackUserStats.dodge = true
 
                                 }
@@ -242,7 +244,7 @@ const utils = require('../utils/utils')
                                 }
 
                                 if (!attackMonsterStats.dodge) {
-                                    if (Battle.randomInt() <= (user.info.stats.stats.critic) * 100) {
+                                    if (Battle.randomInt() <= (user.info.stats.perks.stats.critic) * 100) {
                                         userAttack = userAttack * 2
                                         attackUserStats.crit = true
                                     }
@@ -255,8 +257,8 @@ const utils = require('../utils/utils')
                                     [turn]: {
                                         [user.name]: {
                                             pv: userpv,
-                                            attack: user.info.stats.stats.attack,
-                                            defence: user.info.stats.stats.defence,
+                                            attack: user.info.stats.perks.stats.attack,
+                                            defence: user.info.stats.perks.stats.defence,
                                             effectiveAttack: userAttack,
                                             attackUserStats
                                         },
@@ -271,12 +273,17 @@ const utils = require('../utils/utils')
                                     },
                                 })
                             }
-                            Battle.obtainLoot(data, parseUsers, profile).then((data) => {
-                                Object.assign(result.loot, data.loot)
+                            if(userpv <= 0) {
                                 resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
-
-                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
-                            })
+                            }else{
+                                Battle.obtainLoot(data, parseUsers, profile).then((data) => {
+                                    Object.assign(result.loot, data.loot)
+                                    resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+    
+                                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
+                                })
+                            }
+                            
 
                         })
                     })
@@ -564,6 +571,10 @@ const utils = require('../utils/utils')
                     for (const loot of lootKey){
                         monster.loot[loot].data.lengthMax = monster.loot[loot].data.lengthMax*data.rpg.bossesconf.multiplicatorStuff._text
                     }
+
+                    if(monster.stats.speed >= 0.8) monster.stats.speed = 0.8
+                    if(monster.stats.critic >= 0.8) monster.stats.critic = 0.8
+
 
                     resolve(monster)
                 })
