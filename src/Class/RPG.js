@@ -4,7 +4,6 @@ const Users = require('../lib/Users')
 const Items = require('../lib/Items')
 const Jobs = require('../lib/Job')
 
-
 module.exports = class {
     constructor() {
         this.monsters = new Monsters()
