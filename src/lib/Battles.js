@@ -155,14 +155,14 @@ const utils = require('../utils/utils')
                             }
 
                             if(userpv <= 0) {
-                                resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+                                resolve({data: result, message:'Joueur perdu'})
                             }else{
                                 Battle.orbLoot( name,stringifyUsers,profile).then((stringifyLootOrb)=>{
                                     Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile).then((stringifyLootRate)=>{
                                         Battle.obtainLoot(data,stringifyLootRate,profile).then((data)=>{
                                             Battle.EndDungeon(data,name,profile).then((data)=>{
                                                 Object.assign(result.loot, data.loot)
-                                                resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+                                                resolve({data: result, message: 'Joueur gagner'})
     
                                                 fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
                                             })
@@ -274,11 +274,11 @@ const utils = require('../utils/utils')
                                 })
                             }
                             if(userpv <= 0) {
-                                resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+                                resolve({data: result, message:  'Joueur perdu'})
                             }else{
                                 Battle.obtainLoot(data, parseUsers, profile).then((data) => {
                                     Object.assign(result.loot, data.loot)
-                                    resolve({data: result, message: userpv <=0 ? 'Joueur perdu': 'Joueur gagner'})
+                                    resolve({data: result, message: 'Joueur gagner'})
     
                                     fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
                                 })
