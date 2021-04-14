@@ -1,6 +1,6 @@
 const RPG = require('./src/Class/RPG')
 const fs = require('fs/promises')
-
+const user = "802e51ac-f377-4779-b35a-c1b9c0940c7b"
 const rpg = new RPG()
 /*
 rpg.monsters.getMonsterInfo('Slime','low').then(r =>{
@@ -43,12 +43,7 @@ rpg.items.getMaterialWeapon("Iron").then((r) =>{
 //const utils = require('./src/utils/utils')
 
 
-rpg.battles.fightBosse("802e51ac-f377-4779-b35a-c1b9c0940c7b").then((data) =>{
-    console.log(data)
-}).catch((err) =>{
-    console.log(err)
-})
-
+rpg.jobs.makeJob(user)
 //rpg.users.updateJob("Hallo")
 /*rpg.users.createProfile("Hallo","Elf","Meridor","Classe","Tadil").then((data) =>{
     console.log(data)

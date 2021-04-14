@@ -7,14 +7,14 @@
     "faction": "Tadil",
     "premium": false,
     "info": {
-      "level": 4,
-      "xp": 42,
+      "level": 26,
+      "xp": 11,
       "reputation": 0,
-      "point": 3,
+      "point": 398,
       "stats": {
-        "health": 20,
+        "health": 0,
         "mana": 35,
-        "energy": 20,
+        "energy": 11315.499999999945,
         "perks": {
           "forge": {
             "level": 2,
@@ -35,28 +35,35 @@
     },
     "job": {
       "bucheron": {
-        "level": 1,
-        "xp": 0
+        "level": 10,
+        "xp": 41
       },
       "mineur": {
-        "level": 1,
-        "xp": 0
+        "level": 10,
+        "xp": 28
       },
       "chasseur": {
-        "level": 1,
-        "xp": 0
+        "level": 10,
+        "xp": 23
       },
       "tailleur": {
-        "level": 1,
-        "xp": 0
+        "level": 10,
+        "xp": 26
       }
     },
     "inventory": {
       "modifiers": {},
       "item": {
-        "Drop of slime": 13,
-        "Bone": 10,
-        "Ectoplasm": 2
+        "Drop of slime": 17,
+        "Bone": 19,
+        "Ectoplasm": 2,
+        "bois": 104565,
+        "pierre": 69919,
+        "cuir": 40384,
+        "tissu": 41500,
+        "hêtre": 102084,
+        "charbon": 53848,
+        "fer": 53848
       },
       "keys": {},
       "orbs": {},

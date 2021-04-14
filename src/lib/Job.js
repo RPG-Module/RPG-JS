@@ -1,4 +1,6 @@
 const fs = require('fs/promises')
+const User = require('./Users')
+const userManager = new User()
 class Jobs {
     //TODO
     // - Job Structure
@@ -26,42 +28,42 @@ class Jobs {
         })
     }
 
-    //TODO
-    // - Make gain ressources
-    // - Rework gain ressources and leveling
-
-    //FIXME
-    // - Made a "}" if no mat gain
-
     /**
      * Harvest ressources for all jobs
      * @param profile {String<username>} user uuid
      */
+    
     makeJob(profile) {
-        fs.readFile('./src/assets/database/users.json').then(function (users) {
-            const stringifyUsers = JSON.parse(users)
-            const user = stringifyUsers[profile]
-            const jobs = user.job
-            let gain = {}
-            for (const job of Object.keys(jobs)) {
-                let calculmat = Jobs.randomInt(user, job)
-                let calculxp = ((calculmat *0.02)+5).toFixed(0)
-                for(const mat of Jobs.JobRessources(job,user)){
-                    console.log( parseInt(calculmat))
-                    Object.assign(gain, {
-                        [mat]: parseInt(parseInt(calculmat) + (user.inventory.item[mat] || 0))
-                    })
-                    user.job[job].xp += (parseInt(calculxp))
-                    Object.assign(user.inventory.item, {[mat]: gain[mat]})
+        return new Promise((resolve,reject) =>{
+            fs.readFile('./src/assets/database/users.json').then(function (users) {
+                const stringifyUsers = JSON.parse(users)
+                const user = stringifyUsers[profile]
+                const jobs = user.job
+                let gain = {}
+                for (const job of Object.keys(jobs)) {
+                    let calculmat = Jobs.randomInt(user, job)
+                    let calculxp = ((calculmat *0.02)+5*1.75).toFixed(0)
+                    if(user.info.stats.energy >= 5){
+                        for(const mat of Jobs.JobRessources(job,user)){
+                            Object.assign(gain, {
+                                [mat]: parseInt(parseInt(calculmat) + (user.inventory.item[mat] || 0))
+                            })
+                            user.job[job].xp += (parseInt(calculxp))
+                            user.info.stats.energy = user.info.stats.energy- ((calculmat *0.02))
+                            user.info.xp += parseInt((calculmat/10).toFixed(0))
+                            userManager.levelup(user).then(() =>{
+                                Object.assign(user.inventory.item, {[mat]: gain[mat]})
+                            })
+                        }
+                    }
                 }
-
-            }
-            console.log(gain)
-            Jobs.levelup(user).then(() => {
-                fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
-
+                Jobs.levelup(user).then(() => {
+                    resolve(gain)
+                    fs.writeFile('./src/assets/database/users.json', JSON.stringify(stringifyUsers, null, 2))
+                })
             })
         })
+        
     }
 
     static levelup(profile){
@@ -69,20 +71,24 @@ class Jobs {
             if(!profile){
                 reject({message:"Aucun utilisateur mentionné"})
             }
+            let xp = 0
             const jobs = Object.keys(profile.job)
             for(const job of jobs){
-                console.log(((profile.job[job].level+20)*3)*1.75)
-                while (profile.job[job].xp >= ((profile.job[job].level+20)*3)*1.75){
-                    profile.job[job].xp -= ((profile.job[job].level+20)*3)*1.75.toFixed(0)
+                while (profile.job[job].xp >= ((profile.job[job].level+20)*3)){
+                    profile.job[job].xp -= ((profile.job[job].level+20)*3).toFixed(0)
                     profile.job[job].level++
+                    profile.info.xp += 30
                 }
             }
-            resolve({data:profile})
+            userManager.levelup(profile).then((data) =>{
+                resolve({data})
+
+            })
         })
     }
 
     static randomInt(user,job){
-        return (Math.floor(Math.random()*(Math.pow(user.job[job].level, 2)+5)+2).toFixed(0))
+        return (Math.floor(Math.random()*(Math.pow(user.job[job].level, 2)+5)+2*2.5).toFixed(0))
     }
     static JobRessources(job,user){
         switch (job) {
@@ -95,7 +101,6 @@ class Jobs {
                 return ["bois"]
 
             case "mineur":
-                console.log(user.job[job].level >= 10)
                  if (user.job[job] <= 10) {
                     return ["pierre", "charbon"]
                 } else if (user.job[job].level >= 20) {
