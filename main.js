@@ -1,13 +1,12 @@
-const RPG = require('./src/Class/RPG')
+const {RpgService,AuthService} = require('./src/Class/RPG')
 const fs = require('fs/promises')
 const user = "802e51ac-f377-4779-b35a-c1b9c0940c7b"
-const rpg = new RPG()
-/*
-rpg.monsters.getMonsterInfo('Slime','low').then(r =>{
-    console.log(r.loot['Drop of slime'])
-}).catch((err)=>{
-    console.log(err)
-})*/
+const rpg = new RpgService()
+const auth = new AuthService()
+
+auth.connect('afdsq')
+auth.disconnect('afdsq')
+
 
 
 /*rpg.items.getItemInfo("heal","heal potion").then(r =>{
@@ -43,7 +42,6 @@ rpg.items.getMaterialWeapon("Iron").then((r) =>{
 //const utils = require('./src/utils/utils')
 
 
-rpg.jobs.makeJob(user)
 //rpg.users.updateJob("Hallo")
 /*rpg.users.createProfile("Hallo","Elf","Meridor","Classe","Tadil").then((data) =>{
     console.log(data)
@@ -69,3 +67,4 @@ rpg.monsters.getMonsterInfo("slime","low").then((monster) =>{
     console.log(monster.loot["Drop of slime"].data)
 })
 */
+
