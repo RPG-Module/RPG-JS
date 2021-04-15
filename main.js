@@ -5,7 +5,6 @@ const rpg = new RpgService()
 const auth = new AuthService()
 
 auth.connect('afdsq')
-auth.disconnect('afdsq')
 
 
 
