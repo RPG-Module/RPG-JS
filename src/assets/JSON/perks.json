@@ -1,0 +1,32 @@
+{
+  "enchantement": {
+    "level": 1,
+    "xp": 0,
+    "bonus": 1
+  },
+  "combat": {
+    "level": 1,
+    "xp": 0,
+    "bonus": 1
+  },
+  "parade": {
+    "level": 1,
+    "xp": 0,
+    "bonus": 1
+  },
+  "forgeage": {
+      "level": 1,
+      "xp": 0,
+      "bonus": 1
+    },
+  "chasse": {
+      "level": 1,
+      "xp": 0,
+      "bonus": 1
+    },
+  "minage": {
+      "level": 1,
+      "xp": 0,
+      "bonus": 1
+    }
+}
