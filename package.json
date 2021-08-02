@@ -9,6 +9,7 @@
   "author": "zechaos",
   "license": "ISC",
   "dependencies": {
+    "snowflake-id": "^1.1.0",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {}
