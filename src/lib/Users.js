@@ -1,116 +1,115 @@
-
-
 const fs = require('fs/promises')
 
 class Users{
 
+    constructor() {
+        this.utils = require("../compenants/utils")
+    }
+
     /**
      * Create a profile
      * @param name {String<name>} profile name
-     * @param race {String<race>} profile race
+     * @param race {String<race>} profile race.json
      * @param clan {String<clan>} profile clan
      * @param classe {String<classe>} profile classe
      * @param faction {String<faction>} profile faction
      * @returns {Promise<user>} return new user profile
      */
-    createProfile(name,race, clan, classe,faction) {
+    createProfile(name,race, classe) {
         return new Promise((resolve, reject) => {
-            if (!name || !race || !clan || !classe || !faction) {
-                reject("Il manque soit le nom du personnage, soit la race, soit le clan, soit la classe")
+            if ( !name || !race || !classe ) {
+                reject("Il manque soit le nom du personnage, soit la race.json, soit le clan, soit la classe")
             }
-            fs.readFile('./src/assets/JSON/race.json').then(function (races) {
+            fs.readFile('./src/assets/JSON/race.json').then(function(races) {
                 const parseRaces = JSON.parse(races)
-                fs.readFile('./src/assets/JSON/clan.json').then(function (clans) {
-                    const parseClans = JSON.parse(clans)
-                    if (!parseRaces[race.toLowerCase()]) reject({message:'Cette race n\'existe pas'})
-                    if (parseClans[faction.toLowerCase()]) {
-                        if (parseClans[faction.toLowerCase()][race.toLowerCase()]) {
-                            if (parseClans[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()]) {
-                                fs.readFile('./src/assets/database/users.json').then(function (user) {
-                                    const parseUserJSON = JSON.parse(user)
-                                    let uuids = Object.keys(parseUserJSON)
-                                    for(const uuid of uuids){
-                                        if (parseUserJSON[uuid].name.toLowerCase() === name.toLowerCase()) {
-                                            reject({message:"Ce nom d'utilisateur est déjà pris"})
-                                        }
-                                    }
-
-                            const uuid = Users.generateUUID()
-                                    //TODO
-                                    // - Add Job
-                                    // - Competence Job
-                                    const newUser = {
-                                        [uuid]: {
-                                            name: name.toLowerCase(),
-                                            classe,
-                                            race,
-                                            clan,
-                                            faction,
-                                            premium: false,
-                                            info: {
-                                                level: 1,
-                                                xp: 0,
-                                                reputation: 0,
-                                                point:0,
-                                                stats: parseRaces[faction.toLowerCase()][race.toLowerCase()][clan.toLowerCase()].info,
-                                            },
-                                            job: {},
-                                            inventory: {
-                                                modifiers: {},
-                                                item: {},
-                                                keys: {},
-                                                orbs: {},
-                                                stuff: {
-                                                    weapons: {},
-                                                    armors: {},
-                                                    money: 0
-                                                }
-                                            },
-                                            dungeons: {
-                                                begin: {},
-                                                end: {}
-
-                                            },
-                                            chest: {}
-
-                                        }
-                                    }
-                                    Users.setJob(newUser[uuid]).then(() => {
-                                        const users = Object.assign(parseUserJSON, newUser)
-                                        fs.writeFile('./src/assets/database/users.json', JSON.stringify(users, null, 2)).then(() => {
-                                            resolve({message: "Utilisateur créer", user: newUser})
-                                        }).catch((err) => {
-                                            reject({message:err})
-                                        })
-                                    })
-
-                                }).catch((err) => {
-                                    reject(err)
-                                })
-                            } else {
-                                reject({message:"Ce clan n'existe pas dans cette race"})
+                if ( !parseRaces[race.toLowerCase()] ) reject('Cette race.json n\'existe pas')
+                if ( parseRaces[race.toLowerCase()] ) {
+                    fs.readFile('./src/assets/database/users.json').then(function(user) {
+                        const parseUserJSON = JSON.parse(user)
+                        let ids = Object.keys(parseUserJSON)
+                        for ( const id of ids ) {
+                            if ( parseUserJSON[id].name.toLowerCase() === name.toLowerCase() ) {
+                                reject("Ce nom d'utilisateur est déjà pris")
                             }
-                        } else {
-                            reject({message:"Cette race n'existe pas dans cette faction"})
                         }
-                    } else {
-                        reject({message:"Cette faction n'existe pas"})
-                    }
-                })
+                        const id = Users.generateid()
+                        fs.readFile('./src/assets/JSON/perks.json').then(function(perksList) {
+                            let defaultPerks = JSON.parse(perksList)
+                            //erase default avancement perks to race avancement perks
+                            Object.assign(defaultPerks, parseRaces[race.toLowerCase()].info.perks)
+                            //assign all avancement perks to new user info
+                            Object.assign(parseRaces[race.toLowerCase()].info.perks, defaultPerks)
+
+                            //TODO
+                            // - Add Job
+                            // - Competence Job
+                            const newUser = {
+                                [id]: {
+                                    name: name.toLowerCase(),
+                                    id,
+                                    classe,
+                                    race,
+                                    premium: false,
+                                    info: {
+                                        level: 1,
+                                        xp: 0,
+                                        reputation: 0,
+                                        point: 0,
+                                        stats: parseRaces[race.toLowerCase()].info,
+                                    },
+                                    job: {},
+                                    inventory: {
+                                        modifiers: {},
+                                        item: {},
+                                        keys: {},
+                                        orbs: {},
+                                        stuff: {
+                                            weapons: {},
+                                            armors: {},
+                                            money: 0
+                                        }
+                                    },
+                                    dungeons: {
+                                        begin: {},
+                                        end: {}
+
+                                    },
+                                    chest: {}
+
+                                }
+                            }
+                            Users.setJob(newUser[id]).then(() => {
+                                const users = Object.assign(parseUserJSON, newUser)
+                                fs.writeFile('./src/assets/database/users.json', JSON.stringify(users, null, 2)).then(() => {
+                                    resolve({message: "Utilisateur créer", user: newUser})
+                                }).catch((err) => {
+                                    reject({message: err})
+                                })
+                            })
+                        }).catch((err) => {
+                            reject(err)
+                        })
+                    }).catch((err) => {
+                        reject(err)
+                    })
+
+                } else {
+                    reject({message: "Cette faction n'existe pas"})
+                }
             })
         })
     }
 
-    getUserUUID(name) {
+    getUserid(name) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
                 const parseuser = JSON.parse(user)
 
-                let uuids = Object.keys(parseuser)
+                let ids = Object.keys(parseuser)
 
-                for(const uuid of uuids){
-                    if(parseuser[uuid].name === name){
-                        resolve(uuid)
+                for(const id of ids){
+                    if(parseuser[id].name === name){
+                        resolve(id)
                     }
                 }
                 reject({message:"Aucun utilisateur trouvé"})
@@ -123,20 +122,49 @@ class Users{
 
     /**
      * Get user profile
-     * @param profile {Object<profile>} user profile
+     * @param id {Snowflake} user profile id
      * @returns {Promise<profile>} Return profile
      */
-    getProfile(profile) {
+    getProfileByID(id) {
         return new Promise((resolve, reject) => {
             fs.readFile('./src/assets/database/users.json').then(function (user) {
-                if(!profile){
-                    reject({message:"Aucun utilisateur mentionné"})
+                if(!id){
+                    reject({message:"Aucun id mentionné"})
                 }
                 const stringifyOlfUserJSON = JSON.parse(user)
-                if (!stringifyOlfUserJSON[profile]) {
+                if (!stringifyOlfUserJSON[id]) {
                     reject({message:'Utilisateur non trouvé'})
                 }
-                resolve({data: stringifyOlfUserJSON[profile]})
+                resolve({data: stringifyOlfUserJSON[id]})
+            }).catch((err)=>{
+                reject({message: err})
+            })
+        })
+    }
+
+    getProfileByName(name) {
+        return new Promise((resolve, reject) => {
+            fs.readFile('./src/assets/database/users.json').then(function (user) {
+                const parseuser = JSON.parse(user)
+
+                let ids = Object.keys(parseuser)
+
+                let names = []
+
+                for(const id of ids){
+                    names.push(parseuser[id].name)
+                }
+                console.log(names)
+
+                if(!names.includes(name)){
+                    reject({message:'Utilisateur non trouvé'})
+                }
+                for(const id of ids){
+                    if(parseuser[id].name === name){
+                        resolve(parseuser[id])
+                    }
+                }
+
             }).catch((err)=>{
                 reject({message: err})
             })
@@ -327,7 +355,6 @@ class Users{
      * Use orb for upgrade stats
      * @param orb {String<orb>} orb name
      * @param profile {Object<profile>} user profile
-     * @returns {Promise<unknown>} nothing.
      */
     useOrb(orb,profile){
         return new Promise((resolve, reject) => {
@@ -440,15 +467,20 @@ class Users{
     }
 
     /**
-     * Generate UUID
-     * @returns {String<uuid>} Return UUID
+     * Generate id
+     * @returns {String<id>} Return id
      */
 
-    static generateUUID(){
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
+    static generateid(){
+        const SnowflakeId = require('../compenants/SnwoflakesIDs/main');
+
+        // Initialize snowflake
+        const snowflake = new SnowflakeId({
+            mid: 42,
+            offset: ( 2019 - 1970 ) * 31536000 * 1000,
         });
+
+        return snowflake.generate()
     }
 }
 module.exports = Users

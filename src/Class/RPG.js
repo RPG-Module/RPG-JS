@@ -1,6 +1,6 @@
-require("../utils/prototype")
+require("../compenants/prototype")
 
 module.exports = {
     RpgService : require('../service/rpgService'),
-    AuthService : require('../service/authService')
+
 }
