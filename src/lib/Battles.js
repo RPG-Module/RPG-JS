@@ -1,5 +1,5 @@
 const fs = require('fs/promises')
-const utils = require('../utils/utils')
+const utils = require('../compenants/utils')
     class Battle {
         constructor() {
 
@@ -7,10 +7,10 @@ const utils = require('../utils/utils')
         /**
          * Start dungeons
          * @param {String<dungeonName>} name dungeon name
-         * @param {String<uuid>} profile user uuid
+         * @param {String<id>} id user id
          * @returns {Promise<message>} Return message
          */
-        startDungeon(name, profile) {
+        startDungeon(name, id) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/dungeons.json').then(function (dungeons) {
                     dungeons = JSON.parse(dungeons)
@@ -18,16 +18,21 @@ const utils = require('../utils/utils')
 
                         users = JSON.parse(users)
                         let selectedDungeon = dungeons[name];
-                        let selectedUser = users[profile]
+                        let selectedUser = users[id]
+
                         if(!selectedUser){
                             reject({message:"Cette utilisateur n'existe pas"})
                         }
                         if (!selectedDungeon) {
                             reject({message:"Ce donjon n'existe pas"})
                         }
+                        if(selectedUser.dungeons.begin[name]){
+                            reject({message:"Ce donjon est deja commencé"})
+                        }
                         if(selectedUser.dungeons.end[name]){
                             reject({message:"Ce donjon est deja fini"})
                         }
+
                         selectedUser.dungeons.begin[name] = {}
 
                         Object.assign(selectedUser.dungeons.begin[name],selectedDungeon.loot)
@@ -47,15 +52,15 @@ const utils = require('../utils/utils')
         /**
          * Made Battle
          * @param {String<dungeonName>} name dungeon name
-         * @param {String<uuid>} profile user uuid
+         * @param {String<id>} id user id
          * @returns {Promise<result>} Return data
          */
 
-        fightDungeon(name, profile) {
+        fightDungeon(name, id) {
             //random dungeon
             if(name === 'random') {
 
-                Battle.randomDungeon(profile.toLowerCase()).then((djn) =>{
+                Battle.randomDungeon(id.toLowerCase()).then((djn) =>{
                     name = djn
                 })
             }
@@ -67,21 +72,24 @@ const utils = require('../utils/utils')
                     fs.readFile('./src/assets/database/users.json').then(function (users) {
                         const stringifyUsers = JSON.parse(users)
                         const stringifyDungeons = JSON.parse(dungeons)
-                        if (!stringifyUsers[profile]) {
+                        if (!stringifyUsers[id]) {
                             reject({message:"Cette utilisateur n'existe pas"})
                         }
                         if (!stringifyDungeons[name]) {
                             reject({message:"Ce donjon n'existe pas"})
                         }
-                        if(!stringifyUsers[profile].dungeons.begin[name]){
+                        if(!stringifyUsers[id].dungeons.begin[name]){
                             reject({message:"Ce donjon n'est pas commencé"})
                         }
-                        let user = stringifyUsers[profile]
+                        let user = stringifyUsers[id]
                         let dungeon = stringifyDungeons[name]
                         monsters.getMonsterInfo(Battle.selectRandomThings(dungeon.monster[Battle.calcLvl(user)]), Battle.calcLvl(user)).then((data) =>{
-                            let userpv = user.info.stats.hp
+                            let userpv = user.info.stats.health
                             let monsterpv = data.stats.pv
-                            let result = {}
+                            let result = {
+                                fight:{},
+                                loot:{}
+                            }
                             let turn = 0
 
                             //combat
@@ -97,13 +105,13 @@ const utils = require('../utils/utils')
                                     crit:false
                                 }
 
-                                let userAttack = (user.info.stats.perks.stats.attack - data.stats.defence)
-                                let monsterAttack = (data.stats.attack - user.info.stats.perks.stats.defence)
+                                let userAttack = (user.info.stats.stats.attack - data.stats.defence)
+                                let monsterAttack = (data.stats.attack - user.info.stats.stats.defence)
 
 
                                 //DODGE
 
-                                if(Battle.randomInt() <= (user.info.stats.perks.stats.speed)*100){
+                                if(Battle.randomInt() <= (user.info.stats.stats.speed)*100){
                                     attackUserStats.dodge = true
 
                                 }
@@ -124,21 +132,20 @@ const utils = require('../utils/utils')
                                 }
 
                                 if(!attackMonsterStats.dodge){
-                                    if(Battle.randomInt() <= (user.info.stats.perks.stats.critic)*100){
+                                    if(Battle.randomInt() <= (user.info.stats.stats.critic)*100){
                                         userAttack = userAttack*2
                                         attackUserStats.crit = true
                                     }
                                     monsterpv = monsterpv - userAttack
                                 }
-
                                 //Make combat result
                                 turn++
-                                Object.assign(result,{
+                                Object.assign(result.fight,{
                                     [turn]:{
                                         [user.name]:{
                                             pv:userpv,
-                                            attack:user.info.stats.perks.stats.attack,
-                                            defence:user.info.stats.perks.stats.defence,
+                                            attack:user.info.stats.stats.attack,
+                                            defence:user.info.stats.stats.defence,
                                             effectiveAttack:userAttack,
                                             attackUserStats
                                         },
@@ -152,24 +159,24 @@ const utils = require('../utils/utils')
                                         }
                                     },
                                 })
+
+
                             }
 
                             if(userpv <= 0) {
-                                stringifyUsers[profile].info.stats.health = 0
+                                stringifyUsers[user.id].info.stats.health = 0
                                 resolve({data: result, message:  'Joueur perdu'})
                             }else{
-                                stringifyUsers[profile].info.stats.health = userpv
-                                Battle.orbLoot( name,stringifyUsers,profile).then((stringifyLootOrb)=>{
-                                    Battle.rareLoot(stringifyDungeons[name], name,stringifyLootOrb,profile).then((stringifyLootRate)=>{
-                                        Battle.obtainLoot(data,stringifyLootRate,profile).then((data)=>{
-                                            Battle.EndDungeon(data,name,profile).then((data)=>{
+                                stringifyUsers[user.id].info.stats.health = userpv
+                                console.log(data)
+                                        Battle.obtainLoot(data,stringifyUsers,user.id,name).then((data)=>{
+                                            Battle.EndDungeon(data,name,user.id).then((data)=>{
                                                 Object.assign(result.loot, data.loot)
                                                 resolve({data: result, message: 'Joueur gagner'})
 
                                                 fs.writeFile('./src/assets/database/users.json', JSON.stringify(data.user, null, 2))
                                             })
-                                        })
-                                    })
+
                                 })
                             }
                         })
@@ -180,11 +187,11 @@ const utils = require('../utils/utils')
 
         /**
          * Fight a boss
-         * @param {String<username>} profile user uuid
+         * @param {Snowflake<id>} id user id
          * @returns {Promise<battleResult>}
          */
 
-        fightBosse(profile) {
+        fightBosse(id) {
             return new Promise((resolve, reject) => {
                 fs.readFile('./src/assets/JSON/monster.json').then(function (monsters) {
                     fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -192,7 +199,7 @@ const utils = require('../utils/utils')
                         const parseMonster = JSON.parse(monsters)
                         const parseUsers = JSON.parse(users)
 
-                        const user = parseUsers[profile]
+                        const user = parseUsers[id]
                         if (!user) {
                             reject({message: "Utilisateur introuvable"})
                         }
@@ -276,12 +283,11 @@ const utils = require('../utils/utils')
                                 })
                             }
                             if(userpv <= 0) {
-                                parseUsers[profile].info.stats.health = 0
+                                parseUsers[id].info.stats.health = 0
                                 resolve({data: result, message:  'Joueur perdu'})
                             }else{
-                                parseUsers[profile].info.stats.health = userpv
-                                Battle.obtainLoot(data, parseUsers, profile).then((data) => {
-                                    console.log(data.user)
+                                parseUsers[id].info.stats.health = userpv
+                                Battle.obtainLoot(data, parseUsers, id).then((data) => {
 
                                     Object.assign(result.loot, data.loot)
                                     resolve({data: result, message: 'Joueur gagner'})
@@ -324,14 +330,15 @@ const utils = require('../utils/utils')
          * Give mod and dungeons loot
          * @param monster monster data
          * @param {Object<UsersData>} stringifyUsers users
-         * @param {String<uuid>} profile user name
+         * @param {String<username>} id user name
+         * @param dungeonName
          * @returns {Promise<users>} return users
          */
 
-        static obtainLoot(monster,stringifyUsers,profile){
+        static obtainLoot(monster,stringifyUsers,id,dungeonName){
             return new Promise((resolve, reject) => {
                 const loots = monster.loot
-                const user = stringifyUsers[profile]
+                const user = stringifyUsers[id]
                 let Allloot = {}
                 let gainloot = {}
                 let lengthloot = 0
@@ -368,9 +375,20 @@ const utils = require('../utils/utils')
                 const User = require('../lib/Users')
                 const userManager = new User()
 
-                userManager.levelup(user).then((user) =>{
-                    resolve({user : stringifyUsers, loot: gainloot})
+                Battle.orbLoot(dungeonName,stringifyUsers,id).then((data) =>{
+                    Object.assign(gainloot, data.loot)
+                    Battle.rareLoot(dungeonName,stringifyUsers,id).then((data) => {
+                        Object.assign(gainloot, data.loot)
+                        console.log(gainloot)
+                        userManager.levelup(user).then((user) =>{
+                            resolve({user : stringifyUsers, loot: gainloot})
+                        })
+                    })
                 })
+
+
+
+
             })
 
         }
@@ -379,7 +397,7 @@ const utils = require('../utils/utils')
 
         /**
          * Calc monster level
-         * @param {Object<user>} user User profile data
+         * @param {Object<user>} user User id data
          * @returns {string}
          */
         static calcLvl(user) {
@@ -391,84 +409,104 @@ const utils = require('../utils/utils')
          * @param {Object<dungeonData>}dungeon dungeon data
          * @param {String<dungeonName>}name dungeon name
          * @param {Object<UsersData>} stringifyUsers users data
-         * @param {String<uuid>} profile user name
+         * @param {String<id>} id user name
          * @returns {Promise<users>} return users
          */
 
-        static rareLoot(dungeon,name,stringifyUsers,profile){
+        static rareLoot(name,stringifyUsers,id) {
             return new Promise((resolve, reject) => {
-                const chests = dungeon.loot.chest
-                const keys = dungeon.loot.keys
-                const reputation = dungeon.loot.reputation
-                const user = stringifyUsers[profile.toLowerCase()]
-                const rareloot = user.dungeons.begin[name].rareLoot
-                //reputation
-                    if(user.dungeons.begin[name].reputation) {
-                        if (Battle.randomInt() <= (reputation.proba) * 100) {
+                fs.readFile('./src/assets/JSON/dungeons.json').then(function(dungeons) {
+                    const stringifyDungeons = JSON.parse(dungeons)
+                    const dungeon = stringifyDungeons[name]
+                    const chests = dungeon.loot.chest
+                    const keys = dungeon.loot.keys
+                    const reputation = dungeon.loot.reputation
+                    let gainloot = {}
+                    console.log(stringifyUsers)
+                    const user = stringifyUsers[id.toLowerCase()]
+                    const rareloot = user.dungeons.begin[name].rareLoot
+                    //reputation
+                    if ( user.dungeons.begin[name].reputation ) {
+                        if ( Battle.randomInt() <= ( reputation.proba ) * 100 ) {
                             user.info.reputation++
                             user.dungeons.begin[name].reputation.size--
-                            if (user.dungeons.begin[name].reputation.size <= 0) {
+                            Object.assign(gainloot, {
+                                reputation: 1
+                            })
+                            if ( user.dungeons.begin[name].reputation.size <= 0 ) {
                                 delete user.dungeons.begin[name].reputation
                             }
                         }
 
                     }
 
-                //Chest
-                for(const chest in chests){
-                    if(user.dungeons.begin[name].chest[chest]){
-                        if(Battle.randomInt() <= (chests[chest].proba)*100){
-                            Object.assign(user.chest, {
-                                [chest]:1 + (user.chest[chest] ?  user.chest[chest] : 0)
-                            })
-                            delete user.dungeons.begin[name].chest[chest]
-                        }
-                    }
-                }
-
-                //Keys
-                for(const key in keys){
-                    if(user.dungeons.begin[name].keys[key]){
-                        if(Battle.randomInt() <= (keys[key].proba)*100){
-                            Object.assign(user.inventory.keys, {
-                                [key]:1 + (user.inventory.keys[key] || 0)
-                            })
-                            delete user.dungeons.begin[name].keys[key]
-
-                        }
-                    }
-                }
-
-                //Rareloot
-                let rareLootTypes = Object.keys(rareloot)
-                if(rareloot["weapons"]){
-                    let rareLootWeapons = Object.keys(rareloot["weapons"])
-                    let loot = {}
-                    for(const type of rareLootTypes){
-                        Object.assign(loot, {
-                            [type]: {}
-                        })
-                        for(const weapon of rareLootWeapons){
-                            const material = Battle.selectRandomThings(rareloot["weapons"][weapon].material)
-                            Object.assign(loot.weapons, {
-                                [weapon]:{
-                                    material : {}
-                                }
-                            })
-                            Object.assign(loot["weapons"][weapon].material,{[material]: 1 +(loot["weapons"][weapon].material[material] || 0)})
-                            let pos = rareloot["weapons"][weapon].material.indexOf(material)
-                            rareloot["weapons"][weapon].material.splice(pos,1)
-                            if(rareloot["weapons"][weapon].material.length === 0 ){
-                                delete rareloot["weapons"][weapon]
-                                if(Object.entries(rareloot["weapons"]).length === 0){
-                                    delete rareloot["weapons"]
-                                }
+                    //Chest
+                    for ( const chest in chests ) {
+                        if ( user.dungeons.begin[name].chest[chest] ) {
+                            if ( Battle.randomInt() <= ( chests[chest].proba ) * 100 ) {
+                                Object.assign(user.chest, {
+                                    [chest]: 1 + ( user.chest[chest] ? user.chest[chest] : 0 )
+                                })
+                                Object.assign(gainloot, {
+                                    [chest]: 1
+                                })
+                                delete user.dungeons.begin[name].chest[chest]
                             }
                         }
-                        Object.assign(user.inventory.stuff,loot)
                     }
-                }
-                resolve(stringifyUsers)
+
+                    //Keys
+                    for ( const key in keys ) {
+                        if ( user.dungeons.begin[name].keys[key] ) {
+                            if ( Battle.randomInt() <= ( keys[key].proba ) * 100 ) {
+                                Object.assign(user.inventory.keys, {
+                                    [key]: 1 + ( user.inventory.keys[key] || 0 )
+                                })
+                                Object.assign(gainloot, {
+                                    [key]: 1
+                                })
+                                delete user.dungeons.begin[name].keys[key]
+
+                            }
+                        }
+                    }
+
+                    //Rareloot
+                    let rareLootTypes = Object.keys(rareloot)
+                    if ( rareloot["weapons"] ) {
+                        let rareLootWeapons = Object.keys(rareloot["weapons"])
+                        let loot = {}
+                        for ( const type of rareLootTypes ) {
+                            Object.assign(loot, {
+                                [type]: {}
+                            })
+                            for ( const weapon of rareLootWeapons ) {
+                                const material = Battle.selectRandomThings(rareloot["weapons"][weapon].material)
+                                Object.assign(loot.weapons, {
+                                    [weapon]: {
+                                        material: {}
+                                    }
+                                })
+                                Object.assign(loot["weapons"][weapon].material, {[material]: 1 + ( loot["weapons"][weapon].material[material] || 0 )})
+                                let pos = rareloot["weapons"][weapon].material.indexOf(material)
+                                rareloot["weapons"][weapon].material.splice(pos, 1)
+                                if ( rareloot["weapons"][weapon].material.length === 0 ) {
+                                    delete rareloot["weapons"][weapon]
+                                    if ( Object.entries(rareloot["weapons"]).length === 0 ) {
+                                        delete rareloot["weapons"]
+                                    }
+                                }
+                            }
+                            Object.assign(user.inventory.stuff, loot)
+                            Object.assign(gainloot, {
+                                stuff: loot
+                            })
+                        }
+                    }
+                    resolve({users: stringifyUsers, loot: gainloot})
+
+                })
+
             })
         }
 
@@ -476,19 +514,24 @@ const utils = require('../utils/utils')
          * Give orb loot
          * @param {String<dungeonName>} name dungeon name
          * @param {Object<UsersData>} stringifyUsers users data
-         * @param {String<uuid>} profile user name
+         * @param {String<id>} id user name
          * @returns {Promise<users>} return users
          */
 
-        static orbLoot(name,stringifyUsers,profile) {
+        static orbLoot(name,stringifyUsers,id) {
             return new Promise((resolve, reject) => {
-                const orbs = stringifyUsers[profile].dungeons.begin[name].orb
+                let gainloot = {}
+
+                const orbs = stringifyUsers[id].dungeons.begin[name].orb
                 let keysObject = Object.keys(orbs)
                 for (const orb of keysObject) {
                     if (Battle.randomInt() <= (0.25 * 100)) {
                         if (orbs[orb]) {
-                            Object.assign(stringifyUsers[profile].inventory.orbs, {
-                                [orb]: 1 + (stringifyUsers[profile].inventory.orbs[orb] || 0)
+                            Object.assign(stringifyUsers[id].inventory.orbs, {
+                                [orb]: 1 + (stringifyUsers[id].inventory.orbs[orb] || 0)
+                            })
+                            Object.assign(gainloot,{
+                                [orb]: 1
                             })
                             delete orbs[orb]
                         }else{
@@ -496,7 +539,7 @@ const utils = require('../utils/utils')
                         }
                     }
                 }
-                resolve(stringifyUsers)
+                resolve({users: stringifyUsers, loot:gainloot})
             })
         }
 
@@ -504,27 +547,32 @@ const utils = require('../utils/utils')
          * End dungeons is all loot and rareloot is empty
          * @param {Object<allStringifyUser>}stringifyUser users data
          * @param {String<dungeonName>}name dungeon name
-         * @param {String<uuid>} profile user name
+         * @param {String<id>} id user name
          * @returns {Promise<users>} return users
          */
 
-        static EndDungeon(stringifyUser,name,profile){
+        static EndDungeon(stringifyUser,name,id){
             return new Promise((resolve, reject) => {
-                const dungeon = stringifyUser[profile].dungeons.begin[name]
+                const dungeon = stringifyUser.user[id].dungeons.begin[name]
 
                 const ObjectKey = Object.keys(dungeon)
-                let isEmpty = true
 
+                /*
+                TODO :
+                 - ?????????????????????????????????
+                 */
+                let isEmpty = false
+                let entries = []
                 for(const key of ObjectKey){
-                    if(!isEmpty){
-                        if(Object.entries(dungeon[key]).length !== 0){
-                            isEmpty = true
-                        }
-                    }
+                    entries.push(Object.entries(dungeon[key]).length)
                 }
+
+                const filtered = entries.filter(nb => nb !== 0 )
+                if(!filtered.length) isEmpty = true
+
                 if(isEmpty){
-                    stringifyUser[profile].dungeons.end[name] = stringifyUser[profile].dungeons.begin[name]
-                    delete stringifyUser[profile].dungeons.begin[name]
+                    stringifyUser.user[id].dungeons.end[name] = stringifyUser.user[id].dungeons.begin[name]
+                    delete stringifyUser.user[id].dungeons.begin[name]
                 }
                 resolve(stringifyUser)
             })
@@ -533,12 +581,12 @@ const utils = require('../utils/utils')
         /**
          * Make bosses
          * @param monsterList {Array<monster>} monster list
-         * @param  {Object<user>} profile  user profile data
+         * @param  {Object<user>} id  user id data
          * @returns {Promise<boss>} return boss stats
          * @constructor
          */
 
-        static MakeBosses(monsterList,profile) {
+        static MakeBosses(monsterList,id) {
             const Monsters = require('../lib/Monsters')
             const monsters = new Monsters()
             return new Promise((resolve, reject) => {
@@ -546,10 +594,10 @@ const utils = require('../utils/utils')
                     reject({message:"La liste de monstre n'est pas une liste"})
                 }
 
-                if(typeof profile !== "object" || !profile.info){
-                    reject({message: "Le profile indique n'est pas un utilisateur ou l'utilisateur n'est pas complet"})
+                if(typeof id !== "object" || !id.info){
+                    reject({message: "Le id indique n'est pas un utilisateur ou l'utilisateur n'est pas complet"})
                 }
-                monsters.getMonsterInfo(Battle.selectRandomThings(monsterList), Battle.calcLvl(profile)).then((data) => {
+                monsters.getMonsterInfo(Battle.selectRandomThings(monsterList), Battle.calcLvl(id)).then((data) => {
                     Battle.boostMonster(data).then((boss) =>{
                         resolve(boss)
                     })
