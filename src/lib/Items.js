@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 
- class Items{
+ class Items {
 
      /**
       * Get item info
@@ -8,67 +8,89 @@ const fs = require('fs/promises')
       * @param name {String<itemName>} item name
       * @returns {Promise<item>} Return item stat
       */
-    getItemInfo(type,name) {
-        return new Promise((resolve, reject) => {
-            if(!name) reject('Specify a item name')
-            if(!type) reject('Specify a type name')
-            fs.readFile('./src/assets/JSON/object.json').then(function (obj) {
-                const objs = JSON.parse(obj)
-                if(!objs[type.toLowerCase()]){
-                    reject('Ce type n\'existe pas\nType liste: '+ Object.keys(objs))
-                }
-                if(!objs[type.toLowerCase()][name.toLowerCase()]){
-                    reject('Cet item n\'existe pas\nItem liste: '+ Object.keys(objs[type.toLowerCase()]))
-                }
-                resolve(objs[type.toLowerCase()][name.toLowerCase()])
-            }).catch(err =>{
-                reject(err)
-            })
-        })
-    }
+     getItemInfo(name) {
+         return new Promise((resolve, reject) => {
+             if ( !name ) reject('Specify a item name')
+             fs.readFile('./src/assets/JSON/items.json').then(function(obj) {
+                 const items = JSON.parse(obj)
+                 if ( !items.items[name.toLowerCase()] ) {
+                     reject('Cet item n\'existe pas\nItem liste: ' + Object.keys(items.items))
+                 }
+                 resolve(items.items[name.toLowerCase()])
+             }).catch(err => {
+                 reject(err)
+             })
+         })
+     }
 
      /**
-      * Get stat material armor
-      * @param {String<materialName>} name material material
+      * Get stat material
+      * @param {String<materialName>} name material
       * @returns {Promise<material>} Return material stat
       */
-    getMaterialArmor(name){
-        return new Promise((resolve, reject) => {
-            if(!name) reject('Specify a material name')
-            fs.readFile('./src/assets/JSON/armor.json').then(function (obj) {
-                const objs = JSON.parse(obj)
-                if(!objs.material[name.toLowerCase()]){
-                    reject('This material doesn\'t exist\nMaterial list: '+ Object.keys(objs.material))
-                }
-                resolve(objs.material[name.toLowerCase()])
-            }).catch(err =>{
-                reject(err)
-            })
-        })
-    }
+     getMaterial(name) {
+         return new Promise((resolve, reject) => {
+             if ( !name ) reject('Specify a material name')
+             fs.readFile('./src/assets/JSON/items.json').then(function(obj) {
+                 const objs = JSON.parse(obj)
+                 let items = objs.items
+                 let materials = {}
+                 for ( const item of Object.keys(objs.items) ) {
+                     const isMaterial = Object.getOwnPropertyDescriptor(items[item], 'isMaterial')
+                     if ( isMaterial.value ) {
+                         Object.assign(materials, {
+                             [item]: items[item]
+                         })
+                     }
+                 }
+                 if ( !materials[name.toLowerCase()] ) {
+                     reject('This material doesn\'t exist\nMaterial list: ' + Object.keys(materials) + '\n\n')
+                 }
+                 resolve(materials[name.toLowerCase()])
+             }).catch(err => {
+                 reject(err)
+             })
+         })
+     }
 
      /**
-      * Get stat material weapons
-      * @param name {String<materialName>} name material material
-      * @returns {Promise<material>} Return material stat
+      * Get weapon info
+      * @param name {String<materialName>} weapon name
+      * @returns {Promise<material>} Return weapon info
       */
 
-    getMaterialWeapon(name){
-        return new Promise((resolve, reject) => {
-            if(!name) reject('Specify a material name')
+     getWeapon(name) {
+         return new Promise((resolve, reject) => {
+             fs.readFile('./src/assets/JSON/items.json').then(function(obj) {
+                 const objs = JSON.parse(obj)
+                 if ( !name || !objs.weapons[name] ) reject('Specify a name')
 
-            fs.readFile('./src/assets/JSON/weapon.json').then(function (obj) {
-                const objs = JSON.parse(obj)
-                if(!objs.material[name.toLowerCase()]){
-                    reject('This material doesn\'t exist\nMaterial list: '+ Object.keys(objs.material))
-                }
-                resolve(objs.material[name.toLowerCase()])
-            }).catch(err =>{
-                reject(err)
-            })
-        })
-    }
-    //TODO
-    // - Crafting
-}
+                 let items = objs.items
+                 let weapon = {}
+                 let materials = {}
+                 for ( const item of Object.keys(objs.items) ) {
+                     const isMaterial = Object.getOwnPropertyDescriptor(items[item], 'isMaterial')
+                     if ( isMaterial.value ) {
+                         Object.assign(materials, {
+                             [item]: items[item]
+                         })
+                     }
+                 }
+                 Object.assign(weapon, objs.weapons[name])
+                 Object.assign(weapon, {materials: []})
+                 for ( const mat in materials ) {
+                     if ( items[mat].weapons instanceof Object ) {
+                         weapon.materials.push(materials[mat])
+                     }
+                 }
+                 resolve(weapon)
+             }).catch(err => {
+                 reject(err)
+             })
+         })
+     }
+
+     //TODO
+     // - Crafting
+ }
 module.exports = Items
