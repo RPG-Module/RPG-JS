@@ -1,0 +1,327 @@
+{
+  "items": {
+    "Bois": {
+      "name": "Bois",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "atk": 1,
+          "def": 1,
+          "drb": 0
+        }
+      },
+      "armor": false,
+      "store": {
+        "sell": 1,
+        "buy": 5
+      },
+      "description": "Matériaux de base pour faire des arme."
+    },
+    "Morceau de slime": {
+      "name": "Morceau de slime",
+      "isMaterial": false,
+      "weapons": false,
+      "armor": false,
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "A simple part of slime."
+    },
+    "Os": {
+      "name": "Os",
+      "isMaterial": false,
+      "weapons": false,
+      "armor": false,
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "A simple part of skeleton."
+    },
+    "Ectoplasme": {
+      "name": "Ectoplasme",
+      "isMaterial": false,
+      "weapons": false,
+      "armor": false,
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "A simple part of spirit."
+    },
+
+    "Pierre": {
+      "name": "Pierre",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "atk": 2,
+          "def": 2,
+          "drb": 1
+        }
+      },
+      "armor": false,
+      "store": {
+        "sell": 2,
+        "buy": 5
+      }
+    },
+    "Cuir": {
+      "name": "Cuir",
+      "isMaterial": true,
+      "weapons": false,
+      "armor": {
+        "stats": {
+          "def": 1,
+          "drb": 2,
+          "spd": 2
+        }
+      },
+      "store": {
+        "sell": 4,
+        "buy": 8
+      }
+    },
+    "Fer": {
+      "name": "Fer",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "def": 2,
+          "atk": 2,
+          "drb": 2
+        }
+      },
+      "armor": {
+        "stats": {
+          "def": 2,
+          "drb": 4,
+          "spd": 0
+        }
+      },
+      "store": {
+        "sell": 5,
+        "buy": 10
+      }
+    },
+    "Acier": {
+      "name": "Acier",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "atk": 2,
+          "def": 2,
+          "drb": 5
+        }
+      },
+      "armor": {
+        "stats": {
+          "def": 2,
+          "drb": 5,
+          "spd": 0
+        }
+      },
+      "store": {
+        "sell": 10,
+        "buy": 20
+      }
+    },
+    "Topaze": {
+      "name": "Topaze",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "atk": 3,
+          "drb": 8,
+          "def": 2
+        }
+      },
+      "armor": {
+        "stats": {
+          "def": 2,
+          "drb": 8,
+          "spd": 0
+        }
+      },
+      "store": {
+        "sell": 45,
+        "buy": 90
+      }
+    },
+    "Rubis": {
+      "name": "Rubis",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "atk": 3,
+          "def": 2,
+          "drb": 9
+        }
+      },
+      "armor": {
+        "stats": {
+          "def": 2,
+          "drb": 9,
+          "spd": 0
+        }
+      },
+      "store": {
+        "sell": 50,
+        "buy": 100
+      }
+    },
+    "Pierre du dragon": {
+      "name": "Pierre du dragon",
+      "isMaterial": true,
+      "weapons": {
+        "stats": {
+          "atk": 5,
+          "drb": 10,
+          "def": 3
+        }
+      },
+      "armor": {
+        "stats": {
+          "def": 3,
+          "drb": 10,
+          "spd": 0
+        }
+      },
+      "store": {
+        "sell": 200,
+        "buy": 400
+      }
+    }
+  },
+  "armor": {
+    "Casque": {
+      "name": "Casque",
+      "stats": {
+        "def": 2,
+        "drb": 3
+      },
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "Protect your head."
+    },
+    "Plastron": {
+      "name": "Plastron",
+
+      "stats": {
+        "def": 4,
+        "drb": 4
+      },
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "Protect your torso."
+    },
+    "Jambière": {
+      "name": "Jambière",
+      "stats": {
+        "def": 3,
+        "drb": 4
+      },
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "Protect your legs."
+    },
+    "Bottes": {
+      "name": "Bottes",
+      "stats": {
+        "def": 2,
+        "drb": 3
+      },
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "Protect your feet."
+    },
+    "Bouclier": {
+      "name": "Bouclier",
+      "stats": {
+        "def": 3,
+        "drb": 4
+      },
+      "store": {
+        "sell": 2,
+        "buy": 4
+      },
+      "description": "Protects you better."
+    }
+  },
+  "weapons": {
+    "sword": {
+      "name": "Epee",
+      "stats": {
+        "atk": 3,
+        "def": 2,
+        "drb": 2,
+        "spd": 4
+      },
+      "store": {
+        "sell": 10,
+        "buy": 15
+      }
+    },
+    "longsword": {
+      "name": "Epee longue",
+      "stats": {
+        "atk": 4,
+        "def": 3,
+        "drb": 2,
+        "spd": 2
+      },
+      "store": {
+        "sell": 16,
+        "buy": 19
+      }
+    },
+    "dagger": {
+      "name": "Dague",
+      "stats": {
+        "atk": 2,
+        "def": 1,
+        "drb": 2,
+        "spd": 6
+      },
+      "store": {
+        "sell": 7,
+        "buy": 13
+      }
+    },
+    "waraxe": {
+      "name": "Hache de combat",
+      "stats": {
+        "atk": 4,
+        "def": 2,
+        "drb": 2,
+        "spd": 1
+      },
+      "store": {
+        "sell": 12,
+        "buy": 16
+      }
+    },
+    "warhammer": {
+      "name": "Marteau de guerre",
+      "stats": {
+        "atk": 5,
+        "def": 2,
+        "drb": 2,
+        "spd": 1
+      },
+      "store": {
+        "sell": 15,
+        "buy": 20
+      }
+    }
+  }
+}

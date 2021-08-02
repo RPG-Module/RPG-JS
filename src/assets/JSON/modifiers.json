@@ -1,0 +1,36 @@
+{
+  "heal potion": {
+    "stats": {
+      "health": 20
+    },
+    "store": {
+      "sell": 5,
+      "buy": 15
+    },
+    "description": "Donne 20 point de vie."
+  },
+  "energy potion": {
+    "stats": {
+      "heal": {
+        "energy": 20
+      }
+    },
+    "store": {
+      "sell": 5,
+      "buy": 15
+    },
+    "description": "Donne 20 point d'énergies."
+  },
+  "mana potion": {
+    "stats": {
+      "heal": {
+        "mana": 20
+      }
+    },
+    "store": {
+      "sell": 5,
+      "buy": 15
+    },
+    "description": "Donne 20 point d'énergies."
+  }
+}
