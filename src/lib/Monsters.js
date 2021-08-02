@@ -27,13 +27,13 @@ class Monsters{
                 fs.readFile('./src/assets/JSON/loottable.json').then(function (lootlist) {
                     const loots = JSON.parse(lootlist)
                     const loottable = loots[monster.toLowerCase()]
-                    fs.readFile('./src/assets/JSON/object.json').then(function (obj) {
+                    fs.readFile('./src/assets/JSON/items.json').then(function (obj) {
                         const objs = JSON.parse(obj)
                         let loot = {}
                         for (const lootobj of loottable) {
-                            if (objs.item[lootobj.name.toLowerCase()]|| lootobj.name.toLowerCase() === 'xp') {
+                            if (objs.items[lootobj.name.toLowerCase()]|| lootobj.name.toLowerCase() === 'xp') {
                                 Object.assign(loot, {
-                                    [lootobj.name]: {data : lootobj, info: objs.item[lootobj.name.toLowerCase()] || null}
+                                    [lootobj.name]: {data : lootobj, info: objs.items[lootobj.name.toLowerCase()] || null}
                                 })
                             }
                         }

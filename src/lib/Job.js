@@ -18,7 +18,7 @@ class Jobs {
             if (!name) reject({message: "Nom du metier non specifier"})
             fs.readFile('./src/assets/JSON/jobs.json').then(function (obj) {
                 const jobsStringify = JSON.parse(obj)
-                if (!objs[name.toLowerCase()]) {
+                if (!jobsStringify[name.toLowerCase()]) {
                     reject('Ce metier n\'existe pas\nItem liste: ' + Object.keys(jobsStringify))
                 }
                 resolve(jobsStringify[name.toLowerCase()])
@@ -30,9 +30,9 @@ class Jobs {
 
     /**
      * Harvest ressources for all jobs
-     * @param profile {String<username>} user uuid
+     * @param profile {String<username>} user id
      */
-    
+
     makeJob(profile) {
         return new Promise((resolve,reject) =>{
             fs.readFile('./src/assets/database/users.json').then(function (users) {
@@ -63,7 +63,7 @@ class Jobs {
                 })
             })
         })
-        
+
     }
 
     static levelup(profile){
