@@ -1,9 +1,15 @@
 const fs = require('fs/promises')
 
 const convert = require('xml-js');
+const SnowflakeId = require('./SnwoflakesIDs/main');
 
+// Initialize snowflake
+const snowflake = new SnowflakeId({
+    mid: 42,
+    offset: ( 2019 - 1970 ) * 31536000 * 1000,
+});
 
-const utls = {
+module.exports = {
     readXML(file) {
         return new Promise((resolve, reject) => {
             fs.readFile(`./src/conf/${file}.xml`).then(function (data) {
@@ -14,8 +20,9 @@ const utls = {
             })
         })
 
+    },
+
+    generateIds(){
+        return snowflake.generate()
     }
 }
-
-
-module.exports = utls
