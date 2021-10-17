@@ -1,5 +1,5 @@
 const fs = require('fs/promises')
-
+const path = require('path')
 class Users{
 
     constructor() {
@@ -98,11 +98,23 @@ class Users{
                 }
             })
         })
-    }
+      }
+
+
+        getAllUser(name) {
+            return new Promise((resolve, reject) => {
+                fs.readFile('../assets/database/users.json').then(function (user) {
+                    const parseuser = JSON.parse(user)
+
+                    resolve(parseuser)
+                })
+            })
+
+        }
 
     getUserid(name) {
         return new Promise((resolve, reject) => {
-            fs.readFile('./src/assets/database/users.json').then(function (user) {
+            fs.readFile('../assets/database/users.json').then(function (user) {
                 const parseuser = JSON.parse(user)
 
                 let ids = Object.keys(parseuser)
@@ -116,7 +128,12 @@ class Users{
 
             })
         })
-
+    }
+    getUserName(id) {
+            fs.readFile('../assets/database/users.json').then(function (user) {
+                const parseuser = JSON.parse(user)
+                        return parseuser[id]
+        })
     }
 
 
