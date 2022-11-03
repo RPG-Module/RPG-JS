@@ -12,18 +12,16 @@ RPGModule.register.registerItems({
         description: "caca"
     }
 })
-RPGModule.register.registerMonster({
+RPGModule.register.registerMonsters({
     "test": {
         name: "test",
         test:"testf",
-        level: {
-            low: {
-                pv: 10,
-                attack: 10,
-                defence: 10,
-                speed: 10,
-                critial: 10
-            }
+        stats: {
+            pv: 10,
+            attack: 10,
+            defence: 10,
+            speed: 10,
+            critial: 10
         },
         loot: [{
             name: "Os",
@@ -36,5 +34,19 @@ RPGModule.register.registerMonster({
                 maxLoot: 10
             }],
         description: "test"
+    },
+    "test2": {
+        name: "test",
+        test:"testf",
+        stats: {
+            pv: 10,
+            attack: 10,
+            defence: 10,
+            speed: 10,
+            critial: 10
+        },
+        loot: [],
+        description: "test"
     }
+
 })
