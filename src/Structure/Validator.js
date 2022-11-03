@@ -1,9 +1,6 @@
 const Item = require("./DataStructure/Item");
 const Monster = require("./DataStructure/Monster");
 
-
-
-
 const Validator = class {
     constructor() {
         this.ItemValidation = Item;
