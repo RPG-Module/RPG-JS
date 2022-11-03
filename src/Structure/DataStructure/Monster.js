@@ -32,16 +32,6 @@ let stats = attributes({
 },{
     strictValidationErrorClass: InvalidItemError
 })(class Stats {});
-
-let level= attributes({
-    low:stats,
-    //medium:stats,
-    //high:stats,
-    //epic:stats,
-    //legendary:stats,
-    //:stats,
-},{ strictValidationErrorClass: InvalidItemError})(class Level {});
-
 let loot = attributes({
     name:{
         type:String,
@@ -62,7 +52,7 @@ let Monster = attributes({
         type: String,
         required: true
     },
-    level:level,
+    stats,
     loot:{
       type:Array, itemType:loot
     },
